@@ -2,7 +2,7 @@
 """
 Created on Mon Nov 30 12:23:40 2020
 
-@author: dschumac
+@authors: dschumac. afunk1
 """
 import socket
 
