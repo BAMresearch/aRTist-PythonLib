@@ -1,27 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 30 12:23:40 2020
+Created on Mon Nov 30 12:23:40 2020by afunkt1 based on MATLAB-scripts by dschumac
+Updated on Mon May 30 17:36:00 2022 by dschumac
 
 @authors: dschumac. afunk1
 """
 import socket
 
+
+   
 def connect(Host, Port, timeout):
     S = socket.socket()             # Create socket (for TCP)
     S.connect((Host, Port))         # Connect to aRTist
     S.settimeout(timeout)
     return S
 
-def send(socket, x):
+def send(buffer_size, timeout, x):
     total = ""
     for i in range(len(x)):
        # print(i+1, "of", len(x), " commands send")  
        # print(x[i])
         socket.send(x[i].encode())
-        total = total + listen(1)
+        total = total + listen(buffer_size, timeout, 1)
     return total
 
-def listen(socket, buffer_size, timeout, command_no):
+def listen(buffer_size, timeout, command_no):
     total = ""
     stop = False
     if (command_no == 0):
@@ -29,7 +32,7 @@ def listen(socket, buffer_size, timeout, command_no):
     while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
         try:
             msg = socket.recv(buffer_size).decode()                                     # 
-        except socket.timeout as e:
+        except BaseException as e:
             err = e.args[0]
             if err == "timed out":
                 print("Timeout\n")
@@ -62,47 +65,82 @@ def open_scence(Path):
 """]
     return STR
 
-def setup_detector(x, y, px):
-    STR = ["""set ::Xdetector(Type) {flat panel};
-""","""set ::Xsetup_private(DGauto) {Size};
-""","""set ::Xsetup(DetectorPixelX) """+ str((int(x))) +""";
-""","""set ::Xsetup(DetectorPixelY) """+ str((int(y))) +""";
-""","""set ::Xsetup_private(DGdx) """+ str(px) +""";
-""","""set ::Xsetup_private(DGdy) """+ str(px) +""";
-""","""set ::Xdetector(AutoD) {max};
-""","""set ::Xdetector(RefGV) 50000;
-""","""::XDetector::UpdateGeometry 1;
-"""]
+def SETUP_Preview(state):
+    #state (0, 1)
+    STR = ["""set ::Engine::RenderPreview """+str(state)+""";
+           """]
     return STR
 
-def setup_source(pos, kV, mA):
-    STR = ["""set ::Xsetup(SourceSampling) {point};
-""","""set ::Xsource(Exposure) """+ str(mA) +""";
-""","""set ::Xsource(Tube) {Mono};
-""","""set ::Xsource(Voltage) """+ str(kV) +""";
-""","""::PartList::Invoke S SetPosition 0 0 """+ str(pos) +""";
-""","""::PartList::Invoke S SetRefPos 0 0 """+ str(pos) +""";
-""","""set ::Xdetector(FFCorrRun) 0;
-""","""XDetector::FFCorrClearCmd;
-""","""::XSource::spectrumOK;
-"""]  # set ::Engine::RenderPreview 0;
+def SETUP_detector(posZ, angleZ, x, y, px, RefPoint, GV): #Order of commands important!! -> Invoke should be reomved!
+    #RefPoint ('off', 'min', 'max', 'center')
+    STR = ["""::PartList::Invoke D SetPosition 0 0 """+ str(posZ) +""";
+           ""","""::PartList::Invoke D SetRefPos 0 0 """+ str(posZ) +""";
+           ""","""::PartList::Invoke D SetOrientation 0 0 """+ str(angleZ) +""";
+           ""","""set ::Xdetector(AutoD) """+ RefPoint +""";
+           ""","""set ::Xdetector(RefGV) """+ str(GV) +""";
+           ""","""set ::Xsetup(DetectorPixelX) """+ str((int(x))) +""";
+           ""","""set ::Xsetup(DetectorPixelY) """+ str((int(y))) +""";
+           ""","""set ::Xsetup_private(DGauto) Size;
+           ""","""set ::Xsetup_private(DGdx) """+ str(px) +""";
+           ""","""set ::Xsetup_private(DGdy) """+ str(px) +""";
+           ""","""::XDetector::ExposureModeChange;
+           ""","""::XDetector::UpdateGeometry 1;
+           """]
     return STR
 
-def setup_FFcorr():
+def SETUP_source(posZ, kV, mA, Type, FMat, FThick):
+    #Type (Mono, General)
+    STR = ["""set ::Xsource(Exposure) """+ str(mA) +""";
+           ""","""set ::Xsource(Voltage) """+ str(kV) +""";
+           ""","""set ::Xsource(Tube) """+ str(Type) +""";
+           ""","""set ::Xsource(FilterMaterial) """+ str(FMat) +""";
+           ""","""set ::Xsource(FilterThickness) """+ str(FThick) +""";
+           ""","""::PartList::Invoke S SetPosition 0 0 """+ str(posZ) +""";
+           ""","""::PartList::Invoke S SetRefPos 0 0 """+ str(posZ) +""";
+           ""","""::XSource::ComputeSpectrum;
+           """]
+    return STR
+
+def SETUP_SourceSampling(sampling):
+    #Type (Mono, General)
+    STR = ["""set ::Xsetup(SourceSampling) """+ str(sampling) +""";
+           """]
+    return STR
+
+def SETUP_CalcFocalspot(width, height, fract, res):
+    STR = ["""set ::Xsource_private(SpotWidth) """+ str(width) +""";       
+			""","""set ::Xsource_private(SpotHeight) """+ str(height) +""";
+			""","""set ::Xsource_private(SpotHeight) """+ str(height) +""";
+			""","""set ::Xsource_private(SpotLorentz) """+ str(fract) +""";
+			""","""set ::Xsource_private(SpotRes) """+ str(res) +""";
+			""","""::XSource::SetSpotProfile;
+			"""]
+    return STR
+
+def LOAD_spectrum(SpecPath):
+    #Type (Mono, General)
+    STR = ["""::XSource::LoadSpectrum """+ SpecPath +""";
+           """]
+    return STR
+
+def Acq_FF():
     STR = ["""::XDetector::FFCorrGenCmd;
 """]
     return STR
 
-def create_sphere(R):
-    R = 2 * R
-    STR = ["""::Modules::Run Solid;
-""","""set ::Modules::Module7::Solid(Type) {ellipsoid};
-""","""set ::Modules::Module7::Solid(Equilateral) 1;
-""","""set ::Modules::Module7::Solid(X) """+ str(R) +""";
-""","""set ::Modules::Module7::Solid(PhiResolution) 80;
-""","""set ::Modules::Module7::Solid(ThetaResolution) 80;
-""","""set ::Modules::Module7::Solid(GridEllipsoid) 1;
-""","""set ::Modules::Module7::Solid(VolumeCorrect) 1;
+def AutoAcq_FF(state):
+    #state (0, 1)
+    STR = ["""set ::Xdetector(FFCorrRun) """+str(state)+""";
+"""]
+    return STR
+
+def Clear_FF():
+    STR = ["""XDetector::FFCorrClearCmd;
+"""]
+    return STR
+
+def count_parts():
+    STR = ["""::PartList::Count;
 """]
     return STR
 
@@ -122,13 +160,12 @@ def translate(ID, x, y, z):
 """]
     return STR
 
-
-def aRTist_set_vis_AllParts(state): #state = "on"/"off"
+def set_vis_AllParts(state): #state = "on"/"off"
     STR = ["""::PartList::SetVisibility """+state+""";
-           """] #::PartList::Set parts Visible off;
+           """]
     return STR
 
-def aRTist_set_vis(ID, state):
+def set_vis(ID, state):
     STR = ["""::PartList::Set """+str(ID)+""" Visible """+state+""";
            """]
     return STR
@@ -148,52 +185,83 @@ def save_image(Path):
 """]
     return STR
 
-#def delete(O1, O2):
-#    STR = ""
-#    while (O1 <= O2):
-#        STR = STR + """::PartList::Delete """+ str(O1)+""";
-#"""
-#        O1 = O1 + 1
-#    return STR
+def SETUP_CT(CTModNo, angle, steps, OutDir, OutName, OutFormat, PType, RunFDK, OnlySelObj, Direction, Scat, ScatInt):
+    #OutFormat ({BAM CT}, TIFFs)
+    #PType (16bit, float)
+    #Direction (clockwise, counterclockwise)
+    #Scat (off, McRay)
+    STR = ["""::Modules::Run CtScan;
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Angle) """+ str(angle) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Steps) """+ str(steps) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Directory) """+ OutDir +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(File) """+ OutName +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Output) """+ str(OutFormat) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(PixelType) """+ str(PType) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Feldkamp) """+ str(RunFDK) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Selected) """+ str(OnlySelObj) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Direction) """+ str(Direction) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(ScatterMode) """+ Scat +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(ScatterInterval) """+ str(ScatInt) +""";
+           """]
+    return STR
 
-def fire():
-    STR = ["""::Modules::Module7::GenerateCmd;
-"""]
-#::Modules::Module7::Close;"
-    return STR            
+def SETUP_FDK(CTModNo, VType, Interp, OutFormat):
+    #VType (8bit, 16bit, 32bit, float)
+    #OutFormat ({BAM CT}, VTK, RAW)
+    STR = ["""::Modules::Run CtScan;
+        ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(VoxelType) """+ str(VType) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Interpolate) """+ str(Interp) +""";
+           ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(FileType) """+ str(OutFormat) +""";
+           """]
+    return STR
 
-# def aRTist_SETUP_CT(angle, steps, OutDir, OutName, OutFormat, PType, RunFDK, OnlySelObj, Direction, Scat, ScatInt):
-#     #OutFormat ({BAM CT}, TIFFs)
-#     #PType (16bit, float)
-#     #Direction (clockwise, counterclockwise)
-#     #Scat (off, McRay)
-#     STR = ["""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Angle) """+ str(angle) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Steps) """+ str(steps) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Directory) """+ OutDir +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(File) """+ OutName +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Output) """+ str(OutFormat) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(PixelType) """+ str(PType) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Feldkamp) """+ str(RunFDK) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Selected) """+ str(OnlySelObj) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Direction) """+ str(Direction) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(ScatterMode) """+ Scat +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(ScatterInterval) """+ str(ScatInt) +""";
-#            """]
-#     return STR
+def Run_CT(CTModNo):
+    STR = ["""::Modules::Run CtScan;
+        ""","""::Modules::Module""" +str(CTModNo)+"""::Execute; 
+           """]
+    return STR
 
-# def aRTist_SETUP_FDK(VType, Interp, OutFormat):
-#     #VType (8bit, 16bit, 32bit, float)
-#     #OutFormat ({BAM CT}, VTK, RAW)
-#     STR = ["""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(VoxelType) """+ str(VType) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(Interpolate) """+ str(Interp) +""";
-#            ""","""set ::Modules::Module""" +str(CTModNo)+"""::CtScan(FileType) """+ str(OutFormat) +""";
-#            """]
-#     return STR
+def create_Object(SolidModNo, OType, Eq, x, y, z, PhiRes, ThetaRes, Grid, VC):
+    STR = ["""::Modules::Run Solid;
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(Type) """+ str(OType) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(Equilateral) """+ str(Eq) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(X) """+ str(x) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(Y) """+ str(y) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(Z) """+ str(z) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(PhiResolution) """+ str(PhiRes) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(ThetaResolution) """+ str(ThetaRes) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(GridEllipsoid) """+ str(Grid) +""";
+           ""","""set ::Modules::Module""" +str(SolidModNo)+"""::Solid(VolumeCorrect) """+ str(VC) +""";
+           ""","""::Modules::Module""" +str(SolidModNo)+"""::GenerateCmd;
+           """]
+    return STR
 
-# def aRTist_Run_CT():
-#     STR = ["""::Modules::Module""" +str(CTModNo)+"""::Execute; 
-#            """]
-#     return STR
+def get_Obj_IDs():
+    STR = ["""PartList::Query {ID};
+           """]
+    return STR
+
+def aget_ObjID(name):
+    STR = ['PartList::Query {ID Name} -where {Name=="' +str(name)+ '"};\r\n']
+    return STR
+
+def get_Obj_ID_by_Pos(pos):
+    #pos (e.g. 'end')
+    STR = ["""PartList::GetIDFromPos """+ str(pos) +""";
+           """]
+    return STR
+
+def select_last_Obj():
+    STR = ["""PartList::Select [PartList::GetIDFromPos end];
+           """]
+    return STR
+
+def delete_all_Obj():
+    STR = ["""PartList::Clear;
+           """]
+    return STR
+
+
 
 ################# Extract results from aRTist answer string ###################
 def Extract_resultStr(aRTist_string):
