@@ -9,58 +9,66 @@ import socket
 
 
    
-def connect(Host, Port, timeout):
-    S = socket.socket()             # Create socket (for TCP)
-    S.connect((Host, Port))         # Connect to aRTist
-    S.settimeout(timeout)
-    return S
-
-def send(buffer_size, timeout, x):
-    total = ""
-    for i in range(len(x)):
-       # print(i+1, "of", len(x), " commands send")  
-       # print(x[i])
-        socket.send(x[i].encode())
-        total = total + listen(buffer_size, timeout, 1)
-    return total
-
-def listen(buffer_size, timeout, command_no):
-    total = ""
-    stop = False
-    if (command_no == 0):
-        socket.settimeout(0.2)
-    while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
-        try:
-            msg = socket.recv(buffer_size).decode()                                     # 
-        except BaseException as e:
-            err = e.args[0]
-            if err == "timed out":
-                print("Timeout\n")
-                stop = True
-                continue
-        else:
-            if ("SUCCESS" in msg):
-                total = total + msg
-               # print(msg)
-                stop = True
-                continue
-            elif ("ERROR" in msg):
-                total = total + msg
-               # print(msg)
-                stop = True
-                global error
-                error = error + 1 
-                continue
+class Connection:
+    def __init__(self, Host, Port, buffer_size, timeout):
+        self.Host = Host
+        self.Port = Port
+        self.buffer_size = buffer_size
+        self.timeout = timeout
+        self.connect()
+    
+    def connect(self):
+        self.S = socket.socket()                        # Create socket (for TCP)
+        self.S.connect((self.Host, self.Port))          # Connect to aRTist
+        self.S.settimeout(self.timeout)
+        return self.S
+    
+    def send(self, x):
+        total = ""
+        for i in range(len(x)):
+           # print(i+1, "of", len(x), " commands send")  
+           # print(x[i])
+            socket.send(x[i].encode())
+            total = total + self.listen(1)
+        return total
+    
+    def listen(self, command_no):
+        total = ""
+        stop = False
+        if (command_no == 0):
+            socket.settimeout(0.2)
+        while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
+            try:
+                msg = socket.recv(self.buffer_size).decode()                                     # 
+            except BaseException as e:
+                err = e.args[0]
+                if err == "timed out":
+                    print("Timeout\n")
+                    stop = True
+                    continue
             else:
-               # print(msg)
-                if (command_no == 0):
-                    print(msg)
-                total = total + msg
-    socket.settimeout(timeout)
-    return total
+                if ("SUCCESS" in msg):
+                    total = total + msg
+                   # print(msg)
+                    stop = True
+                    continue
+                elif ("ERROR" in msg):
+                    total = total + msg
+                   # print(msg)
+                    stop = True
+                    global error
+                    error = error + 1 
+                    continue
+                else:
+                   # print(msg)
+                    if (command_no == 0):
+                        print(msg)
+                    total = total + msg
+        socket.settimeout(self.timeout)
+        return total
 
-''' aRTist spezifische Kommandos '''
-def open_scence(Path):
+''' Scene '''
+def open_scene(Path):
     STR = ["""FileIO::OpenAny """+ Path +""";
 """]
     return STR
