@@ -7,8 +7,7 @@ Updated on Mon May 30 17:36:00 2022 by dschumac
 """
 import socket
 
-
-   
+############################### Connection #####################################
 class Connection:
     def __init__(self, Host, Port, buffer_size, timeout):
         self.Host = Host
