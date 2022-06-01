@@ -9,60 +9,69 @@ import socket
 
 
    
-def connect(Host, Port, timeout):
-    S = socket.socket()             # Create socket (for TCP)
-    S.connect((Host, Port))         # Connect to aRTist
-    S.settimeout(timeout)
-    return S
-
-def send(buffer_size, timeout, x):
-    total = ""
-    for i in range(len(x)):
-       # print(i+1, "of", len(x), " commands send")  
-       # print(x[i])
-        socket.send(x[i].encode())
-        total = total + listen(buffer_size, timeout, 1)
-    return total
-
-def listen(buffer_size, timeout, command_no):
-    total = ""
-    stop = False
-    if (command_no == 0):
-        socket.settimeout(0.2)
-    while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
-        try:
-            msg = socket.recv(buffer_size).decode()                                     # 
-        except BaseException as e:
-            err = e.args[0]
-            if err == "timed out":
-                print("Timeout\n")
-                stop = True
-                continue
-        else:
-            if ("SUCCESS" in msg):
-                total = total + msg
-               # print(msg)
-                stop = True
-                continue
-            elif ("ERROR" in msg):
-                total = total + msg
-               # print(msg)
-                stop = True
-                global error
-                error = error + 1 
-                continue
+class Connection:
+    def __init__(self, Host, Port, buffer_size, timeout):
+        self.Host = Host
+        self.Port = Port
+        self.buffer_size = buffer_size
+        self.timeout = timeout
+        self.connect()
+    
+    def connect(self):
+        self.S = socket.socket()                        # Create socket (for TCP)
+        self.S.connect((self.Host, self.Port))          # Connect to aRTist
+        self.S.settimeout(self.timeout)
+        self.listen(0)
+        return self.S
+    
+    def send(self, x):
+        total = ""
+        for i in range(len(x)):
+           # print(i+1, "of", len(x), " commands send")  
+           # print(x[i])
+            self.S.send(x[i].encode())
+            total = total + self.listen(1)
+        return total
+    
+    def listen(self, command_no):
+        total = ""
+        stop = False
+        if (command_no == 0):
+            self.S.settimeout(0.2)
+        while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
+            try:
+                msg = self.S.recv(self.buffer_size).decode()                                     # 
+            except BaseException as e:
+                err = e.args[0]
+                if err == "timed out":
+                    print("Timeout\n")
+                    stop = True
+                    continue
             else:
-               # print(msg)
-                if (command_no == 0):
-                    print(msg)
-                total = total + msg
-    socket.settimeout(timeout)
-    return total
+                if ("SUCCESS" in msg):
+                    total = total + msg
+                   # print(msg)
+                    stop = True
+                    continue
+                elif ("ERROR" in msg):
+                    total = total + msg
+                   # print(msg)
+                    stop = True
+                    global error
+                    error = error + 1 
+                    continue
+                else:
+                   # print(msg)
+                    if (command_no == 0):
+                        print(msg)
+                    total = total + msg
+        self.S.settimeout(self.timeout)
+        return total
 
-''' aRTist spezifische Kommandos '''
-def open_scence(Path):
+''' Scene '''
+def open_scene(Path):
     STR = ["""FileIO::OpenAny """+ Path +""";
-"""]
+           """]
     return STR
 
 def SETUP_Preview(state):
@@ -71,6 +80,12 @@ def SETUP_Preview(state):
            """]
     return STR
 
+def RenderPreview():
+    STR = ["""::Engine::RenderPreview;
+           """]
+    return STR
+
+
 def SETUP_detector(posZ, angleZ, x, y, px, RefPoint, GV): #Order of commands important!! -> Invoke should be reomved!
     #RefPoint ('off', 'min', 'max', 'center')
     STR = ["""::PartList::Invoke D SetPosition 0 0 """+ str(posZ) +""";
@@ -78,12 +93,12 @@ def SETUP_detector(posZ, angleZ, x, y, px, RefPoint, GV): #Order of commands imp
            ""","""::PartList::Invoke D SetOrientation 0 0 """+ str(angleZ) +""";
            ""","""set ::Xdetector(AutoD) """+ RefPoint +""";
            ""","""set ::Xdetector(RefGV) """+ str(GV) +""";
+           ""","""::XDetector::ExposureModeChange;
+           ""","""set ::Xsetup_private(DGauto) Size;
            ""","""set ::Xsetup(DetectorPixelX) """+ str((int(x))) +""";
            ""","""set ::Xsetup(DetectorPixelY) """+ str((int(y))) +""";
-           ""","""set ::Xsetup_private(DGauto) Size;
            ""","""set ::Xsetup_private(DGdx) """+ str(px) +""";
            ""","""set ::Xsetup_private(DGdy) """+ str(px) +""";
-           ""","""::XDetector::ExposureModeChange;
            ""","""::XDetector::UpdateGeometry 1;
            """]
     return STR
@@ -102,8 +117,8 @@ def SETUP_source(posZ, kV, mA, Type, FMat, FThick):
     return STR
 
 def SETUP_SourceSampling(sampling):
-    #Type (Mono, General)
     STR = ["""set ::Xsetup(SourceSampling) """+ str(sampling) +""";
+           ""","""::XSource::SelectSpotTypeEvent;
            """]
     return STR
 
@@ -125,39 +140,39 @@ def LOAD_spectrum(SpecPath):
 
 def Acq_FF():
     STR = ["""::XDetector::FFCorrGenCmd;
-"""]
+           """]
     return STR
 
 def AutoAcq_FF(state):
     #state (0, 1)
     STR = ["""set ::Xdetector(FFCorrRun) """+str(state)+""";
-"""]
+           """]
     return STR
 
 def Clear_FF():
     STR = ["""XDetector::FFCorrClearCmd;
-"""]
+           """]
     return STR
 
 def count_parts():
     STR = ["""::PartList::Count;
-"""]
+           """]
     return STR
 
 def set_material(ID, mat):
     STR = ["""::PartList::Set """+ str(ID) +""" Material """+ mat +""";
-"""]
+           """]
     return STR
 
 def set_position(ID, x, y, z):
     STR = ["""::PartList::Invoke """+ str(ID) +""" SetPosition """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
-""","""::PartList::Invoke """+ str(ID) +""" SetRefPos """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
-"""]
+           ""","""::PartList::Invoke """+ str(ID) +""" SetRefPos """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
+           """]
     return STR
 
 def translate(ID, x, y, z):
     STR = ["""::PartList::Invoke """+ str(ID) +""" Translate world """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
-"""]
+           """]
     return STR
 
 def set_vis_AllParts(state): #state = "on"/"off"
@@ -172,17 +187,17 @@ def set_vis(ID, state):
 
 def resize(ID, size):
     STR = ["""::PartList::Invoke """+str(ID)+""" SetSize """+str(size)+""" """+str(size)+""" """+str(size)+""";
-"""]
+           """]
     return STR
 
 def make_image():
     STR = ["""::Engine::StartStopCmd;
-"""]
+           """]
     return STR
 
 def save_image(Path):
     STR = ["""::Modules::Execute ImageViewer Save16bit """+ Path +""" 1;
-"""]
+           """]
     return STR
 
 def SETUP_CT(CTModNo, angle, steps, OutDir, OutName, OutFormat, PType, RunFDK, OnlySelObj, Direction, Scat, ScatInt):
@@ -241,9 +256,9 @@ def get_Obj_IDs():
            """]
     return STR
 
-def aget_ObjID(name):
+def get_ObjID(name):
     STR = ['PartList::Query {ID Name} -where {Name=="' +str(name)+ '"};\r\n']
-    return STR
+    return STR #PartList::Query {ID Name Material} -where {Material=="Al"}
 
 def get_Obj_ID_by_Pos(pos):
     #pos (e.g. 'end')
@@ -260,6 +275,7 @@ def delete_all_Obj():
     STR = ["""PartList::Clear;
            """]
     return STR
+
 
 
 
