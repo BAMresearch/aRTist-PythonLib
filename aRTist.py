@@ -71,7 +71,7 @@ class Connection:
 ''' Scene '''
 def open_scene(Path):
     STR = ["""FileIO::OpenAny """+ Path +""";
-"""]
+           """]
     return STR
 
 def SETUP_Preview(state):
@@ -80,6 +80,12 @@ def SETUP_Preview(state):
            """]
     return STR
 
+def RenderPreview():
+    STR = ["""::Engine::RenderPreview;
+           """]
+    return STR
+
+
 def SETUP_detector(posZ, angleZ, x, y, px, RefPoint, GV): #Order of commands important!! -> Invoke should be reomved!
     #RefPoint ('off', 'min', 'max', 'center')
     STR = ["""::PartList::Invoke D SetPosition 0 0 """+ str(posZ) +""";
@@ -87,12 +93,12 @@ def SETUP_detector(posZ, angleZ, x, y, px, RefPoint, GV): #Order of commands imp
            ""","""::PartList::Invoke D SetOrientation 0 0 """+ str(angleZ) +""";
            ""","""set ::Xdetector(AutoD) """+ RefPoint +""";
            ""","""set ::Xdetector(RefGV) """+ str(GV) +""";
+           ""","""::XDetector::ExposureModeChange;
+           ""","""set ::Xsetup_private(DGauto) Size;
            ""","""set ::Xsetup(DetectorPixelX) """+ str((int(x))) +""";
            ""","""set ::Xsetup(DetectorPixelY) """+ str((int(y))) +""";
-           ""","""set ::Xsetup_private(DGauto) Size;
            ""","""set ::Xsetup_private(DGdx) """+ str(px) +""";
            ""","""set ::Xsetup_private(DGdy) """+ str(px) +""";
-           ""","""::XDetector::ExposureModeChange;
            ""","""::XDetector::UpdateGeometry 1;
            """]
     return STR
@@ -111,8 +117,8 @@ def SETUP_source(posZ, kV, mA, Type, FMat, FThick):
     return STR
 
 def SETUP_SourceSampling(sampling):
-    #Type (Mono, General)
     STR = ["""set ::Xsetup(SourceSampling) """+ str(sampling) +""";
+           ""","""::XSource::SelectSpotTypeEvent;
            """]
     return STR
 
@@ -134,39 +140,39 @@ def LOAD_spectrum(SpecPath):
 
 def Acq_FF():
     STR = ["""::XDetector::FFCorrGenCmd;
-"""]
+           """]
     return STR
 
 def AutoAcq_FF(state):
     #state (0, 1)
     STR = ["""set ::Xdetector(FFCorrRun) """+str(state)+""";
-"""]
+           """]
     return STR
 
 def Clear_FF():
     STR = ["""XDetector::FFCorrClearCmd;
-"""]
+           """]
     return STR
 
 def count_parts():
     STR = ["""::PartList::Count;
-"""]
+           """]
     return STR
 
 def set_material(ID, mat):
     STR = ["""::PartList::Set """+ str(ID) +""" Material """+ mat +""";
-"""]
+           """]
     return STR
 
 def set_position(ID, x, y, z):
     STR = ["""::PartList::Invoke """+ str(ID) +""" SetPosition """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
-""","""::PartList::Invoke """+ str(ID) +""" SetRefPos """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
-"""]
+           ""","""::PartList::Invoke """+ str(ID) +""" SetRefPos """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
+           """]
     return STR
 
 def translate(ID, x, y, z):
     STR = ["""::PartList::Invoke """+ str(ID) +""" Translate world """+ str(x) +""" """+ str(y) +""" """+ str(z) +""";
-"""]
+           """]
     return STR
 
 def set_vis_AllParts(state): #state = "on"/"off"
@@ -181,17 +187,17 @@ def set_vis(ID, state):
 
 def resize(ID, size):
     STR = ["""::PartList::Invoke """+str(ID)+""" SetSize """+str(size)+""" """+str(size)+""" """+str(size)+""";
-"""]
+           """]
     return STR
 
 def make_image():
     STR = ["""::Engine::StartStopCmd;
-"""]
+           """]
     return STR
 
 def save_image(Path):
     STR = ["""::Modules::Execute ImageViewer Save16bit """+ Path +""" 1;
-"""]
+           """]
     return STR
 
 def SETUP_CT(CTModNo, angle, steps, OutDir, OutName, OutFormat, PType, RunFDK, OnlySelObj, Direction, Scat, ScatInt):
@@ -269,6 +275,7 @@ def delete_all_Obj():
     STR = ["""PartList::Clear;
            """]
     return STR
+
 
 
 
