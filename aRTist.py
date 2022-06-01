@@ -21,6 +21,7 @@ class Connection:
         self.S = socket.socket()                        # Create socket (for TCP)
         self.S.connect((self.Host, self.Port))          # Connect to aRTist
         self.S.settimeout(self.timeout)
+        self.listen(0)
         return self.S
     
     def send(self, x):
@@ -28,7 +29,7 @@ class Connection:
         for i in range(len(x)):
            # print(i+1, "of", len(x), " commands send")  
            # print(x[i])
-            socket.send(x[i].encode())
+            self.S.send(x[i].encode())
             total = total + self.listen(1)
         return total
     
@@ -36,10 +37,10 @@ class Connection:
         total = ""
         stop = False
         if (command_no == 0):
-            socket.settimeout(0.2)
+            self.S.settimeout(0.2)
         while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
             try:
-                msg = socket.recv(self.buffer_size).decode()                                     # 
+                msg = self.S.recv(self.buffer_size).decode()                                     # 
             except BaseException as e:
                 err = e.args[0]
                 if err == "timed out":
@@ -64,7 +65,7 @@ class Connection:
                     if (command_no == 0):
                         print(msg)
                     total = total + msg
-        socket.settimeout(self.timeout)
+        self.S.settimeout(self.timeout)
         return total
 
 ''' Scene '''
@@ -249,9 +250,9 @@ def get_Obj_IDs():
            """]
     return STR
 
-def aget_ObjID(name):
+def get_ObjID(name):
     STR = ['PartList::Query {ID Name} -where {Name=="' +str(name)+ '"};\r\n']
-    return STR
+    return STR #PartList::Query {ID Name Material} -where {Material=="Al"}
 
 def get_Obj_ID_by_Pos(pos):
     #pos (e.g. 'end')
