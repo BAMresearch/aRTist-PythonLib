@@ -14,6 +14,7 @@ class Connection:
         self.Port = Port
         self.buffer_size = buffer_size
         self.timeout = timeout
+        self.error = 0
         self.connect()
     
     def connect(self):
@@ -54,8 +55,8 @@ class Connection:
                     total = total + msg
                    # print(msg)
                     stop = True
-                    global error
-                    error = error + 1 
+                    #global error
+                    self.error = self.error + 1 
                     continue
                 else:
                    # print(msg)
