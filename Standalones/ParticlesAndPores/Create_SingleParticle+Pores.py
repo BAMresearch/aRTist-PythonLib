@@ -20,13 +20,13 @@ BUFFER_SIZE = 1024              # package size
 timeout = 10                    # TimeOut in sec
 
 ''' aRTist Module '''
-SolidModNo = 16                 # Number of module "Solid" in aRTist (Modules/XX. Solid)
+SolidModNo = 17                 # Number of module "Solid" in aRTist (Modules/XX. Solid)
 
 ''' Particles/Pores '''
-D_max = 90                      # max particle diameter in micrometer
-D_min = 80                      # min particle diameter in micrometer
-P_max = 50                      # max pore diameter in micrometer
-P_min = 25                      # min pore diameter in micrometer
+D_max = 100                      # max particle diameter in micrometer
+D_min = 90                      # min particle diameter in micrometer
+P_max = 45                      # max pore diameter in micrometer
+P_min = 10                      # min pore diameter in micrometer
 N_Par = 10                      # No. of particles to be created
 pores_max = 5                   # max. no. of pores per particle
 pores_min = 1                   # min. no. of pores per particle
