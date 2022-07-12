@@ -144,8 +144,8 @@ def set_vis(ID, state):
            """]
     return STR
 
-def resize(ID, size):
-    STR = ["""::PartList::Invoke """+str(ID)+""" SetSize """+str(size)+""" """+str(size)+""" """+str(size)+""";
+def resize(ID, sizeX, sizeY, sizeZ):
+    STR = ["""::PartList::Invoke """+str(ID)+""" SetSize """+str(sizeX)+""" """+str(sizeY)+""" """+str(sizeZ)+""";
            """]
     return STR
 
