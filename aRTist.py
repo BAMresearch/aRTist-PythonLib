@@ -9,7 +9,7 @@ import socket
 
 ############################### Connection #####################################
 class Connection:
-    def __init__(self, Host, Port, buffer_size, timeout):
+    def __init__(self, Host="localhost", Port=3658, buffer_size=1024, timeout=5):
         self.Host = Host
         self.Port = Port
         self.buffer_size = buffer_size
