@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 30 12:23:40 2020by afunkt1 based on MATLAB-scripts by dschumac
+Created on Mon Nov 30 12:23:40 2020 by afunkt1 based on MATLAB-scripts by dschumac
 Updated on Mon May 30 17:36:00 2022 by dschumac
 
 @authors: dschumac. afunk1
@@ -22,49 +22,71 @@ class Connection:
         self.S.connect((self.Host, self.Port))          # Connect to aRTist
         self.S.settimeout(self.timeout)
         self.listen(0)
-        return self.S
+        return self
     
-    def send(self, x):
-        total = ""
-        for i in range(len(x)):
-            self.S.send(x[i].encode())
-            total = total + self.listen(1)
-        return total
+    def send(self, commands, type="RESULT"):
+        answers = []
+        for c in commands:
+            self.S.send(c.encode())
+            answers.append(self.listen(type=type))
+        return answers
     
-    def listen(self, command_no):
-        total = ""
+    def listen(self, command_no=1, type="RESULT"):
+        answer = ""
         stop = False
         if (command_no == 0):
             self.S.settimeout(0.2)
         while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
             try:
-                msg = self.S.recv(self.buffer_size).decode()                                     # 
+                msg = self.S.recv(self.buffer_size).decode()
             except BaseException as e:
                 err = e.args[0]
                 if err == "timed out":
                     print("Timeout\n")
+                    answer += "RESULT Timeout\n"
+                    #print(answer)
                     stop = True
                     continue
             else:
                 if ("SUCCESS" in msg):
-                    total = total + msg
-                   # print(msg)
+                    answer += msg
                     stop = True
                     continue
                 elif ("ERROR" in msg):
-                    total = total + msg
-                   # print(msg)
+                    answer += msg
                     stop = True
                     #global error
                     self.error = self.error + 1 
                     continue
                 else:
-                   # print(msg)
                     if (command_no == 0):
                         print(msg)
-                    total = total + msg
+                    answer += msg
         self.S.settimeout(self.timeout)
-        return total
+        if (type != "*"):
+            answer = self.result(answer, type)
+        return answer
+    
+    def result(self, answer, res='RESULT'):
+        start = answer.find(res+' ')
+        if start == -1:
+            return res + ' not found.'
+        start += len(res) + 1
+        end = answer.find('\n', start)  # one line per result
+        if answer.find('\r', start) == end-1:  # care for Windows line endings
+            end -= 1
+        return answer[start:end]
+
+################# Extract results from aRTist answer string ###################
+def extract_result(answer, res='RESULT'):
+    start = answer.find(res+' ')
+    if start == -1:
+        return res + ' not found.'
+    start += len(res) + 1
+    end = answer.find('\n', start)  # one line per result
+    if answer.find('\r', start) == end-1:  # care for Windows line endings
+        end -= 1
+    return answer[start:end]
 
 
 ############################### Scene #########################################
@@ -280,18 +302,3 @@ def save_image(Path):
     STR = ["""::Modules::Execute ImageViewer Save16bit """+ Path +""" 1;
            """]
     return STR
-
-
-
-
-
-
-
-################# Extract results from aRTist answer string ###################
-def Extract_resultStr(aRTist_string):
-    startI = aRTist_string.find('RESULT ') + 7
-    endI = aRTist_string.find('\r\nSUCCESS', startI)
-    result = aRTist_string[startI:endI]
-    return result
-
-
