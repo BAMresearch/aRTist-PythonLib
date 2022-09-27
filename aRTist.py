@@ -3,7 +3,7 @@
 Created on Mon Nov 30 12:23:40 2020 by afunkt1 based on MATLAB-scripts by dschumac
 Updated on Mon May 30 17:36:00 2022 by dschumac
 
-@authors: dschumac. afunk1
+@authors: dschumac. afunk1, cbellon
 """
 import socket
 
