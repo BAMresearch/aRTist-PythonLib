@@ -8,3 +8,6 @@
 
 def info():
     return ('Todo: add useful info here. ;-)')
+
+from . import _version
+__version__ = _version.get_versions()['version']

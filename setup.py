@@ -1,10 +1,12 @@
 from setuptools import setup
+import versioneer
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(name='artistlib',
-      version='0.1',
+      version=versioneer.get_version(),
+      cmdclass=versioneer.get_cmdclass(),
       description='aRTist Python library',
       url='https://github.com/BAMresearch/aRTist-PythonLib',
       author='Carsten Bellon',
@@ -20,4 +22,5 @@ setup(name='artistlib',
             "Natural Language :: English",
             "Topic :: Multimedia :: Graphics :: Graphics Conversion"
       ],
-zip_safe=False)
+      zip_safe=False)
+      
