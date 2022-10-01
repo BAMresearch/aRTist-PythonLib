@@ -15,7 +15,7 @@ Installation
 
 If you want to **install** the package in your Python environment, you can use [pip]. For example, you can run the following command to make the toolbox available:
 
-	pip install ctsimu
+	pip install artistlib
 
 [pip]: https://pip.pypa.io
 
