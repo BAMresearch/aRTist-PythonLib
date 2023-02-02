@@ -22,4 +22,4 @@
 </%def>
 
 <style>${homelink()}</style>
-<link rel="icon" href="https://bamresearch.github.io/aRTsitPythonLib/artistlib.png">
+<link rel="icon" href="https://bamresearch.github.io/aRTsit-PythonLib/artistlib.png">
