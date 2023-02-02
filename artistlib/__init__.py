@@ -1,9 +1,7 @@
 # -*- coding: UTF-8 -*-
 """The aRTist Python library is intended to remote control and automate the radiographic simulator aRTist.
 
-@authors: dschumac. afunk1, cbellon
-
-#.. include:: ./documentation.md
+.. include:: ./documentation.md
 """
 
 from ._version import get_versions
