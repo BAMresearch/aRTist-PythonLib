@@ -1,4 +1,3 @@
-
 import artistlib as a
 
 # connect to aRTist (default: host='localhost', port=3658) 
