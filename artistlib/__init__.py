@@ -22,6 +22,7 @@ class Junction:
         self.bufferSize = bufferSize
         self.timeout = timeout
         self.error = 0
+        self.progress = 0
         self.connect()
 
     def connect(self):
@@ -70,6 +71,12 @@ class Junction:
                     stop = True
                     #global error
                     self.error = self.error + 1 
+                    continue
+                elif ("PROGRESS" in msg):
+                    try:
+                        self.progress = float(msg.strip('PROGRESS '))
+                    except:
+                        self.progress = 0
                     continue
                 else:
                     if (command_no == 0):
