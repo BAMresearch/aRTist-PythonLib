@@ -93,20 +93,19 @@ class Junction:
             if a.find(res) == 0:
                 picked += (a[1 + len(res):].strip('\r') + '\n')
         if len(picked) == 0:
+                return res + ' not found.'
         return picked
 
-    def image(self):
+    def image(self, filename):
         imageData = self.answer["BASE64"]
         decodedData = base64.b64decode((imageData))
-
         imageHeader = self.answer["IMAGE"]
         for i in imageHeader.split(" "):
             self.lst.append(i)
         if "LE" in self.lst[5]:
-            dtype = np.uint16    
-        #im = np.frombuffer(decodedData, np.uint16).reshape((10,10))
+            dtype = np.uint16
         im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
-        Image.fromarray(im).save("test2.png")
+        Image.fromarray(im).save(filename)
 
         
     
