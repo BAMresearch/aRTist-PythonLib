@@ -85,6 +85,7 @@ class Junction:
         if (msgType != "*"):
             answer = self.pick(answer, msgType)
         self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "IMAGE":self.pick(answer, "IMAGE"), "BASE64":self.pick(answer, "BASE64")})
+        #print(self.answer)
         return answer
 
     def pick(self, answer, res='RESULT'):
@@ -102,8 +103,15 @@ class Junction:
         imageHeader = self.answer["IMAGE"]
         for i in imageHeader.split(" "):
             self.lst.append(i)
-        if "LE" in self.lst[5]:
+        pixels = int(self.lst[1]) * int(self.lst[2])
+        if int(len(decodedData)/pixels) == 2:
             dtype = np.uint16
+        elif int(len(decodedData)/pixels) == 4:
+            dtype = np.float32
+        elif int(len(decodedData)/pixels) == 1:
+            dtype = np.uint8
+        elif int(len(decodedData)/pixels) == 8:
+            dtype = np.float64
         im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
         Image.fromarray(im).save(filename)
 
