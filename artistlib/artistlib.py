@@ -98,20 +98,17 @@ class Junction:
         return picked
 
     def image(self, filename):
+        self.lst.clear()
+        cTypes = ["bit", "char", "signed char", "unsigned char", "short", "unsigned short", "int", "unsigned int", "long", "unsigned long", "float", "double"]
+        npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
         imageData = self.answer["BASE64"]
         decodedData = base64.b64decode((imageData))
         imageHeader = self.answer["IMAGE"]
-        for i in imageHeader.split(" "):
+        for i in imageHeader.split(","):
             self.lst.append(i)
-        pixels = int(self.lst[1]) * int(self.lst[2])
-        if int(len(decodedData)/pixels) == 2:
-            dtype = np.uint16
-        elif int(len(decodedData)/pixels) == 4:
-            dtype = np.float32
-        elif int(len(decodedData)/pixels) == 1:
-            dtype = np.uint8
-        elif int(len(decodedData)/pixels) == 8:
-            dtype = np.float64
+        imType = self.lst[4]
+        if imType in cTypes:
+            dtype = npTypes[cTypes.index(imType)]
         im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
         Image.fromarray(im).save(filename)
 
