@@ -13,28 +13,42 @@ c = 0
 while True:
     try:
         com = session.prompt("Command: ")
-    
-        ver = a.Junction.send(rc, com, "*")
 
-        for i in list:
-            typ = a.Junction.pick(rc, ver, i)
-            if "IMAGE" in ver and not "{}" in typ:
-                name = input("Save Image as: ")
-                a.Junction.image(rc, name)
-                print("Image saved as ", name)
+        if "::RemoteControl::ReceiveFile" in com:
+            fileName2 = input("Send following file: ")
+            recAnswer = a.Junction.receive_file(rc, fileName2)
+            print(recAnswer)
             
-            if not "{}" in typ:
-                if not "not found" in typ:
-                    print(typ)
+        else:
+            ver = a.Junction.send(rc, com, "*")
+
+            if "FILE" in ver:
+                fileName = input("Sav File as: ")
+                a.Junction.send_file(rc, fileName)
+                print("File saved as ", fileName)      
+                
+               
+
+            for i in list:
+                typ = a.Junction.pick(rc, ver, i)
+                if "IMAGE" in ver and not "{}" in typ:
+                    name = input("Save Image as: ")
+                    a.Junction.image(rc, name)
+                    print("Image saved as ", name)
+
+                
+                if not "{}" in typ:
+                    if not "not found" in typ:
+                        print(typ)
+                    else:
+                        c += 1
                 else:
                     c += 1
-            else:
-                c += 1
 
-        if c >= 3 and not "BASE64" in ver:
-            print(ver)
+            if c >= 3 and not "BASE64" in ver:
+                print(ver)
 
-        c = 0
+            c = 0
 
     except KeyboardInterrupt:
         raise SystemExit

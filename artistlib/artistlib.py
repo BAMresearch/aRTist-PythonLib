@@ -12,13 +12,14 @@ import numpy as np
 from numpy import append
 import socket
 import base64
+import sys
 from PIL import Image
 
 
 class Junction:
     """Remote control of aRTist simulator
     """
-    def __init__(self, host="localhost", port=3658, bufferSize=1024, timeout=5):
+    def __init__(self, host="localhost", port=3658, bufferSize=1024, timeout=10):
         self.host = host
         self.port = port
         self.bufferSize = bufferSize
@@ -27,6 +28,8 @@ class Junction:
         self.progress = 0
         self.answer = {}
         self.lst = []
+        self.lst2 = []
+        self.splitter = "\n{}\n"
         
         self.connect()
         
@@ -79,13 +82,11 @@ class Junction:
                 else:
                     if (command_no == 0):
                         print(msg)
-                    answer += msg
-                    
+                    answer += msg      
         self.S.settimeout(self.timeout)
         if (msgType != "*"):
             answer = self.pick(answer, msgType)
-        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "IMAGE":self.pick(answer, "IMAGE"), "BASE64":self.pick(answer, "BASE64")})
-        #print(self.answer)
+        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
         return answer
 
     def pick(self, answer, res='RESULT'):
@@ -97,7 +98,7 @@ class Junction:
                 return res + ' not found.'
         return picked
 
-    def image(self, filename):
+    def image(self, imageName):
         self.lst.clear()
         cTypes = ["bit", "char", "signed char", "unsigned char", "short", "unsigned short", "int", "unsigned int", "long", "unsigned long", "float", "double"]
         npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
@@ -110,7 +111,31 @@ class Junction:
         if imType in cTypes:
             dtype = npTypes[cTypes.index(imType)]
         im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
-        Image.fromarray(im).save(filename)
+        Image.fromarray(im).save(imageName)
 
+
+    def send_file(self, fileName):
+        fileData = self.answer["BASE64"]
+        decodedFile = base64.b64decode((fileData))
+        artistFile = open(fileName, "wb")
+        artistFile.write(decodedFile)
+        artistFile.close()
+        
+
+    def receive_file(self, fileName2):
+        outFile = open(fileName2, "br")
+        fileBytes = outFile.read()
+        encBytes = base64.b64encode((fileBytes))
+        encString = str(encBytes)
+        encString2 = encString.lstrip("b'")
+        encString3 = encString2.rstrip("'")
+        com = "::RemoteControl::ReceiveFile " + encString3 + " .aRTist"
+        recAnswer = self.send(com, "RESULT")
+        return recAnswer
+
+    
+
+    
+    
         
     
