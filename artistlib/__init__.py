@@ -12,7 +12,7 @@ from numpy import append
 import socket
 
 class Junction:
-    """Remote control of aRTist simulator
+    """Remote control of aRTist simulator (this is a test)
     """
     def __init__(self, host="localhost", port=3658, bufferSize=1024, timeout=5):
         self.host = host
