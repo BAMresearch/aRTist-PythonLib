@@ -13,6 +13,27 @@
 # limitations under the License.
 
 
-from setuptools import setup
+from pathlib import Path
 
-setup()
+
+__SaRTistPath__ = Path(__file__).parent.parent
+__SaRTistTCL__ = __SaRTistPath__ / "sartist" / "SaRTist.tcl"
+__SaRTistTemp__ = __SaRTistPath__ / "data"
+
+host_send = '127.0.0.1'
+port_send = 3658
+
+__send__ = (host_send, port_send)
+
+host_receive = "127.0.0.1"
+port_receive = 1234
+
+__receive__ = (host_receive, port_receive)
+
+host_local = "127.0.0.6"
+port_local = 0
+
+__local__ = (host_local, port_local)
+
+
+

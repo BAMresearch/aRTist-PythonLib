@@ -1,3 +1,7 @@
-__pycache__
-artistlib.egg-info
-dist
+/venv/
+*.egg-info
+*.raw
+/.idea/
+*.tiff
+sartist/__pycache__/*
+sartist/hardware/__pycache__/*
