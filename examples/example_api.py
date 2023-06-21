@@ -12,8 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
+import artistlib
 
-class ProjectionGeometry:
-    def __init__(self, detector_posi) -> None:
-        pass
+def main():
+    ### Test Connection() class
+    connection = artistlib.Connection()
+    ver = connection.send(['::aRTist::GetVersion;\n'])
+    cmd = f'puts "aRTist {ver} remote controlled by >>>example.py<<<."\n'
+    connection.send(cmd)
+    print('Some text written to aRTist\'s console.')
+
+
+    ### Test API
+    artist = artistlib.ArtistApi()
+    object_ids = artist.get_object_ids()
+    print(artist.number_of_objects())
+    artist.set_material(object_ids[0], 'Al')
+
+if __name__ == '__main__':
+    main()

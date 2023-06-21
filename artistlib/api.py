@@ -21,30 +21,55 @@ from pathlib import Path
 
 
 class ArtistApi:
+    """aRTist  API
+    """
     def __init__(self, connection: Connection = Connection()) -> None:
         self.connection = connection
 
     def open_scene(self, scene_path: str | Path) -> None:
+        """Opens a aRTist scene.
+
+        Args:
+            scene_path (str | Path): Path to the saved aRTist scene.
+        """
         if isinstance(scene_path, str):
             scene_path = Path(scene_path)
         scene_path = scene_path.absolute()
-        command =  [f'FileIO::OpenAny {scene_path}']
+        command =  f'FileIO::OpenAny {str(scene_path)}'
         self.connection.send(command)
 
     def get_object_ids(self) -> list[int]:
+        """Retuns the object ids of all objects in aRTist.
+
+        Returns:
+            list[int]: _description_
+        """
         command = "PartList::Query ID;\n"
         result = self.connection.send(command, SendTypes.RESULT)[0]
         return self.connection.string_to_list(result, int)
     
     def clear_objects(self) -> None:
+        """Clears all objects in aRTist.
+        """
         command = 'PartList::Clear;'
         self.connection.send(command, SendTypes.RESULT)
 
     def number_of_objects(self) -> int:
+        """Return the number of objects in aRTist.
+
+        Returns:
+            int: number of objects.
+        """
         command = '::PartList::Count;\n'
         return int(self.connection.send(command, SendTypes.RESULT)[0])
     
     def set_material(self, object_id: str | int, material: str):
+        """Sets the material of an object in aRTist.
+
+        Args:
+            object_id (str | int): The object, which material gets set.
+            material (str): Materia, which gets set. As string!
+        """
         command =  f'::PartList::Set {str(object_id)} Material {material}'
         self.connection.send(command, SendTypes.RESULT)
 

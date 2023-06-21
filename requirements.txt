@@ -1,5 +1,2 @@
 setuptools~=56.2.0
-Pillow~=8.2.0
 numpy~=1.20.3
-scipy~=1.6.3
-#PythonTools~=2.0.0b1
