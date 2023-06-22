@@ -12,8 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import hardware
-
-from .api import ArtistApi
-from .connection import Connection
-from .common_types import SolidModelTypes
+from .xray_source import ArtistXraySource

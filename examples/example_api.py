@@ -24,10 +24,21 @@ def main():
 
 
     ### Test API
-    artist = artistlib.ArtistApi()
-    object_ids = artist.get_object_ids()
-    print(artist.number_of_objects())
-    artist.set_material(object_ids[0], 'Al')
+    artist = artistlib.ArtistApi()  # Create handle
+    object_ids = artist.get_object_ids()  # Get list of all object ids of aRTist
+    print(artist.number_of_objects)  # print the number of objects
+    artist.set_material(object_ids[0], 'Al')  # Change the material of an object.
+
+    ### Hardware components as python class
+
+    xray_source = artistlib.hardware.ArtistXraySource(artist)  # Create a hardware object of the xray source, the same connection object is used. 
+    current_voltage = xray_source.voltage_kv  # Wrap the properties of the aRTist xray source as properties of a python class
+    print(f'Current voltage in aRTist: {current_voltage}') 
+
+    xray_source.voltage_kv = 20.  # Wrap the python setter
+    changed_voltage = xray_source.voltage_kv
+    print(f'Changed voltage in aRTist: {changed_voltage}')
+
 
 if __name__ == '__main__':
     main()

@@ -5,3 +5,4 @@
 *.tiff
 sartist/__pycache__/*
 sartist/hardware/__pycache__/*
+__pycache__/*

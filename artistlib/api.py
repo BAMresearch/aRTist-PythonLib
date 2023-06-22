@@ -53,7 +53,8 @@ class ArtistApi:
         """
         command = 'PartList::Clear;'
         self.connection.send(command, SendTypes.RESULT)
-
+        
+    @property
     def number_of_objects(self) -> int:
         """Return the number of objects in aRTist.
 
@@ -70,7 +71,7 @@ class ArtistApi:
             object_id (str | int): The object, which material gets set.
             material (str): Materia, which gets set. As string!
         """
-        command =  f'::PartList::Set {str(object_id)} Material {material}'
+        command =  f'::PartList::Set {str(object_id)} Material {material};'
         self.connection.send(command, SendTypes.RESULT)
 
     
