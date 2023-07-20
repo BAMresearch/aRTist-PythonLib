@@ -1,3 +1,7 @@
 import subprocess
+import os
 
-cmd = subprocess.run(["python", "remote_access.py"])
+path = os.path.dirname(os.path.abspath(__file__))
+correctedPath = path.replace("\\", "/")
+
+cmd = subprocess.run(["python", correctedPath + "/remote_access.py"])
