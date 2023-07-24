@@ -8,9 +8,12 @@ from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
+import numpy as np
 from numpy import append
 import socket
-
+import base64
+import sys
+from PIL import Image
 class Junction:
     """Remote control of aRTist simulator (this is a test)
     """
@@ -21,6 +24,11 @@ class Junction:
         self.timeout = timeout
         self.error = 0
         self.progress = 0
+        self.answer = {}
+        self.lst = []
+        self.lst2 = []
+        self.splitter = "\n{}\n"
+
         self.connect()
 
     def connect(self):
@@ -31,17 +39,9 @@ class Junction:
         return self
 
     def send(self, command, msgType="RESULT"):
-        if type(command) != type([]):
-            c = command + '\n'
-            self.S.send(c.encode())
-            return self.listen(msgType=msgType)
-        else:
-            answers = []
-            for c in command:
-                c += '\n'
-                self.S.send(c.encode())
-                answers.append(self.listen(msgType=msgType))
-            return answers
+        c = command + '\n'
+        self.S.send(c.encode())
+        return self.listen(msgType=msgType)
 
     def listen(self, command_no=1, msgType="RESULT"):
         answer = ""
@@ -54,7 +54,7 @@ class Junction:
             except BaseException as e:
                 err = e.args[0]
                 if err == "timed out":
-                    print("Timeout\n")
+                    #print("Timeout\n")
                     answer += "RESULT Timeout\n"
                     #print(answer)
                     stop = True
@@ -83,6 +83,7 @@ class Junction:
         self.S.settimeout(self.timeout)
         if (msgType != "*"):
             answer = self.pick(answer, msgType)
+        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
         return answer
 
     def pick(self, answer, res='RESULT'):
@@ -93,3 +94,36 @@ class Junction:
         if len(picked) == 0:
             return res + ' not found.'
         return picked
+
+    def image(self, imageName):
+        self.lst.clear()
+        cTypes = ["bit", "char", "signed char", "unsigned char", "short", "unsigned short", "int", "unsigned int", "long", "unsigned long", "float", "double"]
+        npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
+        imageData = self.answer["BASE64"]
+        decodedData = base64.b64decode((imageData))
+        imageHeader = self.answer["IMAGE"]
+        for i in imageHeader.split(","):
+            self.lst.append(i)
+        imType = self.lst[4]
+        if imType in cTypes:
+            dtype = npTypes[cTypes.index(imType)]
+        im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
+        Image.fromarray(im).save(imageName)
+
+    def send_file(self, fileName):
+        fileData = self.answer["BASE64"]
+        decodedFile = base64.b64decode((fileData))
+        artistFile = open(fileName, "wb")
+        artistFile.write(decodedFile)
+        artistFile.close()
+
+    def receive_file(self, fileName2):
+        outFile = open(fileName2, "br")
+        fileBytes = outFile.read()
+        encBytes = base64.b64encode((fileBytes))
+        encString = str(encBytes)
+        encString2 = encString.lstrip("b'")
+        encString3 = encString2.rstrip("'")
+        com = "::RemoteControl::ReceiveFile " + encString3 + " .aRTist"
+        recAnswer = self.send(com, "RESULT")
+        return recAnswer
