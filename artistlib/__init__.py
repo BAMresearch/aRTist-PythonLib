@@ -12,7 +12,7 @@ import numpy as np
 from numpy import append
 import socket
 import base64
-import sys
+import pathlib
 from PIL import Image
 class Junction:
     """Remote control of aRTist simulator (this is a test)
@@ -25,9 +25,6 @@ class Junction:
         self.error = 0
         self.progress = 0
         self.answer = {}
-        self.lst = []
-        self.lst2 = []
-        self.splitter = "\n{}\n"
 
         self.connect()
 
@@ -81,9 +78,9 @@ class Junction:
                         print(msg)
                     answer += msg
         self.S.settimeout(self.timeout)
+        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
         if (msgType != "*"):
             answer = self.pick(answer, msgType)
-        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
         return answer
 
     def pick(self, answer, res='RESULT'):
@@ -95,35 +92,32 @@ class Junction:
             return res + ' not found.'
         return picked
 
-    def image(self, imageName):
-        self.lst.clear()
-        cTypes = ["bit", "char", "signed char", "unsigned char", "short", "unsigned short", "int", "unsigned int", "long", "unsigned long", "float", "double"]
+    def get_answer(self, key):
+        return self.answer[key]
+
+    def save_image(self, imageName):
         npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
         imageData = self.answer["BASE64"]
         decodedData = base64.b64decode((imageData))
-        imageHeader = self.answer["IMAGE"]
-        for i in imageHeader.split(","):
-            self.lst.append(i)
-        imType = self.lst[4]
-        if imType in cTypes:
-            dtype = npTypes[cTypes.index(imType)]
-        im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
+        imageHeader = self.answer["IMAGE"].split()
+        dtype = npTypes[int(imageHeader[4])]
+        im = np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[0])))
         Image.fromarray(im).save(imageName)
 
-    def send_file(self, fileName):
+    def receive_file(self, fileName):
         fileData = self.answer["BASE64"]
         decodedFile = base64.b64decode((fileData))
         artistFile = open(fileName, "wb")
         artistFile.write(decodedFile)
         artistFile.close()
 
-    def receive_file(self, fileName2):
-        outFile = open(fileName2, "br")
+    def send_file(self, fileName):
+        outFile = open(fileName, "br")
         fileBytes = outFile.read()
         encBytes = base64.b64encode((fileBytes))
         encString = str(encBytes)
-        encString2 = encString.lstrip("b'")
-        encString3 = encString2.rstrip("'")
-        com = "::RemoteControl::ReceiveFile " + encString3 + " .aRTist"
+        encString = encString.lstrip("b'").rstrip("'")
+        fileExtension = pathlib.Path(fileName).suffix
+        com = "::RemoteControl::ReceiveFile " + encString + " " + fileExtension
         recAnswer = self.send(com, "RESULT")
         return recAnswer

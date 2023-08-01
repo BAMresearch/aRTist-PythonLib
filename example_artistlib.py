@@ -3,29 +3,27 @@ import artistlib as a
 # connect to aRTist (default: host='localhost', port=3658) 
 rc = a.Junction()
 
-# single command
 # print aRTist's version number
 ver = a.Junction.send(rc, '::aRTist::GetVersion full')
 print(ver)
 
-# list of commands
 # - load a project
 # - run the simulation
 # - save the resulting projection from the image viewer
-cmds = [
-  'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/Schlumpfmark.aRTist',
-  'Engine::GoCmd',
-  'Modules::Invoke ImageViewer SaveFile [file join $env(HOME) Pictures/artistlib.tif] true']
-a.Junction.send(rc, cmds)
+a.Junction.send(rc, 'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/Schlumpfmark.aRTist')
+a.Junction.send(rc, 'Engine::GoCmd')
+ans = "Saved as: "
+ans += a.Junction.send(rc, 'Modules::Invoke ImageViewer SaveFile [file join $env(HOME) Pictures/artistlib.tif] true')
+print(ans)
 
-# list of commands (2)
 # - load a project
 # - run the simulation without viewing the result
-# - save the final projection 
+# - transfer the final projection 
+# - saving the projection image  >>>> This requires aRTist 2.12.7 or higher! <<<<
 # - delete the images to release the memory
-cmds = [
-  'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/aRTist.aRTist',
-  'set imgList [Engine::Go]',
-  'Image::SaveFile [lindex $imgList 0] [file join $env(HOME) Pictures/artistlib2.tif] true',
-  'foreach i $imgList {$i Delete}']
-a.Junction.send(rc, cmds)
+a.Junction.send(rc, 'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/aRTist.aRTist')
+a.Junction.send(rc, 'set imgList [Engine::Go]')
+a.Junction.send(rc, 'RemoteControl::SendImage [lindex $imgList 0]')
+a.Junction.save_image(rc, "transferred.tif")
+a.Junction.send(rc, 'foreach i $imgList {$i Delete}')
+print("Saved as: transferred.tif")

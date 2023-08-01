@@ -56,9 +56,10 @@ The software is released under the **Apache 2.0 license,** its source code is av
 
 Contributors
 ------------
-The following people contributed to code and documentation of package:
+The following people contributed to code and documentation of the package:
 
 * Alexander Funke
 * David Schumacher
 * Carsten Bellon
 * David Plotzki
+* David Denkler

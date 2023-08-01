@@ -21,7 +21,7 @@ while True:
 
         if "::RemoteControl::ReceiveFile" in com:
             fileName2 = input("Send following file: ")
-            recAnswer = a.Junction.receive_file(rc, fileName2)
+            recAnswer = a.Junction.send_file(rc, fileName2)
             print(recAnswer)
 
         else:
@@ -29,14 +29,14 @@ while True:
 
             if "FILE" in ans:
                 fileName = input("Save file as: ")
-                a.Junction.send_file(rc, fileName)
+                a.Junction.receive_file(rc, fileName)
                 print("File saved as ", fileName)      
 
             for i in list:
                 typ = a.Junction.pick(rc, ans, i)
                 if "IMAGE" in ans and not "{}" in typ:
                     name = input("Save Image as: ")
-                    a.Junction.image(rc, name)
+                    a.Junction.save_image(rc, name)
                     print("Image saved as ", name)
 
                 if not "{}" in typ:
