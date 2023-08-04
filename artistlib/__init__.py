@@ -4,15 +4,20 @@
 .. include:: ./documentation.md
 """
 
+__pdoc__ = {'console': False, 'remote_access': False}
+
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
+import numpy as np
 from numpy import append
 import socket
-
+import base64
+import pathlib
+from PIL import Image
 class Junction:
-    """Remote control of aRTist simulator
+    """Remote control of aRTist simulator (this is a test)
     """
     def __init__(self, host="localhost", port=3658, bufferSize=1024, timeout=5):
         self.host = host
@@ -21,6 +26,8 @@ class Junction:
         self.timeout = timeout
         self.error = 0
         self.progress = 0
+        self.answer = {}
+
         self.connect()
 
     def connect(self):
@@ -31,17 +38,9 @@ class Junction:
         return self
 
     def send(self, command, msgType="RESULT"):
-        if type(command) != type([]):
-            c = command + '\n'
-            self.S.send(c.encode())
-            return self.listen(msgType=msgType)
-        else:
-            answers = []
-            for c in command:
-                c += '\n'
-                self.S.send(c.encode())
-                answers.append(self.listen(msgType=msgType))
-            return answers
+        c = command + '\n'
+        self.S.send(c.encode())
+        return self.listen(msgType=msgType)
 
     def listen(self, command_no=1, msgType="RESULT"):
         answer = ""
@@ -54,7 +53,7 @@ class Junction:
             except BaseException as e:
                 err = e.args[0]
                 if err == "timed out":
-                    print("Timeout\n")
+                    #print("Timeout\n")
                     answer += "RESULT Timeout\n"
                     #print(answer)
                     stop = True
@@ -81,6 +80,7 @@ class Junction:
                         print(msg)
                     answer += msg
         self.S.settimeout(self.timeout)
+        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
         if (msgType != "*"):
             answer = self.pick(answer, msgType)
         return answer
@@ -93,3 +93,33 @@ class Junction:
         if len(picked) == 0:
             return res + ' not found.'
         return picked
+
+    def get_answer(self, key):
+        return self.answer[key]
+
+    def save_image(self, imageName):
+        npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
+        imageData = self.answer["BASE64"]
+        decodedData = base64.b64decode((imageData))
+        imageHeader = self.answer["IMAGE"].split()
+        dtype = npTypes[int(imageHeader[4])]
+        im = np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[0])))
+        Image.fromarray(im).save(imageName)
+
+    def receive_file(self, fileName):
+        fileData = self.answer["BASE64"]
+        decodedFile = base64.b64decode((fileData))
+        artistFile = open(fileName, "wb")
+        artistFile.write(decodedFile)
+        artistFile.close()
+
+    def send_file(self, fileName):
+        outFile = open(fileName, "br")
+        fileBytes = outFile.read()
+        encBytes = base64.b64encode((fileBytes))
+        encString = str(encBytes)
+        encString = encString.lstrip("b'").rstrip("'")
+        fileExtension = pathlib.Path(fileName).suffix
+        com = "::RemoteControl::ReceiveFile " + encString + " " + fileExtension
+        recAnswer = self.send(com, "RESULT")
+        return recAnswer
