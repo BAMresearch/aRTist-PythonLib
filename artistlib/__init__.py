@@ -4,6 +4,8 @@
 .. include:: ./documentation.md
 """
 
+__pdoc__ = {'console': False, 'remote_access': False}
+
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions

@@ -54,44 +54,42 @@
 # connect to aRTist (default: host='localhost', port=3658) 
 rc = a.Junction()
 
-# single command
 # print aRTist's version number
 ver = a.Junction.send(rc, '::aRTist::GetVersion full')
 print(ver)
 
-# list of commands
 # - load a project
 # - run the simulation
 # - save the resulting projection from the image viewer
-cmds = [
-  'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/Schlumpfmark.aRTist',
-  'Engine::GoCmd',
-  'Modules::Invoke ImageViewer SaveFile [file join $env(HOME) Pictures/artistlib.tif] true']
-a.Junction.send(rc, cmds)
+a.Junction.send(rc, 'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/Schlumpfmark.aRTist')
+a.Junction.send(rc, 'Engine::GoCmd')
+ans = &quot;Saved as: &quot;
+ans += a.Junction.send(rc, 'Modules::Invoke ImageViewer SaveFile [file join $env(HOME) Pictures/artistlib.tif] true')
+print(ans)
 
-# list of commands (2)
 # - load a project
 # - run the simulation without viewing the result
-# - save the final projection 
+# - transfer the final projection 
+# - saving the projection image  &gt;&gt;&gt;&gt; This requires aRTist 2.12.7 or higher! &lt;&lt;&lt;&lt;
 # - delete the images to release the memory
-cmds = [
-  'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/aRTist.aRTist',
-  'set imgList [Engine::Go]',
-  'Image::SaveFile [lindex $imgList 0] [file join $env(HOME) Pictures/artistlib2.tif] true',
-  'foreach i $imgList {$i Delete}']
-a.Junction.send(rc, cmds)
+a.Junction.send(rc, 'FileIO::OpenAny $Xray(LibraryDir)/ExampleProjects/aRTist.aRTist')
+a.Junction.send(rc, 'set imgList [Engine::Go]')
+a.Junction.send(rc, 'RemoteControl::SendImage [lindex $imgList 0]')
+a.Junction.save_image(rc, &quot;transferred.tif&quot;)
+a.Junction.send(rc, 'foreach i $imgList {$i Delete}')
+print(&quot;Saved as: transferred.tif&quot;)
 </code></pre>
 <h1 id="about">About</h1>
 <p>The aRTist library was developed for utilize the Python scripting of the radiographic simulator <a href="https://artist.bam.de">aRTist</a>.</p>
 <p>The software is released under the <strong>Apache 2.0 license,</strong> its source code is available <a href="https://github.com/BAMresearch/aRTist-PythonLib">on GitHub</a>.</p>
 <h2 id="contributors">Contributors</h2>
-<p>The following people contributed to code and documentation of package:</p>
+<p>The following people contributed to code and documentation of the package:</p>
 <ul>
 <li>Alexander Funke</li>
 <li>David Schumacher</li>
 <li>Carsten Bellon</li>
 <li>David Plotzki</li>
-<li>This is a test</li>
+<li>David Denkler</li>
 </ul>
 <details class="source">
 <summary>
@@ -103,6 +101,8 @@ a.Junction.send(rc, cmds)
 .. include:: ./documentation.md
 &#34;&#34;&#34;
 
+__pdoc__ = {&#39;console&#39;: False, &#39;remote_access&#39;: False}
+
 from ._version import get_versions
 __version__ = get_versions()[&#39;version&#39;]
 del get_versions
@@ -111,13 +111,10 @@ import numpy as np
 from numpy import append
 import socket
 import base64
-import sys
+import pathlib
 from PIL import Image
-
-
-
 class Junction:
-    &#34;&#34;&#34;Remote control of aRTist simulator
+    &#34;&#34;&#34;Remote control of aRTist simulator (this is a test)
     &#34;&#34;&#34;
     def __init__(self, host=&#34;localhost&#34;, port=3658, bufferSize=1024, timeout=5):
         self.host = host
@@ -127,9 +124,7 @@ class Junction:
         self.error = 0
         self.progress = 0
         self.answer = {}
-        self.lst = []
-        self.lst2 = []
-        self.splitter = "\n{}\n"
+
         self.connect()
 
     def connect(self):
@@ -140,17 +135,9 @@ class Junction:
         return self
 
     def send(self, command, msgType=&#34;RESULT&#34;):
-        if type(command) != type([]):
-            c = command + &#39;\n&#39;
-            self.S.send(c.encode())
-            return self.listen(msgType=msgType)
-        else:
-            answers = []
-            for c in command:
-                c += &#39;\n&#39;
-                self.S.send(c.encode())
-                answers.append(self.listen(msgType=msgType))
-            return answers
+        c = command + &#39;\n&#39;
+        self.S.send(c.encode())
+        return self.listen(msgType=msgType)
 
     def listen(self, command_no=1, msgType=&#34;RESULT&#34;):
         answer = &#34;&#34;
@@ -163,7 +150,7 @@ class Junction:
             except BaseException as e:
                 err = e.args[0]
                 if err == &#34;timed out&#34;:
-                    print(&#34;Timeout\n&#34;)
+                    #print(&#34;Timeout\n&#34;)
                     answer += &#34;RESULT Timeout\n&#34;
                     #print(answer)
                     stop = True
@@ -190,9 +177,9 @@ class Junction:
                         print(msg)
                     answer += msg
         self.S.settimeout(self.timeout)
+        self.answer.update({&#34;SUCCESS&#34;:self.pick(answer, &#34;SUCCESS&#34;), &#34;RESULT&#34;:self.pick(answer, &#34;RESULT&#34;), &#34;SDTOUT&#34;:self.pick(answer, &#34;STDOUT&#34;), &#34;BASE64&#34;:self.pick(answer, &#34;BASE64&#34;), &#34;IMAGE&#34;:self.pick(answer, &#34;IMAGE&#34;), &#34;FILE&#34;:self.pick(answer, &#34;FILE&#34;)})
         if (msgType != &#34;*&#34;):
             answer = self.pick(answer, msgType)
-        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
         return answer
 
     def pick(self, answer, res=&#39;RESULT&#39;):
@@ -203,40 +190,35 @@ class Junction:
         if len(picked) == 0:
             return res + &#39; not found.&#39;
         return picked
-        
-    def image(self, imageName):
-        self.lst.clear()
-        cTypes = ["bit", "char", "signed char", "unsigned char", "short", "unsigned short", "int", "unsigned int", "long", "unsigned long", "float", "double"]
+
+    def get_answer(self, key):
+        return self.answer[key]
+
+    def save_image(self, imageName):
         npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
-        imageData = self.answer["BASE64"]
+        imageData = self.answer[&#34;BASE64&#34;]
         decodedData = base64.b64decode((imageData))
-        imageHeader = self.answer["IMAGE"]
-        for i in imageHeader.split(","):
-            self.lst.append(i)
-        imType = self.lst[4]
-        if imType in cTypes:
-            dtype = npTypes[cTypes.index(imType)]
-        im = np.frombuffer(decodedData, dtype).reshape((int(self.lst[1]),int(self.lst[2])))
+        imageHeader = self.answer[&#34;IMAGE&#34;].split()
+        dtype = npTypes[int(imageHeader[4])]
+        im = np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[0])))
         Image.fromarray(im).save(imageName)
 
-
-    def send_file(self, fileName):
-        fileData = self.answer["BASE64"]
+    def receive_file(self, fileName):
+        fileData = self.answer[&#34;BASE64&#34;]
         decodedFile = base64.b64decode((fileData))
-        artistFile = open(fileName, "wb")
+        artistFile = open(fileName, &#34;wb&#34;)
         artistFile.write(decodedFile)
         artistFile.close()
-        
 
-    def receive_file(self, fileName2):
-        outFile = open(fileName2, "br")
+    def send_file(self, fileName):
+        outFile = open(fileName, &#34;br&#34;)
         fileBytes = outFile.read()
         encBytes = base64.b64encode((fileBytes))
         encString = str(encBytes)
-        encString2 = encString.lstrip("b'")
-        encString3 = encString2.rstrip("'")
-        com = "::RemoteControl::ReceiveFile " + encString3 + " .aRTist"
-        recAnswer = self.send(com, "RESULT")
+        encString = encString.lstrip(&#34;b&#39;&#34;).rstrip(&#34;&#39;&#34;)
+        fileExtension = pathlib.Path(fileName).suffix
+        com = &#34;::RemoteControl::ReceiveFile &#34; + encString + &#34; &#34; + fileExtension
+        recAnswer = self.send(com, &#34;RESULT&#34;)
         return recAnswer</code></pre>
 </details>
 </section>
@@ -254,13 +236,13 @@ class Junction:
 <span>(</span><span>host='localhost', port=3658, bufferSize=1024, timeout=5)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Remote control of aRTist simulator</p></div>
+<div class="desc"><p>Remote control of aRTist simulator (this is a test)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Junction:
-    &#34;&#34;&#34;Remote control of aRTist simulator
+    &#34;&#34;&#34;Remote control of aRTist simulator (this is a test)
     &#34;&#34;&#34;
     def __init__(self, host=&#34;localhost&#34;, port=3658, bufferSize=1024, timeout=5):
         self.host = host
@@ -269,6 +251,8 @@ class Junction:
         self.timeout = timeout
         self.error = 0
         self.progress = 0
+        self.answer = {}
+
         self.connect()
 
     def connect(self):
@@ -279,17 +263,9 @@ class Junction:
         return self
 
     def send(self, command, msgType=&#34;RESULT&#34;):
-        if type(command) != type([]):
-            c = command + &#39;\n&#39;
-            self.S.send(c.encode())
-            return self.listen(msgType=msgType)
-        else:
-            answers = []
-            for c in command:
-                c += &#39;\n&#39;
-                self.S.send(c.encode())
-                answers.append(self.listen(msgType=msgType))
-            return answers
+        c = command + &#39;\n&#39;
+        self.S.send(c.encode())
+        return self.listen(msgType=msgType)
 
     def listen(self, command_no=1, msgType=&#34;RESULT&#34;):
         answer = &#34;&#34;
@@ -302,7 +278,7 @@ class Junction:
             except BaseException as e:
                 err = e.args[0]
                 if err == &#34;timed out&#34;:
-                    print(&#34;Timeout\n&#34;)
+                    #print(&#34;Timeout\n&#34;)
                     answer += &#34;RESULT Timeout\n&#34;
                     #print(answer)
                     stop = True
@@ -329,6 +305,7 @@ class Junction:
                         print(msg)
                     answer += msg
         self.S.settimeout(self.timeout)
+        self.answer.update({&#34;SUCCESS&#34;:self.pick(answer, &#34;SUCCESS&#34;), &#34;RESULT&#34;:self.pick(answer, &#34;RESULT&#34;), &#34;SDTOUT&#34;:self.pick(answer, &#34;STDOUT&#34;), &#34;BASE64&#34;:self.pick(answer, &#34;BASE64&#34;), &#34;IMAGE&#34;:self.pick(answer, &#34;IMAGE&#34;), &#34;FILE&#34;:self.pick(answer, &#34;FILE&#34;)})
         if (msgType != &#34;*&#34;):
             answer = self.pick(answer, msgType)
         return answer
@@ -340,7 +317,37 @@ class Junction:
                 picked += a[1 + len(res):].strip(&#39;\r&#39;) + &#39;\n&#39;
         if len(picked) == 0:
             return res + &#39; not found.&#39;
-        return picked</code></pre>
+        return picked
+
+    def get_answer(self, key):
+        return self.answer[key]
+
+    def save_image(self, imageName):
+        npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
+        imageData = self.answer[&#34;BASE64&#34;]
+        decodedData = base64.b64decode((imageData))
+        imageHeader = self.answer[&#34;IMAGE&#34;].split()
+        dtype = npTypes[int(imageHeader[4])]
+        im = np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[0])))
+        Image.fromarray(im).save(imageName)
+
+    def receive_file(self, fileName):
+        fileData = self.answer[&#34;BASE64&#34;]
+        decodedFile = base64.b64decode((fileData))
+        artistFile = open(fileName, &#34;wb&#34;)
+        artistFile.write(decodedFile)
+        artistFile.close()
+
+    def send_file(self, fileName):
+        outFile = open(fileName, &#34;br&#34;)
+        fileBytes = outFile.read()
+        encBytes = base64.b64encode((fileBytes))
+        encString = str(encBytes)
+        encString = encString.lstrip(&#34;b&#39;&#34;).rstrip(&#34;&#39;&#34;)
+        fileExtension = pathlib.Path(fileName).suffix
+        com = &#34;::RemoteControl::ReceiveFile &#34; + encString + &#34; &#34; + fileExtension
+        recAnswer = self.send(com, &#34;RESULT&#34;)
+        return recAnswer</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
@@ -359,6 +366,19 @@ class Junction:
     self.S.settimeout(self.timeout)
     self.listen(0)
     return self</code></pre>
+</details>
+</dd>
+<dt id="artistlib.Junction.get_answer"><code class="name flex">
+<span>def <span class="ident">get_answer</span></span>(<span>self, key)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_answer(self, key):
+    return self.answer[key]</code></pre>
 </details>
 </dd>
 <dt id="artistlib.Junction.listen"><code class="name flex">
@@ -381,7 +401,7 @@ class Junction:
         except BaseException as e:
             err = e.args[0]
             if err == &#34;timed out&#34;:
-                print(&#34;Timeout\n&#34;)
+                #print(&#34;Timeout\n&#34;)
                 answer += &#34;RESULT Timeout\n&#34;
                 #print(answer)
                 stop = True
@@ -408,6 +428,7 @@ class Junction:
                     print(msg)
                 answer += msg
     self.S.settimeout(self.timeout)
+    self.answer.update({&#34;SUCCESS&#34;:self.pick(answer, &#34;SUCCESS&#34;), &#34;RESULT&#34;:self.pick(answer, &#34;RESULT&#34;), &#34;SDTOUT&#34;:self.pick(answer, &#34;STDOUT&#34;), &#34;BASE64&#34;:self.pick(answer, &#34;BASE64&#34;), &#34;IMAGE&#34;:self.pick(answer, &#34;IMAGE&#34;), &#34;FILE&#34;:self.pick(answer, &#34;FILE&#34;)})
     if (msgType != &#34;*&#34;):
         answer = self.pick(answer, msgType)
     return answer</code></pre>
@@ -432,6 +453,42 @@ class Junction:
     return picked</code></pre>
 </details>
 </dd>
+<dt id="artistlib.Junction.receive_file"><code class="name flex">
+<span>def <span class="ident">receive_file</span></span>(<span>self, fileName)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def receive_file(self, fileName):
+    fileData = self.answer[&#34;BASE64&#34;]
+    decodedFile = base64.b64decode((fileData))
+    artistFile = open(fileName, &#34;wb&#34;)
+    artistFile.write(decodedFile)
+    artistFile.close()</code></pre>
+</details>
+</dd>
+<dt id="artistlib.Junction.save_image"><code class="name flex">
+<span>def <span class="ident">save_image</span></span>(<span>self, imageName)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_image(self, imageName):
+    npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
+    imageData = self.answer[&#34;BASE64&#34;]
+    decodedData = base64.b64decode((imageData))
+    imageHeader = self.answer[&#34;IMAGE&#34;].split()
+    dtype = npTypes[int(imageHeader[4])]
+    im = np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[0])))
+    Image.fromarray(im).save(imageName)</code></pre>
+</details>
+</dd>
 <dt id="artistlib.Junction.send"><code class="name flex">
 <span>def <span class="ident">send</span></span>(<span>self, command, msgType='RESULT')</span>
 </code></dt>
@@ -442,17 +499,30 @@ class Junction:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def send(self, command, msgType=&#34;RESULT&#34;):
-    if type(command) != type([]):
-        c = command + &#39;\n&#39;
-        self.S.send(c.encode())
-        return self.listen(msgType=msgType)
-    else:
-        answers = []
-        for c in command:
-            c += &#39;\n&#39;
-            self.S.send(c.encode())
-            answers.append(self.listen(msgType=msgType))
-        return answers</code></pre>
+    c = command + &#39;\n&#39;
+    self.S.send(c.encode())
+    return self.listen(msgType=msgType)</code></pre>
+</details>
+</dd>
+<dt id="artistlib.Junction.send_file"><code class="name flex">
+<span>def <span class="ident">send_file</span></span>(<span>self, fileName)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_file(self, fileName):
+    outFile = open(fileName, &#34;br&#34;)
+    fileBytes = outFile.read()
+    encBytes = base64.b64encode((fileBytes))
+    encString = str(encBytes)
+    encString = encString.lstrip(&#34;b&#39;&#34;).rstrip(&#34;&#39;&#34;)
+    fileExtension = pathlib.Path(fileName).suffix
+    com = &#34;::RemoteControl::ReceiveFile &#34; + encString + &#34; &#34; + fileExtension
+    recAnswer = self.send(com, &#34;RESULT&#34;)
+    return recAnswer</code></pre>
 </details>
 </dd>
 </dl>
@@ -486,11 +556,15 @@ class Junction:
 <ul>
 <li>
 <h4><code><a title="artistlib.Junction" href="#artistlib.Junction">Junction</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="artistlib.Junction.connect" href="#artistlib.Junction.connect">connect</a></code></li>
+<li><code><a title="artistlib.Junction.get_answer" href="#artistlib.Junction.get_answer">get_answer</a></code></li>
 <li><code><a title="artistlib.Junction.listen" href="#artistlib.Junction.listen">listen</a></code></li>
 <li><code><a title="artistlib.Junction.pick" href="#artistlib.Junction.pick">pick</a></code></li>
+<li><code><a title="artistlib.Junction.receive_file" href="#artistlib.Junction.receive_file">receive_file</a></code></li>
+<li><code><a title="artistlib.Junction.save_image" href="#artistlib.Junction.save_image">save_image</a></code></li>
 <li><code><a title="artistlib.Junction.send" href="#artistlib.Junction.send">send</a></code></li>
+<li><code><a title="artistlib.Junction.send_file" href="#artistlib.Junction.send_file">send_file</a></code></li>
 </ul>
 </li>
 </ul>
