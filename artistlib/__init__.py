@@ -17,7 +17,7 @@ import base64
 import pathlib
 from PIL import Image
 class Junction:
-    """Remote control of aRTist simulator (this is a test)
+    """Remote control of aRTist simulator
     """
     def __init__(self, host="localhost", port=3658, bufferSize=1024, timeout=5):
         self.host = host
