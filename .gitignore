@@ -1,3 +1,5 @@
 __pycache__
 artistlib.egg-info
 dist
+/venv/
+*.tif
