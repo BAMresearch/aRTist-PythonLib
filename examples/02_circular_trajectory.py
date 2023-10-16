@@ -21,6 +21,9 @@ from artistlib import API
 
 
 def generate_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int) -> tuple[np.ndarray]:
+    if fod_mm > fdd_mm:
+        raise ValueError('fod > fdd.')
+
     rotation_angles = np.linspace(-np.pi, np.pi, number_of_projections, endpoint=False)
     rotation_object = Rotation.from_euler('Y', rotation_angles, degrees=False)
 
@@ -33,7 +36,7 @@ def generate_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int
     return zip(source_positions, detector_positions, rotation_angles * 180 / np.pi)
 
 def main():
-    trajectory = generate_trajectory(100., 200., 20)
+    trajectory = generate_trajectory(500., 1000., 20)
     api = API()
 
     for scan_pose in trajectory:
@@ -41,6 +44,7 @@ def main():
         
         api.translate('S', *source)
         api.translate('D', *detector)
+        api.rotate('S', beta=beta_angles)
         api.rotate('D', beta=beta_angles)
 
         image = api.get_image()
