@@ -3,5 +3,6 @@ requires = [
     "setuptools>=42",
     "versioneer"
     "wheel"
+    "scipy"
 ]
 build-backend = "setuptools.build_meta"

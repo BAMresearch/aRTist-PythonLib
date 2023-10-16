@@ -45,11 +45,11 @@ class API():
     
     def get_position(self, id: int | str) -> np.ndarray:
         result = self.rc.send(f'[::PartList::Get {id} Obj] GetPosition')
-        return np.float32(result[1:-2].split(" "))
+        return np.float32(result[1:-1].split(" "))
     
     def get_euler_angles(self, id: int | str) -> np.ndarray:
         result = self.rc.send(f'[::PartList::Get {id} Obj] GetOrientation')
-        return np.float32(result[1:-2].split(" "))
+        return np.float32(result[1:-1].split(" "))
     
     def get_rotation_matrix(self, id: int | str) -> np.ndarray:
         euler_angles = self.get_euler_angles(id)
