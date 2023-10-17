@@ -16,7 +16,10 @@ from __future__ import annotations
 from .remote_connection import Junction
 
 import numpy as np
+
 from scipy.spatial.transform import Rotation
+from pathlib import Path
+import json
 
 
 class API():
@@ -27,7 +30,17 @@ class API():
         self.rc.send('set imgList [Engine::Go]')
         self.rc.send('RemoteControl::SendImage [lindex $imgList 0]')
         return self.rc.get_image()
-    
+
+    def save_image_uint16(self, save_path: Path):
+        self.rc.send('set imgList [Engine::Go]')
+        save_path_projection = str(save_path.absolute()).replace('\\', '\\\\')
+        save_path_json = save_path.parent / (save_path.stem + '.json') # Image::SaveFile [lindex $imgList 0] [file join $env(HOME) Pictures/artistlib2.tif] true',
+        self.rc.send(f'Image::SaveFile [lindex $imgList 0] {save_path_projection} true')
+        self.rc.send('foreach i $imgList {$i Delete}')
+
+        with open(str(save_path_json), 'w') as f:
+            json.dump(self.projection_geometry(), f, indent=4)
+            
     def translate(self, id: int | str, x: float = 0.0, y: float = 0.0, z: float = 0.0) -> None:
         self.rc.send(f'::PartList::Invoke {str(id)} SetPosition {str(x)} {str(y)} {str(z)};')
         self.rc.send(f'::PartList::Invoke {str(id)} SetRefPos {str(x)} {str(y)} {str(z)};')
@@ -67,3 +80,31 @@ class API():
     def get_orientation(self, id) -> np.ndarray:
         rotation = Rotation.from_matrix(self.get_rotation_matrix(id))
         return rotation.as_quat()
+    
+    def projection_geometry(self):
+        source_position = np.array(self.get_position('S'))
+        source_orientation = np.array(self.get_rotation_matrix('S'))
+        detector_position = np.array(self.get_position('D'))
+        detector_orientation = np.array(self.get_rotation_matrix('D'))
+
+        detector_resolution = self.get_detector_resolution()
+        detector_pixel_count = self.get_detector_pixel_count()
+
+        data_dict = dict()
+        data_dict['source_position_mm'] = source_position.tolist()
+        data_dict['source_orientation_matrix'] = source_orientation.tolist()
+        data_dict['detector_position_mm'] = detector_position.tolist()
+        data_dict['detector_orientation_matrix'] = detector_orientation.tolist()
+
+        data_dict['detector_count_px'] = detector_pixel_count.tolist()
+        data_dict['detector_resolution_mm'] = detector_resolution.tolist()
+
+        return data_dict
+    
+    def get_detector_resolution(self) -> np.ndarray:
+        result = self.rc.send(f'::XDetector::GetResolution')
+        return np.array(np.float32(result.split(" ")))
+
+    def get_detector_pixel_count(self) -> np.ndarray:
+        result = self.rc.send(f'::XDetector::GetPixelSize')
+        return np.array(np.int32(result.split(" ")))

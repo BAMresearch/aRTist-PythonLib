@@ -42,7 +42,6 @@ def main():
     print(f'Source Exposure: {source.exposure_ma} mA')
     print(f'Source Type: {source.source_type}')
 
-
     # Make a projection an visualize it in python
     image = artist_api.get_image()
 

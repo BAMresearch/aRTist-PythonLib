@@ -3,3 +3,4 @@ artistlib.egg-info
 dist
 /venv/
 *.tif
+/workspace/
