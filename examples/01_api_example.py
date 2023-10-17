@@ -15,7 +15,7 @@
 import matplotlib.pyplot as plt
 
 from artistlib import API
-from artistlib.hardware import XraySource
+from artistlib.hardware import XraySource, XrayDetector
 
 
 def main():
@@ -41,6 +41,14 @@ def main():
     print(f'Source Voltage: {source.voltage_kv} kV')
     print(f'Source Exposure: {source.exposure_ma} mA')
     print(f'Source Type: {source.source_type}')
+
+    # Create a detector object and set the resolution
+    detector = XrayDetector(artist_api)
+    detector.detector_resolution_mm = [0.1, 0.15]
+    detector.detector_count_px = [1000, 1000]
+
+    print(f'Detector Resolution: {detector.detector_resolution_mm} mm')
+    print(f'Detector Pixel Count: {detector.detector_count_px} px')
 
     # Make a projection an visualize it in python
     image = artist_api.get_image()
