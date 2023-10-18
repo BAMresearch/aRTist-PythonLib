@@ -17,3 +17,10 @@ from enum import IntEnum
 class SOURCETYPES(IntEnum):
     MONOCHROMATIC = 0
     GENERAL = 1
+
+class SAVEMODES(IntEnum):
+    UINT8 = 0
+    UINT16 = 1
+    FLOAT_TIFF = 2
+    FLOAT_RAW = 3
+    PNG = 4

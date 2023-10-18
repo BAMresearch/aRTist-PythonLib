@@ -21,7 +21,7 @@ import numpy as np
 
 
 class XrayDetector(BaseHardware):
-    def __init__(self, remote_control: Junction | API) -> None:
+    def __init__(self, remote_control: Junction | API = None) -> None:
         super().__init__(remote_control)
 
     @property
@@ -45,3 +45,12 @@ class XrayDetector(BaseHardware):
     def detector_count_px(self, detector_count_px: np.ndarray) -> None:
         self.rc.send(f'set ::Xsetup(DetectorPixelX) {detector_count_px[0]}')
         self.rc.send(f'set ::Xsetup(DetectorPixelY) {detector_count_px[1]}')
+
+    @property
+    def flatfield_correction(self) -> bool:
+        return_value = self.rc.send('array get Xdetector FFCorrRun')
+        return_value = return_value.split(' ')[1]
+        return bool(return_value)
+
+
+    

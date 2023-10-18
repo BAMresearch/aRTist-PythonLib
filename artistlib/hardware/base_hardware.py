@@ -13,15 +13,17 @@
 # limitations under the License.
 from __future__ import annotations
 
-from ..remote_connection import Junction
+from ..remote_connection import Junction, _rc
 from ..api import API
 
 
 class BaseHardware():
-    def __init__(self, remote_control: Junction | API) -> None:
+    def __init__(self, remote_control: Junction | API = None) -> None:
         if isinstance(remote_control, Junction):
             self.rc = remote_control
         elif isinstance(remote_control, API):
             self.rc = remote_control.rc
+        elif remote_control is None:
+            self.rc = _rc
         else:
             raise ValueError('Wrong remote_control argument?')

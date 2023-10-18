@@ -18,11 +18,11 @@ from artistlib.api import API
 from artistlib.remote_connection import Junction
 from .base_hardware import BaseHardware
 
-from .common_types import SOURCETYPES
+from ..common_types import SOURCETYPES
 
 
 class XraySource(BaseHardware):
-    def __init__(self, remote_control: Junction | API) -> None:
+    def __init__(self, remote_control: Junction | API = None) -> None:
         super().__init__(remote_control)
     
     @property

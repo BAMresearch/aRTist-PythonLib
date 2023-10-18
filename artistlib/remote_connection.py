@@ -145,3 +145,5 @@ class Junction:
         imageHeader = self.answer["IMAGE"].split()
         dtype = np.double
         return np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[2])))
+    
+_rc = Junction()

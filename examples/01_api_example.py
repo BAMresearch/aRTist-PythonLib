@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 from artistlib import API
 from artistlib.hardware import XraySource, XrayDetector
@@ -34,7 +35,7 @@ def main():
     print(f'Source Orientation: {source_orientation}')
 
     # Create a source object and set the voltage
-    source = XraySource(artist_api)
+    source = XraySource()
     source.voltage_kv = 142.
     source.exposure_ma = 10.
 
@@ -43,7 +44,7 @@ def main():
     print(f'Source Type: {source.source_type}')
 
     # Create a detector object and set the resolution
-    detector = XrayDetector(artist_api)
+    detector = XrayDetector()
     detector.detector_resolution_mm = [0.1, 0.15]
     detector.detector_count_px = [1000, 1000]
 
@@ -53,8 +54,22 @@ def main():
     # Make a projection an visualize it in python
     image = artist_api.get_image()
 
+    # Load .stl part
+    new_id = artist_api.load_part(
+        Path(r'C:\Program Files\BAM\aRTist 2.12\Data\Library\ExampleParts\Fun\Dog.stl'),
+        'Fe',
+        'test_object')
+    
+    print(f'Inserted ID: {new_id}')
+
+    # change material
+    artist_api.set_material(new_id, 'Al')
+
     plt.imshow(image)
     plt.show()
+
+    # Delete part
+    artist_api.delete_part(new_id)
 
 if __name__ == '__main__':
     main()
