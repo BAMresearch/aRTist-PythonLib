@@ -229,7 +229,10 @@ class API():
         return np.array(np.int32(result.split(" ")))
     
     def set_material(self, id: int | str, material: str):
-        self.rc.send(f':::PartList::SetMaterial {material} {id}')
+        self.rc.send(f'::PartList::SetMaterial {material} {id}')
+
+    def get_material(self, id: int | str):
+        return_value = self.rc.send(f'::PartList::Get {id} Material')
 
     def load_part(self, load_path: Path, material: str = 'Al', name: str = 'Object') -> int:
         return_value = self.rc.send(f'set obj [::PartList::LoadPart "{self.path_to_artist(load_path)}" "{material}" "{name}"]')
@@ -237,3 +240,7 @@ class API():
     
     def delete_part(self, id: int | str):
         self.rc.send(f'::PartList::Delete "{id}"')
+
+    def set_visibility(self, id: int | str, visible: bool = True):
+        visible = 'on' if visible else 'off'
+        self.rc.send(f'[::PartList::Get {id} Obj] SetVisibility "{visible}"')

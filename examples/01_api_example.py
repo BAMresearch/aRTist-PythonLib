@@ -68,6 +68,9 @@ def main():
     plt.imshow(image)
     plt.show()
 
+    # Set visibility off
+    artist_api.set_visibility(new_id, False)
+
     # Delete part
     artist_api.delete_part(new_id)
 
