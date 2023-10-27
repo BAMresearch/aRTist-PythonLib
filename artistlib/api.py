@@ -164,11 +164,11 @@ class API():
         self.rc.send(f'::PartList::Invoke {str(id)} SetOrientation {str(alpha)} {str(beta)} {str(gamma)};')
 
     def rotate_from_rotation_matrix(self, id: int | str, rotation_matrix: np.ndarray) -> None:
-        """_summary_
+        """Rotates an object to an absolute position.
 
         Args:
             id (int | str): ID of the Object.
-            rotation_matrix (np.ndarray): _description_
+            rotation_matrix (np.ndarray): Rotationmatix in world coordinate system.
         """
         rotation = Rotation.from_matrix(rotation_matrix)
         euler_scipy = rotation.as_euler("ZXY", degrees=True)
@@ -176,10 +176,27 @@ class API():
         self.rotate(id, *euler_scipy)
     
     def get_position(self, id: int | str) -> np.ndarray:
+        """Returns the current position of the object in [mm].
+
+        Args:
+            id (int | str): ID of the Object.
+
+        Returns:
+            np.ndarray: position (x,y,z) in [mm].
+        """
         result = self.rc.send(f'[::PartList::Get {id} Obj] GetPosition')
         return np.float32(result[1:-1].split(" "))
     
     def get_euler_angles(self, id: int | str) -> np.ndarray:
+        """Returns the current orientation of the object as euler angles in the ZXY convention.
+
+        Args:
+            id (int | str): ID of the Object.
+
+
+        Returns:
+            np.ndarray: Euler angle in ZXY convention.
+        """
         result = self.rc.send(f'[::PartList::Get {id} Obj] GetOrientation')
         return np.float32(result[1:-1].split(" "))
     
@@ -197,10 +214,25 @@ class API():
         return rotation
     
     def get_orientation(self, id) -> np.ndarray:
+        """Return the current orientation of the object as quarternion.
+
+        Args:
+            id (int | str): ID of the Object.
+
+        Returns:
+            np.ndarray: Quarternion of the object in the wolrd coordinate system.
+        """
         rotation = Rotation.from_matrix(self.get_rotation_matrix(id))
         return rotation.as_quat()
     
-    def projection_geometry(self):
+    def projection_geometry(self) -> dict:
+        """Returns the current projection geometry of the scene. All positions are in [mm].
+
+        Returns:
+            dict: Dictionary of the projection geometry. Keys are: 'source_position_mm', 
+            'source_orientation_matrix', 'detector_position_mm', 'detector_orientation_matrix',
+            'detector_count_px' and 'detector_resolution_mm'
+        """
         source_position = np.array(self.get_position('S'))
         source_orientation = np.array(self.get_rotation_matrix('S'))
         detector_position = np.array(self.get_position('D'))
@@ -221,26 +253,69 @@ class API():
         return data_dict
     
     def get_detector_resolution(self) -> np.ndarray:
+        """Returns the current pixel pitch of the detector as array
+
+        Returns:
+            np.ndarray: Pixel pitch of the detector (u, v).
+        """
         result = self.rc.send(f'::XDetector::GetResolution')
         return np.array(np.float32(result.split(" ")))
 
     def get_detector_pixel_count(self) -> np.ndarray:
+        """Returns the current pixel count of the detector.
+
+        Returns:
+            np.ndarray: Pixel count (u, v).
+        """
         result = self.rc.send(f'::XDetector::GetPixelSize')
         return np.array(np.int32(result.split(" ")))
     
     def set_material(self, id: int | str, material: str):
+        """Changes the material of the object.
+
+        Args:
+            id (int | str): ID of the Object.
+            material (str): Matiral as string. !!!Must be in the material database of artist!!!
+        """
         self.rc.send(f'::PartList::SetMaterial {material} {id}')
 
     def get_material(self, id: int | str):
+        """Returns the material of the object.
+
+        Args:
+            id (int | str): ID of the Object.
+        """
         return_value = self.rc.send(f'::PartList::Get {id} Material')
+        return return_value
 
     def load_part(self, load_path: Path, material: str = 'Al', name: str = 'Object') -> int:
+        """Loads a mesh file into the artist scene. Returns the object id for further mainpulations.
+
+        Args:
+            load_path (Path): Path object pointing to the mesh file.
+            material (str, optional): Material of the mesh file. Defaults to 'Al'.
+            name (str, optional): Displayed name in the aRTist GUI. Defaults to 'Object'.
+
+        Returns:
+            int: Object ID for further Manipulations.
+        """
         return_value = self.rc.send(f'set obj [::PartList::LoadPart "{self.path_to_artist(load_path)}" "{material}" "{name}"]')
         return int(return_value)
     
     def delete_part(self, id: int | str):
+        """Delets the object from the scene.
+
+        Args:
+            id (int | str): ID of the Object.
+        """
         self.rc.send(f'::PartList::Delete "{id}"')
 
     def set_visibility(self, id: int | str, visible: bool = True):
+        """Sets the Object in/visiible.
+
+        Args:
+            id (int | str): ID of the Object.
+            visible (bool, optional): Visible: True. Defaults to True.
+        """
         visible = 'on' if visible else 'off'
         self.rc.send(f'[::PartList::Get {id} Obj] SetVisibility "{visible}"')

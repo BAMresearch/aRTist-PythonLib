@@ -23,10 +23,20 @@ from ..common_types import SOURCETYPES
 
 class XraySource(BaseHardware):
     def __init__(self, remote_control: Junction | API = None) -> None:
+        """Xray source objet. Needs a remote control connection.
+
+        Args:
+            remote_control (Junction | API, optional): remote connection to communicate with aRTist. Defaults to None.
+        """
         super().__init__(remote_control)
     
     @property
     def voltage_kv(self) -> float:
+        """Current voltage setting of the XRay source.
+
+        Returns:
+            float: Voltage value in [kV].
+        """
         return_value = self.rc.send('array get Xsource Voltage')
         return_value = return_value.split(' ')[1]
         return float(return_value)
@@ -38,6 +48,11 @@ class XraySource(BaseHardware):
 
     @property
     def exposure_ma(self) -> float:
+        """Current set exposure of the XRay source
+
+        Returns:
+            float: Exposure in [µA].
+        """
         return_value = self.rc.send('array get Xsource Exposure')
         return_value = return_value.split(' ')[1]
         return float(return_value)
@@ -47,10 +62,15 @@ class XraySource(BaseHardware):
         self.rc.send(f'set ::Xsource(Exposure) {exposure_ma}')
 
     @property
-    def filter_material(self) -> float:
+    def filter_material(self) -> str:
+        """Filter Material of the XRay source.
+
+        Returns:
+            str: Filter material of the XRay source.
+        """
         return_value = self.rc.send('array get Xsource FilterMaterial')
         return_value = return_value.split(' ')[1]
-        return float(return_value)
+        return str(return_value)
     
     @filter_material.setter
     def filter_material(self, filter_material: float) -> None:
@@ -59,6 +79,11 @@ class XraySource(BaseHardware):
 
     @property
     def filter_thickness_mm(self) -> float:
+        """Thickness of the filter in [mm].
+
+        Returns:
+            float: Filter thickness in [mm].
+        """
         return_value = self.rc.send('array get Xsource FilterThickness')
         return_value = return_value.split(' ')[1]
         return float(return_value)
@@ -70,6 +95,11 @@ class XraySource(BaseHardware):
 
     @property
     def source_type(self) -> int:
+        """Source type of the XRay source. Types are Monocromatic or General. See SOURCETYPES.
+
+        Returns:
+            int: Source type as integer. Use SOURCETYPES.
+        """
         return_value = self.rc.send('array get Xsource Tube')
         return_value = return_value.split(' ')[1]
 

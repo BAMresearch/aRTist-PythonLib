@@ -56,7 +56,7 @@ def main():
 
     # Load .stl part
     new_id = artist_api.load_part(
-        Path(r'C:\Program Files\BAM\aRTist 2.12\Data\Library\ExampleParts\Fun\Dog.stl'),
+        Path(r'C:\Program Files\BAM\aRTist 2.12\Data\Library\ExampleParts\Fun\Dog.stl'),  # Plesas check where the aRTist software is installed.
         'Fe',
         'test_object')
     

@@ -22,10 +22,20 @@ import numpy as np
 
 class XrayDetector(BaseHardware):
     def __init__(self, remote_control: Junction | API = None) -> None:
+        """XRay detector object. Needs a remote control connection.
+
+        Args:
+            remote_control (Junction | API, optional): Remote control connection for the communication with artist. Defaults to None.
+        """
         super().__init__(remote_control)
 
     @property
     def detector_resolution_mm(self) -> np.ndarray:
+        """Current detector resolution / pixel pitch in [mm].
+
+        Returns:
+            np.ndarray: Detector resolution (u, v) in [mm].
+        """
         return_value = self.rc.send('::XDetector::GetResolution')
         return_value =  np.array(np.float32(return_value.split(" ")))
         return return_value
@@ -37,6 +47,11 @@ class XrayDetector(BaseHardware):
 
     @property
     def detector_count_px(self) -> np.ndarray:
+        """Current detector pixel count.
+
+        Returns:
+            np.ndarray: Detector pixel count (u, v) in [n].
+        """
         return_value = self.rc.send('::XDetector::GetPixelSize')
         return_value =  np.array(np.int32(return_value.split(" ")))
         return return_value
@@ -48,6 +63,11 @@ class XrayDetector(BaseHardware):
 
     @property
     def flatfield_correction(self) -> bool:
+        """Faltfiled corrected?
+
+        Returns:
+            bool: Return wheter the projection is flatfield corrected or not.
+        """
         return_value = self.rc.send('array get Xdetector FFCorrRun')
         return_value = return_value.split(' ')[1]
         return bool(return_value)
