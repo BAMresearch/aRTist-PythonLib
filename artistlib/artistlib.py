@@ -139,7 +139,7 @@ class Junction:
                     break
                 encChunk = base64.b64encode((chunk)).decode('utf-8')
                 com = f"RemoteControl::ReceiveFile {encChunk} .aRTist"
-                self.send(com, "*")
+                self.send(com, "RESULT")
         finalMessage = 'RemoteControl::ReceiveFile Stop .aRTist'
         recFinal = self.send(finalMessage, "RESULT")
         return recFinal
@@ -160,10 +160,11 @@ class Junction:
                     break
                 encChunk = base64.b64encode((chunk)).decode('utf-8')
                 com = f"RemoteControl::ReceiveFile {encChunk} .{imageType}"
-                self.send(com, "*")
+                self.send(com, "RESULT")
             finalMessage = f"RemoteControl::ReceiveFile Stop .{imageType}"
-            recFinal = self.send(finalMessage, "*")
-            self.send("::FileIO::OpenAny  {recFinal}")
+            recFinal = self.send(finalMessage, "RESULT")
+            openImage = recFinal.replace("\n", "")
+            self.send(f'::FileIO::OpenAny "{openImage}"')
             return recFinal
         
  
