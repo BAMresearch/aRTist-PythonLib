@@ -4,3 +4,8 @@ dist
 /venv/
 *.tif
 /workspace/
+*.raw
+*.stl
+*.json
+*.aRTist
+*.ply

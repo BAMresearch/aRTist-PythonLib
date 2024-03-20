@@ -54,12 +54,12 @@ class API():
             save_mode (SAVEMODES, optional): File type of saved projection. Defaults to SAVEMODES.UINT16.
             save_projection_geometry (bool, optional): Projection geometry of the scene. Stem of save_path is used as path. Defaults to True.
         """
-
+        save_path = save_path.resolve()
         if save_projection_geometry:
             save_path_json = save_path.parent / (save_path.stem + '.json')
             with open(str(save_path_json), 'w') as f:
                 json.dump(self.projection_geometry(), f, indent=4)
-
+        
         if save_mode == SAVEMODES.UINT8:
             self._save_image_uint8(save_path)
         elif save_mode == SAVEMODES.UINT16:
@@ -150,6 +150,17 @@ class API():
         self.rc.send(f'::PartList::Invoke {str(id)} SetPosition {str(x)} {str(y)} {str(z)};')
         self.rc.send(f'::PartList::Invoke {str(id)} SetRefPos {str(x)} {str(y)} {str(z)};')
 
+    def scale(self, id: int | str, x: float = 1.0) -> None:
+        """Moves an object to an absolute position. All values in [mm].
+
+        Args:
+            id (int | str): ID of the Object.
+            x (float, optional): Absolute X position. Defaults to 0.0.
+            y (float, optional): Absolute Y position. Defaults to 0.0.
+            z (float, optional): Absolute Z position. Defaults to 0.0.
+        """
+        self.rc.send(f'::PartList::Invoke {str(id)} SetScale {str(x)} {str(x)} {str(x)};')
+
     def rotate(self, id: int | str, alpha: float = 0.0, beta: float = 0.0, gamma: float = 0.0) -> None:
         """Rotates an object to an absolute position. All values in [°].
 
@@ -229,8 +240,9 @@ class API():
         """Returns the current projection geometry of the scene. All positions are in [mm].
 
         Returns:
-            dict: Dictionary of the projection geometry. Keys are: 'source_position_mm', 
-            'source_orientation_matrix', 'detector_position_mm', 'detector_orientation_matrix',
+            dict: Dictionary of the projection geometry. Keys are: 'focal_spot_position_mm', 
+            'focal_spot_orientation_matrix', 'detector_center_position_mm', 
+            'detector_center_orientation_matrix', 'detector_center_orientation_quat',
             'detector_count_px' and 'detector_resolution_mm'
         """
         source_position = np.array(self.get_position('S'))
@@ -242,13 +254,14 @@ class API():
         detector_pixel_count = self.get_detector_pixel_count()
 
         data_dict = dict()
-        data_dict['source_position_mm'] = source_position.tolist()
-        data_dict['source_orientation_matrix'] = source_orientation.tolist()
-        data_dict['detector_position_mm'] = detector_position.tolist()
-        data_dict['detector_orientation_matrix'] = detector_orientation.tolist()
+        data_dict['focal_spot_position_mm'] = source_position.tolist()
+        data_dict['focal_spot_orientation_matrix'] = source_orientation.tolist()
+        data_dict['detector_center_position_mm'] = detector_position.tolist()
+        data_dict['detector_center_orientation_matrix'] = detector_orientation.tolist()
+        data_dict['detector_center_orientation_quat'] = Rotation.from_matrix(detector_orientation).as_quat().tolist()
 
         data_dict['detector_count_px'] = detector_pixel_count.tolist()
-        data_dict['detector_resolution_mm'] = detector_resolution.tolist()
+        data_dict['pixel_pitch_mm'] = detector_resolution.tolist()
 
         return data_dict
     

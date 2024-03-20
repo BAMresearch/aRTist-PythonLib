@@ -17,11 +17,11 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 
-def circular_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def circular_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int, opening_angle: float = 0.2) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     if fod_mm > fdd_mm:
         raise ValueError('fod > fdd.')
 
-    rotation_angles = np.linspace(0., np.pi*1.2, number_of_projections, endpoint=False)
+    rotation_angles = np.linspace(0., np.pi * (1. + opening_angle), number_of_projections, endpoint=False)
     rotation_object = Rotation.from_euler('Y', rotation_angles, degrees=False)
 
     source_initial_position = np.array([0., 0., fod_mm])
@@ -30,7 +30,7 @@ def circular_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int
     source_positions = rotation_object.apply(source_initial_position)
     detector_positions = rotation_object.apply(detector_initial_position)
     
-    return source_positions, detector_positions, rotation_angles * 180. / np.pi
+    return source_positions, detector_positions, rotation_object.as_matrix()
 
 def look_at_orientation(source, detector, up_vector: np.ndarray = np.array([0., 1., 0.])):
     normal = source - detector
