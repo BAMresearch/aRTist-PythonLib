@@ -9,3 +9,4 @@ dist
 *.json
 *.aRTist
 *.ply
+/build/
