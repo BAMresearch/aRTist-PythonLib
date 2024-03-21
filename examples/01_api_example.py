@@ -60,6 +60,7 @@ def main():
         'Fe',
         'test_object')
     
+    artist_api.delete_part('test_object')
     print(f'Inserted ID: {new_id}')
 
     # change material

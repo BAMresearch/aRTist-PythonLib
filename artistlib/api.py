@@ -332,3 +332,9 @@ class API():
         """
         visible = 'on' if visible else 'off'
         self.rc.send(f'[::PartList::Get {id} Obj] SetVisibility "{visible}"')
+
+    def clear_scene(self):
+        """Clears all objects from the scene.
+        """
+        self.rc.send('::PartList::Clear')
+
