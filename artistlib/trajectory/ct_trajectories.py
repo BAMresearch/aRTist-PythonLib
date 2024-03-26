@@ -32,7 +32,7 @@ def circular_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int
     
     return source_positions, detector_positions, rotation_object.as_matrix()
 
-def look_at_orientation(source, detector, up_vector: np.ndarray = np.array([0., 1., 0.])):
+def look_at_orientation(source, detector, up_vector: np.ndarray = np.array([0., 0., 1.])):
     normal = source - detector
     normal = normal / np.linalg.norm(normal)
 
@@ -68,8 +68,9 @@ def sphere_trajectory(fod_mm: float, fdd_mm: float, number_of_projections: int) 
     point_array = np.zeros((number_of_projections, 3))
     
     point_array[:, 0] = cphi * np.cos(theta)
-    point_array[:, 1] = sphi
-    point_array[:, 2] = cphi * np.sin(theta)
+    
+    point_array[:, 1] = cphi * np.sin(theta)
+    point_array[:, 2] = sphi
 
     source_positions = point_array * fod_mm
     detector_positions = point_array * (fod_mm - fdd_mm)

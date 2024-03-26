@@ -338,3 +338,8 @@ class API():
         """
         self.rc.send('::PartList::Clear')
 
+    def load_project(self, project_file: Path):
+        if project_file.suffix != '.aRTist':
+            raise ValueError('Wrong File / Path. The *project_file* path must be a .aRTist File!')
+        self.rc.send(f'::XRayProject::LoadProject "{self.path_to_artist(project_file)}"')
+
