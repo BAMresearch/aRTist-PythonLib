@@ -10,6 +10,8 @@ from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
+from .material import Material
+
 import numpy as np
 from numpy import append
 import socket
