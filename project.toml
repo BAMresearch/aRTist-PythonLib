@@ -1,3 +1,6 @@
+[project.urls]
+Homepage = "https://github.com/BAMresearch/aRTist-PythonLib"
+
 [build-system]
 requires = [
     "setuptools>=42",

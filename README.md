@@ -1,7 +1,7 @@
 # PythonLib aRTist
 
-Python library and scripts to control the BAM X-ray simulation tool "aRTist" remotely and automatically.
+This Python library can be used to remotely and automatically control the "aRTist" X-ray simulation tool, which was developed by [BAM](https://www.bam.de).
 
-Please refer to the **[documentation](https://bamresearch.github.io/aRTist-PythonLib/)** to get started.
+Please read the [documentation](https://bamresearch.github.io/aRTist-PythonLib/) to get started.
 
-For more information on aRTist see its **[website](https://www.artist.bam.de)** and its **[online guide](https://bamresearch.github.io/aRTist-handbook/)**.
+Visit the [website](https://www.artist.bam.de) and [online guide](https://bamresearch.github.io/aRTist-handbook/) for more information on aRTist.
