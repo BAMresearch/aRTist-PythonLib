@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>artistlib.wrapper.artist_source API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:35%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/aRTist-PythonLib/favicon.ico">
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>artistlib.wrapper.artist_source</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="artistlib.wrapper.artist_source.ArtistSource"><code class="flex name class">
+<span>class <span class="ident">ArtistSource</span></span>
+<span>(</span><span>batch: bool = None, host='localhost', port=3658, bufferSize=1024, timeout=5)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ArtistSource(ArtistSend):
+    &#34;&#34;&#34;This class provides functions for modifying the source.&#34;&#34;&#34;
+
+    List_content = [
+        &#34;Name&#34;,
+        &#34;Voltage&#34;,
+        &#34;TargetMaterial&#34;,
+        &#34;TargetAngle&#34;,
+        &#34;TargetThickness&#34;,
+        &#34;FilterMaterial&#34;,
+        &#34;FilterThickness&#34;,
+        &#34;Filter2Material&#34;,
+        &#34;Filter2Thickness&#34;,
+        &#34;Filter3Material&#34;,
+        &#34;Filter3Thickness&#34;,
+        &#34;WindowMaterial&#34;,
+        &#34;WindowThickness&#34;,
+        &#34;AngleIn&#34;,
+        &#34;Transmission&#34;,
+        &#34;Resolution&#34;,
+    ]
+    STRING_FIELDS = {
+        &#34;Name&#34;,
+        &#34;WindowMaterial&#34;,
+        &#34;TargetMaterial&#34;,
+        &#34;FilterMaterial&#34;,
+        &#34;Filter2Material&#34;,
+        &#34;Filter3Material&#34;,
+    }
+
+    def load_spectra(self, path: str) -&gt; str:
+        &#34;&#34;&#34;Loads a spectrum from an `.xrs` file into aRTist.&#34;&#34;&#34;
+        a = self.load_file(path)
+        return a
+
+    def set_exposure(self, exposure: float) -&gt; str:
+        &#34;&#34;&#34;Sets the exposure value in aRTist.&#34;&#34;&#34;
+        self._control_number(exposure)
+        a = self.send(&#34;set ::Xsource(Exposure) &#34; + str(exposure))
+        return a
+
+    def get_exposure(self):
+        return float(self.send(&#34;set ::Xsource(Exposure)&#34;))
+
+    def set_spectra(
+        self,
+        Tube: str = None,
+        V: float = None,
+        TMaterial: str = None,
+        TAngle: float = None,
+        TThick: float = None,
+        FMaterial: str = None,
+        FThick: float = None,
+        F2Material: str = None,
+        F2Thick: float = None,
+        F3Material: str = None,
+        F3Thick: float = None,
+        WMaterial: str = None,
+        WThick: float = None,
+        Angle: float = None,
+        Transmission: float = None,
+        res: float = None,
+    ) -&gt; str:
+        &#34;&#34;&#34;Sets individual spectrum parameters.&#34;&#34;&#34;
+        Arg = [
+            Tube,
+            V,
+            TMaterial,
+            TAngle,
+            TThick,
+            FMaterial,
+            FThick,
+            F2Material,
+            F2Thick,
+            F3Material,
+            F3Thick,
+            WMaterial,
+            WThick,
+            Angle,
+            Transmission,
+            res,
+        ]
+
+        cmd_list = [
+            &#34;set ::Xsource(Tube) &#34;,
+            &#34;set ::Xsource(Voltage) &#34;,
+            &#34;set ::Xsource(TargetMaterial) &#34;,
+            &#34;set ::Xsource(TargetAngle) &#34;,
+            &#34;set ::Xsource(TargetThickness) &#34;,
+            &#34;set ::Xsource(FilterMaterial) &#34;,
+            &#34;set ::Xsource(FilterThickness) &#34;,
+            &#34;set ::Xsource(Filter2Material) &#34;,
+            &#34;set ::Xsource(Filter2Thickness) &#34;,
+            &#34;set ::Xsource(Filter3Material) &#34;,
+            &#34;set ::Xsource(Filter3Thickness) &#34;,
+            &#34;set ::Xsource(WindowMaterial) &#34;,
+            &#34;set ::Xsource(WindowThickness) &#34;,
+            &#34;set ::Xsource(AngleIn) &#34;,
+            &#34;set ::Xsource(Transmission) &#34;,
+            &#34;set ::Xsource(Resolution) &#34;,
+        ]
+
+        a = &#34;&#34;
+        self._control_number(
+            V,
+            TAngle,
+            TThick,
+            FThick,
+            WThick,
+            Angle,
+            Transmission,
+            res,
+            F2Thick,
+            F3Thick,
+        )
+        self._control_str(Tube, TMaterial, FMaterial, WMaterial, F2Material, F3Material)
+        p = 0
+        for value in cmd_list:
+            if Arg[p] is not None:
+                ar = str(Arg[p])
+                a += self.send(value + ar)
+            p = p + 1
+
+        return a
+
+    def _copy_and_rename(self, src_path: str, dest_path: str, new_name: str) -&gt; None:
+        try:
+            # Datei kopieren
+            copied_file = shutil.copy(src_path, dest_path)
+
+            # Neuer kompletter Pfad mit neuem Namen
+            new_path = self._replace_slashes(os.path.join(dest_path, new_name))
+
+            # rename
+            shutil.move(copied_file, new_path)
+
+        except Exception:
+            logger.exception(&#34;Unexpected error while copying and renaming file&#34;)
+            raise
+
+    def cal_spectra(
+        self, spec_name: str = None, dest_path: str = None, reduce_number_bins=False
+    ):
+        &#34;&#34;&#34;Calculates a spectrum and optionally saves it.
+
+        Note:
+        * If no output path is specified, the spectrum is calculated but not saved.
+        * Spectrum calculation may take longer for high-voltage configurations.
+        * Set reduce_number_bins to True to reduce the number of bins in the spectra to a maximum of 128 bins.
+        &#34;&#34;&#34;
+        a = &#34;&#34;
+        if self.batch_flag:
+            if spec_name is not None or dest_path is not None:
+                logger.warning(
+                    &#34;When using batch mode, no storage location can be specified for the calculation.&#34;
+                )
+            a += self.send(&#34;::XSource::ComputeSpectrum&#34;)
+            if reduce_number_bins is True:
+                a += self.send(&#34;::XSource::CheckSpectrum&#34;)
+            return a
+
+        # we need to set the timeout high, because the calculation can take a long time for high voltage
+
+        old_timeout = self.jct.timeout
+        self.jct.timeout = 1000
+        self.jct.S.settimeout(self.jct.timeout)
+        try:
+            path1 = self.send(&#34;::XSource::ComputeSpectrum&#34;).strip(&#34;\n&#34;)
+            if path1 == &#34;Timeout&#34; or path1 == &#34;{}&#34;:
+                raise RuntimeError(
+                    f&#34;Spectrum calculation failed (timeout: {self.jct.timeout}s) or unexpected error.&#34;
+                )
+            a += path1
+            if reduce_number_bins is True:
+                a += self.send(&#34;::XSource::CheckSpectrum&#34;)
+        finally:
+            self.jct.timeout = old_timeout
+            self.jct.S.settimeout(self.jct.timeout)
+
+        if dest_path is not None:
+            dest_path = self._control_path(dest_path)[0]
+            self._path_exist(dest_path)
+            self._control_str(dest_path)
+
+            if spec_name is not None:
+                self._control_str(spec_name)
+
+            self._copy_and_rename(
+                src_path=path1, dest_path=dest_path, new_name=spec_name
+            )
+
+        return a
+
+    def _read_file(self, path: str) -&gt; None:
+        with open(path, &#34;r&#34;) as f:
+            return f.read()
+
+    def _get_content_dict(self, content: str) -&gt; list:
+
+        list_spectrum = []
+
+        for el in self.List_content:
+            match = re.search(rf&#34;\b{el}\b\s+([^\s]+)&#34;, content)
+
+            if el in self.STRING_FIELDS:
+                if match:
+                    list_spectrum.append(match.group(1))
+                else:
+                    list_spectrum.append(None)
+
+            else:
+                if match:
+                    list_spectrum.append(float(match.group(1)))
+                else:
+                    list_spectrum.append(None)
+        return list_spectrum
+
+    def load_tube(self, path_dict: str, spec_name: str, path_dest: str) -&gt; None:
+        &#34;&#34;&#34;Loads a `.dict` file, applies the spectrum settings, and calculates the resulting spectrum.&#34;&#34;&#34;
+        path_dict, path_dest = self._control_path(path_dict, path_dest)
+        self._path_exist(path_dict, path_dest)
+        self._control_str(path_dict, spec_name, path_dest)
+        try:
+            content = self._read_file(str(path_dict))
+
+            values_spec = self._get_content_dict(content)
+
+            self.set_spectra(*values_spec)
+
+            self.cal_spectra(spec_name, str(path_dest))
+        except Exception:
+            logger.exception(&#34;Unexpected error while loading tube data&#34;)
+            raise
+
+    def get_spectra(self):
+        &#34;&#34;&#34;Gets the current spectrum and returns it as a dict.&#34;&#34;&#34;
+        spectrum_dic = {}
+        for el in self.List_content:
+            out = self.send(&#34;array get Xsource &#34; + el).split(&#34; &#34;)[1].strip(&#34;\n&#34;)
+            if el in self.STRING_FIELDS:
+                spectrum_dic[el] = out
+                continue
+            if out != &#34;{}&#34; and out != &#34;&#34;:
+                spectrum_dic[el] = float(out)
+                continue
+            spectrum_dic[el] = out
+
+        return spectrum_dic
+
+    def get_spectra_one_value(self, spectrum_parameter):
+        &#34;&#34;&#34;Returns only the specified spectrum parameter.
+        **Note**:
+        * Possible values are:
+        &#39;Name&#39;, &#39;Voltage&#39;, &#39;TargetMaterial&#39;, &#39;TargetAngle&#39;, &#39;TargetThickness&#39;, &#39;FilterMaterial&#39;, &#39;FilterThickness&#39;, &#39;Filter2Material&#39;, &#39;Filter2Thickness&#39;, &#39;Filter3Material&#39;, &#39;Filter3Thickness&#39;, &#39;WindowMaterial&#39;, &#39;WindowThickness&#39;, &#39;AngleIn&#39;, &#39;Transmission&#39;, &#39;Resolution&#39;.
+        &#34;&#34;&#34;
+
+        self._control_str(spectrum_parameter)
+
+        if spectrum_parameter in self.List_content:
+            out = (
+                self.send(&#34;array get Xsource &#34; + spectrum_parameter)
+                .split(&#34; &#34;)[1]
+                .strip(&#34;\n&#34;)
+            )
+            if spectrum_parameter in self.STRING_FIELDS:
+                return out
+            if out != &#34;{}&#34; and out != &#34;&#34;:
+                return float(out)
+            return out
+        else:
+            logger.warning(&#34;Wrong spectrum_parameter please use: &#34;, self.List_content)
+
+    def set_source_type(self, source_type: str = &#34;Mono&#34;):
+        &#34;&#34;&#34;Sets the type of the source.
+        **Note**
+        * source_type has to be either &#34;Mono&#34; or &#34;General&#34;.
+        &#34;&#34;&#34;
+        if source_type not in (&#34;Mono&#34;, &#34;General&#34;):
+            logger.warning(&#34;source_type must be either &#39;Mono&#39; or &#39;General&#39;&#34;)
+            return &#34;&#34;
+
+        return self.send(f&#34;set ::Xsource(Tube) {source_type}&#34;)</code></pre>
+</details>
+<div class="desc"><p>This class provides functions for modifying the source.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="artistlib.wrapper.artist_send.ArtistSend" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend">ArtistSend</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.List_content"><code class="name">var <span class="ident">List_content</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.STRING_FIELDS"><code class="name">var <span class="ident">STRING_FIELDS</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.load_spectra"><code class="name flex">
+<span>def <span class="ident">load_spectra</span></span>(<span>self, path: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_spectra(self, path: str) -&gt; str:
+    &#34;&#34;&#34;Loads a spectrum from an `.xrs` file into aRTist.&#34;&#34;&#34;
+    a = self.load_file(path)
+    return a</code></pre>
+</details>
+<div class="desc"><p>Loads a spectrum from an <code>.xrs</code> file into aRTist.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.set_exposure"><code class="name flex">
+<span>def <span class="ident">set_exposure</span></span>(<span>self, exposure: float) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_exposure(self, exposure: float) -&gt; str:
+    &#34;&#34;&#34;Sets the exposure value in aRTist.&#34;&#34;&#34;
+    self._control_number(exposure)
+    a = self.send(&#34;set ::Xsource(Exposure) &#34; + str(exposure))
+    return a</code></pre>
+</details>
+<div class="desc"><p>Sets the exposure value in aRTist.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.get_exposure"><code class="name flex">
+<span>def <span class="ident">get_exposure</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_exposure(self):
+    return float(self.send(&#34;set ::Xsource(Exposure)&#34;))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.set_spectra"><code class="name flex">
+<span>def <span class="ident">set_spectra</span></span>(<span>self,<br>Tube: str = None,<br>V: float = None,<br>TMaterial: str = None,<br>TAngle: float = None,<br>TThick: float = None,<br>FMaterial: str = None,<br>FThick: float = None,<br>F2Material: str = None,<br>F2Thick: float = None,<br>F3Material: str = None,<br>F3Thick: float = None,<br>WMaterial: str = None,<br>WThick: float = None,<br>Angle: float = None,<br>Transmission: float = None,<br>res: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_spectra(
+    self,
+    Tube: str = None,
+    V: float = None,
+    TMaterial: str = None,
+    TAngle: float = None,
+    TThick: float = None,
+    FMaterial: str = None,
+    FThick: float = None,
+    F2Material: str = None,
+    F2Thick: float = None,
+    F3Material: str = None,
+    F3Thick: float = None,
+    WMaterial: str = None,
+    WThick: float = None,
+    Angle: float = None,
+    Transmission: float = None,
+    res: float = None,
+) -&gt; str:
+    &#34;&#34;&#34;Sets individual spectrum parameters.&#34;&#34;&#34;
+    Arg = [
+        Tube,
+        V,
+        TMaterial,
+        TAngle,
+        TThick,
+        FMaterial,
+        FThick,
+        F2Material,
+        F2Thick,
+        F3Material,
+        F3Thick,
+        WMaterial,
+        WThick,
+        Angle,
+        Transmission,
+        res,
+    ]
+
+    cmd_list = [
+        &#34;set ::Xsource(Tube) &#34;,
+        &#34;set ::Xsource(Voltage) &#34;,
+        &#34;set ::Xsource(TargetMaterial) &#34;,
+        &#34;set ::Xsource(TargetAngle) &#34;,
+        &#34;set ::Xsource(TargetThickness) &#34;,
+        &#34;set ::Xsource(FilterMaterial) &#34;,
+        &#34;set ::Xsource(FilterThickness) &#34;,
+        &#34;set ::Xsource(Filter2Material) &#34;,
+        &#34;set ::Xsource(Filter2Thickness) &#34;,
+        &#34;set ::Xsource(Filter3Material) &#34;,
+        &#34;set ::Xsource(Filter3Thickness) &#34;,
+        &#34;set ::Xsource(WindowMaterial) &#34;,
+        &#34;set ::Xsource(WindowThickness) &#34;,
+        &#34;set ::Xsource(AngleIn) &#34;,
+        &#34;set ::Xsource(Transmission) &#34;,
+        &#34;set ::Xsource(Resolution) &#34;,
+    ]
+
+    a = &#34;&#34;
+    self._control_number(
+        V,
+        TAngle,
+        TThick,
+        FThick,
+        WThick,
+        Angle,
+        Transmission,
+        res,
+        F2Thick,
+        F3Thick,
+    )
+    self._control_str(Tube, TMaterial, FMaterial, WMaterial, F2Material, F3Material)
+    p = 0
+    for value in cmd_list:
+        if Arg[p] is not None:
+            ar = str(Arg[p])
+            a += self.send(value + ar)
+        p = p + 1
+
+    return a</code></pre>
+</details>
+<div class="desc"><p>Sets individual spectrum parameters.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.cal_spectra"><code class="name flex">
+<span>def <span class="ident">cal_spectra</span></span>(<span>self, spec_name: str = None, dest_path: str = None, reduce_number_bins=False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cal_spectra(
+    self, spec_name: str = None, dest_path: str = None, reduce_number_bins=False
+):
+    &#34;&#34;&#34;Calculates a spectrum and optionally saves it.
+
+    Note:
+    * If no output path is specified, the spectrum is calculated but not saved.
+    * Spectrum calculation may take longer for high-voltage configurations.
+    * Set reduce_number_bins to True to reduce the number of bins in the spectra to a maximum of 128 bins.
+    &#34;&#34;&#34;
+    a = &#34;&#34;
+    if self.batch_flag:
+        if spec_name is not None or dest_path is not None:
+            logger.warning(
+                &#34;When using batch mode, no storage location can be specified for the calculation.&#34;
+            )
+        a += self.send(&#34;::XSource::ComputeSpectrum&#34;)
+        if reduce_number_bins is True:
+            a += self.send(&#34;::XSource::CheckSpectrum&#34;)
+        return a
+
+    # we need to set the timeout high, because the calculation can take a long time for high voltage
+
+    old_timeout = self.jct.timeout
+    self.jct.timeout = 1000
+    self.jct.S.settimeout(self.jct.timeout)
+    try:
+        path1 = self.send(&#34;::XSource::ComputeSpectrum&#34;).strip(&#34;\n&#34;)
+        if path1 == &#34;Timeout&#34; or path1 == &#34;{}&#34;:
+            raise RuntimeError(
+                f&#34;Spectrum calculation failed (timeout: {self.jct.timeout}s) or unexpected error.&#34;
+            )
+        a += path1
+        if reduce_number_bins is True:
+            a += self.send(&#34;::XSource::CheckSpectrum&#34;)
+    finally:
+        self.jct.timeout = old_timeout
+        self.jct.S.settimeout(self.jct.timeout)
+
+    if dest_path is not None:
+        dest_path = self._control_path(dest_path)[0]
+        self._path_exist(dest_path)
+        self._control_str(dest_path)
+
+        if spec_name is not None:
+            self._control_str(spec_name)
+
+        self._copy_and_rename(
+            src_path=path1, dest_path=dest_path, new_name=spec_name
+        )
+
+    return a</code></pre>
+</details>
+<div class="desc"><p>Calculates a spectrum and optionally saves it.</p>
+<p>Note:
+* If no output path is specified, the spectrum is calculated but not saved.
+* Spectrum calculation may take longer for high-voltage configurations.
+* Set reduce_number_bins to True to reduce the number of bins in the spectra to a maximum of 128 bins.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.load_tube"><code class="name flex">
+<span>def <span class="ident">load_tube</span></span>(<span>self, path_dict: str, spec_name: str, path_dest: str) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_tube(self, path_dict: str, spec_name: str, path_dest: str) -&gt; None:
+    &#34;&#34;&#34;Loads a `.dict` file, applies the spectrum settings, and calculates the resulting spectrum.&#34;&#34;&#34;
+    path_dict, path_dest = self._control_path(path_dict, path_dest)
+    self._path_exist(path_dict, path_dest)
+    self._control_str(path_dict, spec_name, path_dest)
+    try:
+        content = self._read_file(str(path_dict))
+
+        values_spec = self._get_content_dict(content)
+
+        self.set_spectra(*values_spec)
+
+        self.cal_spectra(spec_name, str(path_dest))
+    except Exception:
+        logger.exception(&#34;Unexpected error while loading tube data&#34;)
+        raise</code></pre>
+</details>
+<div class="desc"><p>Loads a <code>.dict</code> file, applies the spectrum settings, and calculates the resulting spectrum.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.get_spectra"><code class="name flex">
+<span>def <span class="ident">get_spectra</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_spectra(self):
+    &#34;&#34;&#34;Gets the current spectrum and returns it as a dict.&#34;&#34;&#34;
+    spectrum_dic = {}
+    for el in self.List_content:
+        out = self.send(&#34;array get Xsource &#34; + el).split(&#34; &#34;)[1].strip(&#34;\n&#34;)
+        if el in self.STRING_FIELDS:
+            spectrum_dic[el] = out
+            continue
+        if out != &#34;{}&#34; and out != &#34;&#34;:
+            spectrum_dic[el] = float(out)
+            continue
+        spectrum_dic[el] = out
+
+    return spectrum_dic</code></pre>
+</details>
+<div class="desc"><p>Gets the current spectrum and returns it as a dict.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.get_spectra_one_value"><code class="name flex">
+<span>def <span class="ident">get_spectra_one_value</span></span>(<span>self, spectrum_parameter)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_spectra_one_value(self, spectrum_parameter):
+    &#34;&#34;&#34;Returns only the specified spectrum parameter.
+    **Note**:
+    * Possible values are:
+    &#39;Name&#39;, &#39;Voltage&#39;, &#39;TargetMaterial&#39;, &#39;TargetAngle&#39;, &#39;TargetThickness&#39;, &#39;FilterMaterial&#39;, &#39;FilterThickness&#39;, &#39;Filter2Material&#39;, &#39;Filter2Thickness&#39;, &#39;Filter3Material&#39;, &#39;Filter3Thickness&#39;, &#39;WindowMaterial&#39;, &#39;WindowThickness&#39;, &#39;AngleIn&#39;, &#39;Transmission&#39;, &#39;Resolution&#39;.
+    &#34;&#34;&#34;
+
+    self._control_str(spectrum_parameter)
+
+    if spectrum_parameter in self.List_content:
+        out = (
+            self.send(&#34;array get Xsource &#34; + spectrum_parameter)
+            .split(&#34; &#34;)[1]
+            .strip(&#34;\n&#34;)
+        )
+        if spectrum_parameter in self.STRING_FIELDS:
+            return out
+        if out != &#34;{}&#34; and out != &#34;&#34;:
+            return float(out)
+        return out
+    else:
+        logger.warning(&#34;Wrong spectrum_parameter please use: &#34;, self.List_content)</code></pre>
+</details>
+<div class="desc"><p>Returns only the specified spectrum parameter.
+<strong>Note</strong>:
+* Possible values are:
+'Name', 'Voltage', 'TargetMaterial', 'TargetAngle', 'TargetThickness', 'FilterMaterial', 'FilterThickness', 'Filter2Material', 'Filter2Thickness', 'Filter3Material', 'Filter3Thickness', 'WindowMaterial', 'WindowThickness', 'AngleIn', 'Transmission', 'Resolution'.</p></div>
+</dd>
+<dt id="artistlib.wrapper.artist_source.ArtistSource.set_source_type"><code class="name flex">
+<span>def <span class="ident">set_source_type</span></span>(<span>self, source_type: str = 'Mono')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_source_type(self, source_type: str = &#34;Mono&#34;):
+    &#34;&#34;&#34;Sets the type of the source.
+    **Note**
+    * source_type has to be either &#34;Mono&#34; or &#34;General&#34;.
+    &#34;&#34;&#34;
+    if source_type not in (&#34;Mono&#34;, &#34;General&#34;):
+        logger.warning(&#34;source_type must be either &#39;Mono&#39; or &#39;General&#39;&#34;)
+        return &#34;&#34;
+
+    return self.send(f&#34;set ::Xsource(Tube) {source_type}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Sets the type of the source.
+<strong>Note</strong>
+* source_type has to be either "Mono" or "General".</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="artistlib.wrapper.artist_send.ArtistSend" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend">ArtistSend</a></b></code>:
+<ul class="hlist">
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.apply" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.apply">apply</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.load_file" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.load_file">load_file</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.send" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.send">send</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.set_global_batch" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.set_global_batch">set_global_batch</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/aRTist-PythonLib">
+<img src="artistlib.png" alt=""> artistlib
+</a>
+</header>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="artistlib.wrapper" href="index.html">artistlib.wrapper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="artistlib.wrapper.artist_source.ArtistSource" href="#artistlib.wrapper.artist_source.ArtistSource">ArtistSource</a></code></h4>
+<ul class="">
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.load_spectra" href="#artistlib.wrapper.artist_source.ArtistSource.load_spectra">load_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.set_exposure" href="#artistlib.wrapper.artist_source.ArtistSource.set_exposure">set_exposure</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.get_exposure" href="#artistlib.wrapper.artist_source.ArtistSource.get_exposure">get_exposure</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.set_spectra" href="#artistlib.wrapper.artist_source.ArtistSource.set_spectra">set_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.cal_spectra" href="#artistlib.wrapper.artist_source.ArtistSource.cal_spectra">cal_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.load_tube" href="#artistlib.wrapper.artist_source.ArtistSource.load_tube">load_tube</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.get_spectra" href="#artistlib.wrapper.artist_source.ArtistSource.get_spectra">get_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.get_spectra_one_value" href="#artistlib.wrapper.artist_source.ArtistSource.get_spectra_one_value">get_spectra_one_value</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.set_source_type" href="#artistlib.wrapper.artist_source.ArtistSource.set_source_type">set_source_type</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.List_content" href="#artistlib.wrapper.artist_source.ArtistSource.List_content">List_content</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_source.ArtistSource.STRING_FIELDS" href="#artistlib.wrapper.artist_source.ArtistSource.STRING_FIELDS">STRING_FIELDS</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

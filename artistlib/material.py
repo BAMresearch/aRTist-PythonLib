@@ -1,9 +1,11 @@
 """Define and handle materials"""
 
 import shlex
+import re
+
 
 class Material:
-    """Define a material"""
+    """Defines a material"""
 
     def __init__(self, name="dummy"):
         self._name = name
@@ -13,59 +15,66 @@ class Material:
 
     @property
     def name(self):
-        """Getter for name"""
+        """Returns the material name."""
         return self._name
 
     @name.setter
     def name(self, value):
-        """Setter for name"""
+        """Sets the material name."""
         if not value:
             raise ValueError("Name cannot be empty")
         self._name = str(value)
 
     @property
     def definition(self):
-        """Return an entry for aRTist's material list"""
-        return self.name+' {density '+str(self.density)+' composition {'+str(self.composition)+'} comment {'+str(self.comment)+'}}'
+        """Returns a material entry in the format required by the aRTist material list."""
+        return (
+            self.name
+            + " {density "
+            + str(self.density)
+            + " composition {"
+            + str(self.composition)
+            + "} comment {"
+            + str(self.comment)
+            + "}}"
+        )
 
     def add(self, junction):
-        """Add/update this material in aRTist"""
-        junction.send('dict set ::Materials::MatList '+self.definition)
-        junction.send('Engine::ClearMaterials')
+        """Adds or updates the material in aRTist."""
+        junction.send("dict set ::Materials::MatList " + self.definition)
+        junction.send("Engine::ClearMaterials")
 
     def delete(self, junction):
-        """Delete this material in aRTist"""
-        junction.send('dict unset ::Materials::MatList '+self.definition)
-        junction.send('Engine::ClearMaterials')
+        """Deletes the material from aRTist."""
+        junction.send("dict unset ::Materials::MatList " + self.definition)
+        junction.send("Engine::ClearMaterials")
 
     def names(self, junction):
-        """List the materials known to aRTist"""
-        list = junction.send('dict keys $::Materials::MatList')
+        """Returns a list of all materials currently available in aRTist."""
+        list = junction.send("dict keys $::Materials::MatList")
         return shlex.split(brace_to_quotes(list))
 
     def pick(self, junction, name):
-        """Get an material from aRTist"""
+        """Retrieves a material definition from aRTist."""
         list = self.names(junction)
         if name in list:
-            mat = junction.send('dict get $::Materials::MatList '+name)
+            mat = junction.send("dict get $::Materials::MatList " + name)
             mat = shlex.split(brace_to_quotes(mat))
             mat = dict(zip(mat[::2], mat[1::2]))
             self._name = name
-            self.density = mat['density']
-            self.composition = mat['composition']
-            self.comment = ''
-            if 'comment' in mat:
-                self.comment = mat['comment']
+            self.density = mat["density"]
+            self.composition = mat["composition"]
+            self.comment = ""
+            if "comment" in mat:
+                self.comment = mat["comment"]
             return name
         else:
-            return ''
+            return ""
 
 
 # helpers
 
-import re
 
 def brace_to_quotes(text):
-    """Helper to handle TCL dictionaries"""
-    return re.sub(r'\{([^}]+)\}', r'"\1"', text)
-
+    """Helper functions for handling Tcl dictionaries."""
+    return re.sub(r"\{([^}]+)\}", r'"\1"', text)

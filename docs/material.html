@@ -56,10 +56,10 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def brace_to_quotes(text):
-    &#34;&#34;&#34;Helper to handle TCL dictionaries&#34;&#34;&#34;
-    return re.sub(r&#39;\{([^}]+)\}&#39;, r&#39;&#34;\1&#34;&#39;, text)</code></pre>
+    &#34;&#34;&#34;Helper functions for handling Tcl dictionaries.&#34;&#34;&#34;
+    return re.sub(r&#34;\{([^}]+)\}&#34;, r&#39;&#34;\1&#34;&#39;, text)</code></pre>
 </details>
-<div class="desc"><p>Helper to handle TCL dictionaries</p></div>
+<div class="desc"><p>Helper functions for handling Tcl dictionaries.</p></div>
 </dd>
 </dl>
 </section>
@@ -76,7 +76,7 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Material:
-    &#34;&#34;&#34;Define a material&#34;&#34;&#34;
+    &#34;&#34;&#34;Defines a material&#34;&#34;&#34;
 
     def __init__(self, name=&#34;dummy&#34;):
         self._name = name
@@ -86,69 +86,65 @@ el.replaceWith(d);
 
     @property
     def name(self):
-        &#34;&#34;&#34;Getter for name&#34;&#34;&#34;
+        &#34;&#34;&#34;Returns the material name.&#34;&#34;&#34;
         return self._name
 
     @name.setter
     def name(self, value):
-        &#34;&#34;&#34;Setter for name&#34;&#34;&#34;
+        &#34;&#34;&#34;Sets the material name.&#34;&#34;&#34;
         if not value:
             raise ValueError(&#34;Name cannot be empty&#34;)
         self._name = str(value)
 
     @property
     def definition(self):
-        &#34;&#34;&#34;Return an entry for aRTist&#39;s material list&#34;&#34;&#34;
-        return self.name+&#39; {density &#39;+str(self.density)+&#39; composition {&#39;+str(self.composition)+&#39;} comment {&#39;+str(self.comment)+&#39;}}&#39;
+        &#34;&#34;&#34;Returns a material entry in the format required by the aRTist material list.&#34;&#34;&#34;
+        return (
+            self.name
+            + &#34; {density &#34;
+            + str(self.density)
+            + &#34; composition {&#34;
+            + str(self.composition)
+            + &#34;} comment {&#34;
+            + str(self.comment)
+            + &#34;}}&#34;
+        )
 
     def add(self, junction):
-        &#34;&#34;&#34;Add/update this material in aRTist&#34;&#34;&#34;
-        junction.send(&#39;dict set ::Materials::MatList &#39;+self.definition)
-        junction.send(&#39;Engine::ClearMaterials&#39;)
+        &#34;&#34;&#34;Adds or updates the material in aRTist.&#34;&#34;&#34;
+        junction.send(&#34;dict set ::Materials::MatList &#34; + self.definition)
+        junction.send(&#34;Engine::ClearMaterials&#34;)
 
     def delete(self, junction):
-        &#34;&#34;&#34;Delete this material in aRTist&#34;&#34;&#34;
-        junction.send(&#39;dict unset ::Materials::MatList &#39;+self.definition)
-        junction.send(&#39;Engine::ClearMaterials&#39;)
+        &#34;&#34;&#34;Deletes the material from aRTist.&#34;&#34;&#34;
+        junction.send(&#34;dict unset ::Materials::MatList &#34; + self.definition)
+        junction.send(&#34;Engine::ClearMaterials&#34;)
 
     def names(self, junction):
-        &#34;&#34;&#34;List the materials known to aRTist&#34;&#34;&#34;
-        list = junction.send(&#39;dict keys $::Materials::MatList&#39;)
+        &#34;&#34;&#34;Returns a list of all materials currently available in aRTist.&#34;&#34;&#34;
+        list = junction.send(&#34;dict keys $::Materials::MatList&#34;)
         return shlex.split(brace_to_quotes(list))
 
     def pick(self, junction, name):
-        &#34;&#34;&#34;Get an material from aRTist&#34;&#34;&#34;
+        &#34;&#34;&#34;Retrieves a material definition from aRTist.&#34;&#34;&#34;
         list = self.names(junction)
         if name in list:
-            mat = junction.send(&#39;dict get $::Materials::MatList &#39;+name)
+            mat = junction.send(&#34;dict get $::Materials::MatList &#34; + name)
             mat = shlex.split(brace_to_quotes(mat))
             mat = dict(zip(mat[::2], mat[1::2]))
             self._name = name
-            self.density = mat[&#39;density&#39;]
-            self.composition = mat[&#39;composition&#39;]
-            self.comment = &#39;&#39;
-            if &#39;comment&#39; in mat:
-                self.comment = mat[&#39;comment&#39;]
+            self.density = mat[&#34;density&#34;]
+            self.composition = mat[&#34;composition&#34;]
+            self.comment = &#34;&#34;
+            if &#34;comment&#34; in mat:
+                self.comment = mat[&#34;comment&#34;]
             return name
         else:
-            return &#39;&#39;</code></pre>
+            return &#34;&#34;</code></pre>
 </details>
-<div class="desc"><p>Define a material</p></div>
+<div class="desc"><p>Defines a material</p></div>
 <h3>Instance variables</h3>
 <dl>
-<dt id="artistlib.material.Material.definition"><code class="name">prop <span class="ident">definition</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def definition(self):
-    &#34;&#34;&#34;Return an entry for aRTist&#39;s material list&#34;&#34;&#34;
-    return self.name+&#39; {density &#39;+str(self.density)+&#39; composition {&#39;+str(self.composition)+&#39;} comment {&#39;+str(self.comment)+&#39;}}&#39;</code></pre>
-</details>
-<div class="desc"><p>Return an entry for aRTist's material list</p></div>
-</dd>
 <dt id="artistlib.material.Material.name"><code class="name">prop <span class="ident">name</span></code></dt>
 <dd>
 <details class="source">
@@ -157,10 +153,32 @@ def definition(self):
 </summary>
 <pre><code class="python">@property
 def name(self):
-    &#34;&#34;&#34;Getter for name&#34;&#34;&#34;
+    &#34;&#34;&#34;Returns the material name.&#34;&#34;&#34;
     return self._name</code></pre>
 </details>
-<div class="desc"><p>Getter for name</p></div>
+<div class="desc"><p>Returns the material name.</p></div>
+</dd>
+<dt id="artistlib.material.Material.definition"><code class="name">prop <span class="ident">definition</span></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def definition(self):
+    &#34;&#34;&#34;Returns a material entry in the format required by the aRTist material list.&#34;&#34;&#34;
+    return (
+        self.name
+        + &#34; {density &#34;
+        + str(self.density)
+        + &#34; composition {&#34;
+        + str(self.composition)
+        + &#34;} comment {&#34;
+        + str(self.comment)
+        + &#34;}}&#34;
+    )</code></pre>
+</details>
+<div class="desc"><p>Returns a material entry in the format required by the aRTist material list.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -174,11 +192,11 @@ def name(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add(self, junction):
-    &#34;&#34;&#34;Add/update this material in aRTist&#34;&#34;&#34;
-    junction.send(&#39;dict set ::Materials::MatList &#39;+self.definition)
-    junction.send(&#39;Engine::ClearMaterials&#39;)</code></pre>
+    &#34;&#34;&#34;Adds or updates the material in aRTist.&#34;&#34;&#34;
+    junction.send(&#34;dict set ::Materials::MatList &#34; + self.definition)
+    junction.send(&#34;Engine::ClearMaterials&#34;)</code></pre>
 </details>
-<div class="desc"><p>Add/update this material in aRTist</p></div>
+<div class="desc"><p>Adds or updates the material in aRTist.</p></div>
 </dd>
 <dt id="artistlib.material.Material.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self, junction)</span>
@@ -189,11 +207,11 @@ def name(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def delete(self, junction):
-    &#34;&#34;&#34;Delete this material in aRTist&#34;&#34;&#34;
-    junction.send(&#39;dict unset ::Materials::MatList &#39;+self.definition)
-    junction.send(&#39;Engine::ClearMaterials&#39;)</code></pre>
+    &#34;&#34;&#34;Deletes the material from aRTist.&#34;&#34;&#34;
+    junction.send(&#34;dict unset ::Materials::MatList &#34; + self.definition)
+    junction.send(&#34;Engine::ClearMaterials&#34;)</code></pre>
 </details>
-<div class="desc"><p>Delete this material in aRTist</p></div>
+<div class="desc"><p>Deletes the material from aRTist.</p></div>
 </dd>
 <dt id="artistlib.material.Material.names"><code class="name flex">
 <span>def <span class="ident">names</span></span>(<span>self, junction)</span>
@@ -204,11 +222,11 @@ def name(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def names(self, junction):
-    &#34;&#34;&#34;List the materials known to aRTist&#34;&#34;&#34;
-    list = junction.send(&#39;dict keys $::Materials::MatList&#39;)
+    &#34;&#34;&#34;Returns a list of all materials currently available in aRTist.&#34;&#34;&#34;
+    list = junction.send(&#34;dict keys $::Materials::MatList&#34;)
     return shlex.split(brace_to_quotes(list))</code></pre>
 </details>
-<div class="desc"><p>List the materials known to aRTist</p></div>
+<div class="desc"><p>Returns a list of all materials currently available in aRTist.</p></div>
 </dd>
 <dt id="artistlib.material.Material.pick"><code class="name flex">
 <span>def <span class="ident">pick</span></span>(<span>self, junction, name)</span>
@@ -219,23 +237,23 @@ def name(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pick(self, junction, name):
-    &#34;&#34;&#34;Get an material from aRTist&#34;&#34;&#34;
+    &#34;&#34;&#34;Retrieves a material definition from aRTist.&#34;&#34;&#34;
     list = self.names(junction)
     if name in list:
-        mat = junction.send(&#39;dict get $::Materials::MatList &#39;+name)
+        mat = junction.send(&#34;dict get $::Materials::MatList &#34; + name)
         mat = shlex.split(brace_to_quotes(mat))
         mat = dict(zip(mat[::2], mat[1::2]))
         self._name = name
-        self.density = mat[&#39;density&#39;]
-        self.composition = mat[&#39;composition&#39;]
-        self.comment = &#39;&#39;
-        if &#39;comment&#39; in mat:
-            self.comment = mat[&#39;comment&#39;]
+        self.density = mat[&#34;density&#34;]
+        self.composition = mat[&#34;composition&#34;]
+        self.comment = &#34;&#34;
+        if &#34;comment&#34; in mat:
+            self.comment = mat[&#34;comment&#34;]
         return name
     else:
-        return &#39;&#39;</code></pre>
+        return &#34;&#34;</code></pre>
 </details>
-<div class="desc"><p>Get an material from aRTist</p></div>
+<div class="desc"><p>Retrieves a material definition from aRTist.</p></div>
 </dd>
 </dl>
 </dd>
@@ -268,11 +286,11 @@ def name(self):
 <h4><code><a title="artistlib.material.Material" href="#artistlib.material.Material">Material</a></code></h4>
 <ul class="two-column">
 <li><code><a title="artistlib.material.Material.add" href="#artistlib.material.Material.add">add</a></code></li>
-<li><code><a title="artistlib.material.Material.definition" href="#artistlib.material.Material.definition">definition</a></code></li>
 <li><code><a title="artistlib.material.Material.delete" href="#artistlib.material.Material.delete">delete</a></code></li>
-<li><code><a title="artistlib.material.Material.name" href="#artistlib.material.Material.name">name</a></code></li>
 <li><code><a title="artistlib.material.Material.names" href="#artistlib.material.Material.names">names</a></code></li>
 <li><code><a title="artistlib.material.Material.pick" href="#artistlib.material.Material.pick">pick</a></code></li>
+<li><code><a title="artistlib.material.Material.name" href="#artistlib.material.Material.name">name</a></code></li>
+<li><code><a title="artistlib.material.Material.definition" href="#artistlib.material.Material.definition">definition</a></code></li>
 </ul>
 </li>
 </ul>

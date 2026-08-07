@@ -1,0 +1,1018 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>artistlib.wrapper.artistwrapper_all API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:35%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/aRTist-PythonLib/favicon.ico">
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>artistlib.wrapper.artistwrapper_all</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll"><code class="flex name class">
+<span>class <span class="ident">ArtistAll</span></span>
+<span>(</span><span>path_specific_version=None,<br>start_UI: bool = True,<br>batch: bool = None,<br>multiple_starts=False,<br>host='localhost',<br>port=3658,<br>bufferSize=1024,<br>timeout=5)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ArtistAll(ArtistSend):
+    &#34;&#34;&#34;A wrapper class that provides access to all available classes and offers autocomplete support.&#34;&#34;&#34;
+
+    def __init__(
+        self,
+        path_specific_version=None,
+        start_UI: bool = True,
+        batch: bool = None,
+        multiple_starts=False,
+        host=&#34;localhost&#34;,
+        port=3658,
+        bufferSize=1024,
+        timeout=5,
+    ):
+
+        self.start = start_artist(
+            path_specific_version=path_specific_version,
+            start_UI=start_UI,
+            port=port,
+            multiple_starts=multiple_starts,
+        )
+        super().__init__(
+            batch=batch, host=host, port=port, bufferSize=bufferSize, timeout=timeout
+        )
+        self.project = ArtistProject()
+        self.detector = ArtistDetector()
+        self.setup = ArtistSetup()
+        self.source = ArtistSource()
+
+    # @wraps(ArtistProject.load_save_project,assigned=(&#34;__doc__&#34;,),updated=())
+    def load_save_project(
+        self, project_path: str, save_img_to: str, img_name: str
+    ) -&gt; str:
+        return self.project.load_save_project(project_path, save_img_to, img_name)
+
+    def load_project(self, path_to_project: str) -&gt; str:
+        return self.project.load_project(path_to_project)
+
+    def run_project(self) -&gt; str:
+        return self.project.run_project()
+
+    def save_img_project(self, path_save_img: str, img_name: str) -&gt; str:
+        return self.project.save_img_project(path_save_img, img_name)
+
+    def get_part_global(self, ID: int) -&gt; str:
+        return self.setup.get_part_global(ID)
+
+    def part_position_global(
+        self, ID: int, x: float = None, y: float = None, z: float = None
+    ) -&gt; str:
+        return self.setup.part_position_global(ID, x, y, z)
+
+    def get_part_ref(self, ID: int) -&gt; tuple[float, float, float]:
+        return self.setup.get_part_ref(ID)
+
+    def part_position_ref(
+        self, ID: int, x: float = None, y: float = None, z: float = None
+    ) -&gt; str:
+        return self.setup.part_position_ref(ID, x, y, z)
+
+    def get_part_orientation(self, ID: int) -&gt; tuple[float, float, float]:
+        return self.setup.get_part_orientation(ID)
+
+    def part_orientation(
+        self, ID: int, angleX: float = None, angleY: float = None, angleZ: float = None
+    ) -&gt; str:
+        return self.setup.part_orientation(ID, angleX, angleY, angleZ)
+
+    def part_rotate(
+        self,
+        ID: int,
+        system: str,
+        alpha: float,
+        axisX: float,
+        axisY: float,
+        axisZ: float,
+    ) -&gt; str:
+        return self.setup.part_rotate(ID, system, alpha, axisX, axisY, axisZ)
+
+    def part_rotate_center(
+        self,
+        ID: int,
+        alpha: float,
+        x: float,
+        y: float,
+        z: float,
+        Cx: float,
+        Cy: float,
+        Cz: float,
+    ) -&gt; str:
+        return self.setup.part_rotate_center(ID, alpha, x, y, z, Cx, Cy, Cz)
+
+    def part_material(self, ID: int, Material: str) -&gt; str:
+        return self.setup.part_material(ID, Material)
+
+    def get_detector(self) -&gt; tuple[float, float, float]:
+        return self.setup.get_detector()
+
+    def get_source(self) -&gt; tuple[float, float, float]:
+        return self.setup.get_source()
+
+    def source_position(self, x: float = None, y: float = None, z: float = None) -&gt; str:
+        return self.setup.source_position(x, y, z)
+
+    def detector_position(
+        self, x: float = None, y: float = None, z: float = None
+    ) -&gt; str:
+        return self.setup.detector_position(x, y, z)
+
+    def get_source_orientation(self) -&gt; tuple[float, float, float]:
+        return self.setup.get_source_orientation()
+
+    def source_orientation(
+        self, x: float = None, y: float = None, z: float = None
+    ) -&gt; str:
+        return self.setup.source_orientation(x, y, z)
+
+    def get_detector_orientation(self):
+        return self.setup.get_detector_orientation()
+
+    def detector_orientation(self, x: float = None, y: float = None, z: float = None):
+        return self.setup.detector_orientation(x, y, z)
+
+    def detector_geo(
+        self,
+        size: float = None,
+        pixel: float = None,
+        res: float = None,
+        sizeX: float = None,
+        sizeY: float = None,
+        pixelX: float = None,
+        pixelY: float = None,
+        resX: float = None,
+        resY: float = None,
+    ):
+        return self.detector.detector_geo(
+            size, pixel, res, sizeX, sizeY, pixelX, pixelY, resX, resY
+        )
+
+    def load_spectra(self, path: str):
+        return self.source.load_spectra(path)
+
+    def set_spectra(
+        self,
+        Tube: str = None,
+        V: float = None,
+        TMaterial: str = None,
+        TAngle: float = None,
+        TThick: float = None,
+        FMaterial: str = None,
+        FThick: float = None,
+        F2Material: str = None,
+        F2Thick: float = None,
+        F3Material: str = None,
+        F3Thick: float = None,
+        WMaterial: str = None,
+        WThick: float = None,
+        Angle: float = None,
+        Transmission: float = None,
+        res: float = None,
+    ):
+        return self.source.set_spectra(
+            Tube,
+            V,
+            TMaterial,
+            TAngle,
+            TThick,
+            FMaterial,
+            FThick,
+            F2Material,
+            F2Thick,
+            F3Material,
+            F3Thick,
+            WMaterial,
+            WThick,
+            Angle,
+            Transmission,
+            res,
+        )
+
+    def cal_spectra(
+        self, spec_name: str = None, dest_path: str = None, reduce_number_bins=False
+    ):
+        return self.source.cal_spectra(spec_name, dest_path, reduce_number_bins)
+
+    def load_tube(self, path_dict: str, spec_name: str, path_dest: str):
+        return self.source.load_tube(path_dict, spec_name, path_dest)
+
+    def set_exposure(self, exposure: float):
+        return self.source.set_exposure(exposure)
+
+    def delete_part(self, ID: int):
+        return self.setup.delete_part(ID)
+
+    def clear_project(self):
+        return self.project.clear_project()
+
+    def save_project(self):
+        return self.project.save_project()
+
+    def get_part_material(self, ID: int):
+        return self.setup.get_part_material(ID)
+
+    def get_detector_pixel_count(self):
+        return self.detector.get_detector_pixel_count()
+
+    def get_detector_res(self):
+        return self.detector.get_detector_res()
+
+    def get_detector_size(self):
+        return self.detector.get_detector_size()
+
+    def get_size(self, ID: int):
+        return self.setup.get_size(ID)
+
+    def set_size(self, ID: int, x: float, y: float, z: float):
+        return self.setup.set_size(ID, x, y, z)
+
+    def get_spectra(self):
+        return self.source.get_spectra()
+
+    def get_spectra_one_value(self, spectrum_parameter: str):
+        return self.source.get_spectra_one_value(spectrum_parameter)
+
+    def get_exposure(self):
+        return self.source.get_exposure()
+
+    def set_source_type(self, source_type=&#34;Mono&#34;):
+        return self.source.set_source_type(source_type)
+
+    def set_Flat_Field_Correction(self, apply_FFC=False):
+        return self.detector.set_Flat_Field_Correction(apply_FFC)
+
+    def set_visibility(self, ID: int, visible: bool = True):
+        return self.setup.set_visibility(ID, visible)</code></pre>
+</details>
+<div class="desc"><p>A wrapper class that provides access to all available classes and offers autocomplete support.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="artistlib.wrapper.artist_send.ArtistSend" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend">ArtistSend</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.load_save_project"><code class="name flex">
+<span>def <span class="ident">load_save_project</span></span>(<span>self, project_path: str, save_img_to: str, img_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_save_project(
+    self, project_path: str, save_img_to: str, img_name: str
+) -&gt; str:
+    return self.project.load_save_project(project_path, save_img_to, img_name)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.load_project"><code class="name flex">
+<span>def <span class="ident">load_project</span></span>(<span>self, path_to_project: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_project(self, path_to_project: str) -&gt; str:
+    return self.project.load_project(path_to_project)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.run_project"><code class="name flex">
+<span>def <span class="ident">run_project</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_project(self) -&gt; str:
+    return self.project.run_project()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.save_img_project"><code class="name flex">
+<span>def <span class="ident">save_img_project</span></span>(<span>self, path_save_img: str, img_name: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_img_project(self, path_save_img: str, img_name: str) -&gt; str:
+    return self.project.save_img_project(path_save_img, img_name)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_global"><code class="name flex">
+<span>def <span class="ident">get_part_global</span></span>(<span>self, ID: int) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_part_global(self, ID: int) -&gt; str:
+    return self.setup.get_part_global(ID)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.part_position_global"><code class="name flex">
+<span>def <span class="ident">part_position_global</span></span>(<span>self, ID: int, x: float = None, y: float = None, z: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def part_position_global(
+    self, ID: int, x: float = None, y: float = None, z: float = None
+) -&gt; str:
+    return self.setup.part_position_global(ID, x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_ref"><code class="name flex">
+<span>def <span class="ident">get_part_ref</span></span>(<span>self, ID: int) ‑> tuple[float, float, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_part_ref(self, ID: int) -&gt; tuple[float, float, float]:
+    return self.setup.get_part_ref(ID)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.part_position_ref"><code class="name flex">
+<span>def <span class="ident">part_position_ref</span></span>(<span>self, ID: int, x: float = None, y: float = None, z: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def part_position_ref(
+    self, ID: int, x: float = None, y: float = None, z: float = None
+) -&gt; str:
+    return self.setup.part_position_ref(ID, x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_orientation"><code class="name flex">
+<span>def <span class="ident">get_part_orientation</span></span>(<span>self, ID: int) ‑> tuple[float, float, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_part_orientation(self, ID: int) -&gt; tuple[float, float, float]:
+    return self.setup.get_part_orientation(ID)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.part_orientation"><code class="name flex">
+<span>def <span class="ident">part_orientation</span></span>(<span>self, ID: int, angleX: float = None, angleY: float = None, angleZ: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def part_orientation(
+    self, ID: int, angleX: float = None, angleY: float = None, angleZ: float = None
+) -&gt; str:
+    return self.setup.part_orientation(ID, angleX, angleY, angleZ)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.part_rotate"><code class="name flex">
+<span>def <span class="ident">part_rotate</span></span>(<span>self, ID: int, system: str, alpha: float, axisX: float, axisY: float, axisZ: float) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def part_rotate(
+    self,
+    ID: int,
+    system: str,
+    alpha: float,
+    axisX: float,
+    axisY: float,
+    axisZ: float,
+) -&gt; str:
+    return self.setup.part_rotate(ID, system, alpha, axisX, axisY, axisZ)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.part_rotate_center"><code class="name flex">
+<span>def <span class="ident">part_rotate_center</span></span>(<span>self, ID: int, alpha: float, x: float, y: float, z: float, Cx: float, Cy: float, Cz: float) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def part_rotate_center(
+    self,
+    ID: int,
+    alpha: float,
+    x: float,
+    y: float,
+    z: float,
+    Cx: float,
+    Cy: float,
+    Cz: float,
+) -&gt; str:
+    return self.setup.part_rotate_center(ID, alpha, x, y, z, Cx, Cy, Cz)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.part_material"><code class="name flex">
+<span>def <span class="ident">part_material</span></span>(<span>self, ID: int, Material: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def part_material(self, ID: int, Material: str) -&gt; str:
+    return self.setup.part_material(ID, Material)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector"><code class="name flex">
+<span>def <span class="ident">get_detector</span></span>(<span>self) ‑> tuple[float, float, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_detector(self) -&gt; tuple[float, float, float]:
+    return self.setup.get_detector()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_source"><code class="name flex">
+<span>def <span class="ident">get_source</span></span>(<span>self) ‑> tuple[float, float, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_source(self) -&gt; tuple[float, float, float]:
+    return self.setup.get_source()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.source_position"><code class="name flex">
+<span>def <span class="ident">source_position</span></span>(<span>self, x: float = None, y: float = None, z: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def source_position(self, x: float = None, y: float = None, z: float = None) -&gt; str:
+    return self.setup.source_position(x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.detector_position"><code class="name flex">
+<span>def <span class="ident">detector_position</span></span>(<span>self, x: float = None, y: float = None, z: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def detector_position(
+    self, x: float = None, y: float = None, z: float = None
+) -&gt; str:
+    return self.setup.detector_position(x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_source_orientation"><code class="name flex">
+<span>def <span class="ident">get_source_orientation</span></span>(<span>self) ‑> tuple[float, float, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_source_orientation(self) -&gt; tuple[float, float, float]:
+    return self.setup.get_source_orientation()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.source_orientation"><code class="name flex">
+<span>def <span class="ident">source_orientation</span></span>(<span>self, x: float = None, y: float = None, z: float = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def source_orientation(
+    self, x: float = None, y: float = None, z: float = None
+) -&gt; str:
+    return self.setup.source_orientation(x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_orientation"><code class="name flex">
+<span>def <span class="ident">get_detector_orientation</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_detector_orientation(self):
+    return self.setup.get_detector_orientation()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.detector_orientation"><code class="name flex">
+<span>def <span class="ident">detector_orientation</span></span>(<span>self, x: float = None, y: float = None, z: float = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def detector_orientation(self, x: float = None, y: float = None, z: float = None):
+    return self.setup.detector_orientation(x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.detector_geo"><code class="name flex">
+<span>def <span class="ident">detector_geo</span></span>(<span>self,<br>size: float = None,<br>pixel: float = None,<br>res: float = None,<br>sizeX: float = None,<br>sizeY: float = None,<br>pixelX: float = None,<br>pixelY: float = None,<br>resX: float = None,<br>resY: float = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def detector_geo(
+    self,
+    size: float = None,
+    pixel: float = None,
+    res: float = None,
+    sizeX: float = None,
+    sizeY: float = None,
+    pixelX: float = None,
+    pixelY: float = None,
+    resX: float = None,
+    resY: float = None,
+):
+    return self.detector.detector_geo(
+        size, pixel, res, sizeX, sizeY, pixelX, pixelY, resX, resY
+    )</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.load_spectra"><code class="name flex">
+<span>def <span class="ident">load_spectra</span></span>(<span>self, path: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_spectra(self, path: str):
+    return self.source.load_spectra(path)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.set_spectra"><code class="name flex">
+<span>def <span class="ident">set_spectra</span></span>(<span>self,<br>Tube: str = None,<br>V: float = None,<br>TMaterial: str = None,<br>TAngle: float = None,<br>TThick: float = None,<br>FMaterial: str = None,<br>FThick: float = None,<br>F2Material: str = None,<br>F2Thick: float = None,<br>F3Material: str = None,<br>F3Thick: float = None,<br>WMaterial: str = None,<br>WThick: float = None,<br>Angle: float = None,<br>Transmission: float = None,<br>res: float = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_spectra(
+    self,
+    Tube: str = None,
+    V: float = None,
+    TMaterial: str = None,
+    TAngle: float = None,
+    TThick: float = None,
+    FMaterial: str = None,
+    FThick: float = None,
+    F2Material: str = None,
+    F2Thick: float = None,
+    F3Material: str = None,
+    F3Thick: float = None,
+    WMaterial: str = None,
+    WThick: float = None,
+    Angle: float = None,
+    Transmission: float = None,
+    res: float = None,
+):
+    return self.source.set_spectra(
+        Tube,
+        V,
+        TMaterial,
+        TAngle,
+        TThick,
+        FMaterial,
+        FThick,
+        F2Material,
+        F2Thick,
+        F3Material,
+        F3Thick,
+        WMaterial,
+        WThick,
+        Angle,
+        Transmission,
+        res,
+    )</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.cal_spectra"><code class="name flex">
+<span>def <span class="ident">cal_spectra</span></span>(<span>self, spec_name: str = None, dest_path: str = None, reduce_number_bins=False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cal_spectra(
+    self, spec_name: str = None, dest_path: str = None, reduce_number_bins=False
+):
+    return self.source.cal_spectra(spec_name, dest_path, reduce_number_bins)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.load_tube"><code class="name flex">
+<span>def <span class="ident">load_tube</span></span>(<span>self, path_dict: str, spec_name: str, path_dest: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_tube(self, path_dict: str, spec_name: str, path_dest: str):
+    return self.source.load_tube(path_dict, spec_name, path_dest)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.set_exposure"><code class="name flex">
+<span>def <span class="ident">set_exposure</span></span>(<span>self, exposure: float)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_exposure(self, exposure: float):
+    return self.source.set_exposure(exposure)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.delete_part"><code class="name flex">
+<span>def <span class="ident">delete_part</span></span>(<span>self, ID: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_part(self, ID: int):
+    return self.setup.delete_part(ID)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.clear_project"><code class="name flex">
+<span>def <span class="ident">clear_project</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear_project(self):
+    return self.project.clear_project()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.save_project"><code class="name flex">
+<span>def <span class="ident">save_project</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_project(self):
+    return self.project.save_project()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_material"><code class="name flex">
+<span>def <span class="ident">get_part_material</span></span>(<span>self, ID: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_part_material(self, ID: int):
+    return self.setup.get_part_material(ID)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_pixel_count"><code class="name flex">
+<span>def <span class="ident">get_detector_pixel_count</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_detector_pixel_count(self):
+    return self.detector.get_detector_pixel_count()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_res"><code class="name flex">
+<span>def <span class="ident">get_detector_res</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_detector_res(self):
+    return self.detector.get_detector_res()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_size"><code class="name flex">
+<span>def <span class="ident">get_detector_size</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_detector_size(self):
+    return self.detector.get_detector_size()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_size"><code class="name flex">
+<span>def <span class="ident">get_size</span></span>(<span>self, ID: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_size(self, ID: int):
+    return self.setup.get_size(ID)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.set_size"><code class="name flex">
+<span>def <span class="ident">set_size</span></span>(<span>self, ID: int, x: float, y: float, z: float)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_size(self, ID: int, x: float, y: float, z: float):
+    return self.setup.set_size(ID, x, y, z)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_spectra"><code class="name flex">
+<span>def <span class="ident">get_spectra</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_spectra(self):
+    return self.source.get_spectra()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_spectra_one_value"><code class="name flex">
+<span>def <span class="ident">get_spectra_one_value</span></span>(<span>self, spectrum_parameter: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_spectra_one_value(self, spectrum_parameter: str):
+    return self.source.get_spectra_one_value(spectrum_parameter)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.get_exposure"><code class="name flex">
+<span>def <span class="ident">get_exposure</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_exposure(self):
+    return self.source.get_exposure()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.set_source_type"><code class="name flex">
+<span>def <span class="ident">set_source_type</span></span>(<span>self, source_type='Mono')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_source_type(self, source_type=&#34;Mono&#34;):
+    return self.source.set_source_type(source_type)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.set_Flat_Field_Correction"><code class="name flex">
+<span>def <span class="ident">set_Flat_Field_Correction</span></span>(<span>self, apply_FFC=False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_Flat_Field_Correction(self, apply_FFC=False):
+    return self.detector.set_Flat_Field_Correction(apply_FFC)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.artistwrapper_all.ArtistAll.set_visibility"><code class="name flex">
+<span>def <span class="ident">set_visibility</span></span>(<span>self, ID: int, visible: bool = True)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_visibility(self, ID: int, visible: bool = True):
+    return self.setup.set_visibility(ID, visible)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="artistlib.wrapper.artist_send.ArtistSend" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend">ArtistSend</a></b></code>:
+<ul class="hlist">
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.apply" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.apply">apply</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.load_file" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.load_file">load_file</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.send" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.send">send</a></code></li>
+<li><code><a title="artistlib.wrapper.artist_send.ArtistSend.set_global_batch" href="artist_send.html#artistlib.wrapper.artist_send.ArtistSend.set_global_batch">set_global_batch</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/aRTist-PythonLib">
+<img src="artistlib.png" alt=""> artistlib
+</a>
+</header>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="artistlib.wrapper" href="index.html">artistlib.wrapper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll" href="#artistlib.wrapper.artistwrapper_all.ArtistAll">ArtistAll</a></code></h4>
+<ul class="">
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.load_save_project" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.load_save_project">load_save_project</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.load_project" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.load_project">load_project</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.run_project" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.run_project">run_project</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.save_img_project" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.save_img_project">save_img_project</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_global" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_global">get_part_global</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.part_position_global" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.part_position_global">part_position_global</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_ref" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_ref">get_part_ref</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.part_position_ref" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.part_position_ref">part_position_ref</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_orientation" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_orientation">get_part_orientation</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.part_orientation" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.part_orientation">part_orientation</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.part_rotate" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.part_rotate">part_rotate</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.part_rotate_center" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.part_rotate_center">part_rotate_center</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.part_material" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.part_material">part_material</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector">get_detector</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_source" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_source">get_source</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.source_position" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.source_position">source_position</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.detector_position" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.detector_position">detector_position</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_source_orientation" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_source_orientation">get_source_orientation</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.source_orientation" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.source_orientation">source_orientation</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_orientation" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_orientation">get_detector_orientation</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.detector_orientation" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.detector_orientation">detector_orientation</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.detector_geo" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.detector_geo">detector_geo</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.load_spectra" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.load_spectra">load_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.set_spectra" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.set_spectra">set_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.cal_spectra" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.cal_spectra">cal_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.load_tube" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.load_tube">load_tube</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.set_exposure" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.set_exposure">set_exposure</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.delete_part" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.delete_part">delete_part</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.clear_project" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.clear_project">clear_project</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.save_project" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.save_project">save_project</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_material" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_part_material">get_part_material</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_pixel_count" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_pixel_count">get_detector_pixel_count</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_res" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_res">get_detector_res</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_size" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_detector_size">get_detector_size</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_size" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_size">get_size</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.set_size" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.set_size">set_size</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_spectra" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_spectra">get_spectra</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_spectra_one_value" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_spectra_one_value">get_spectra_one_value</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.get_exposure" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.get_exposure">get_exposure</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.set_source_type" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.set_source_type">set_source_type</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.set_Flat_Field_Correction" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.set_Flat_Field_Correction">set_Flat_Field_Correction</a></code></li>
+<li><code><a title="artistlib.wrapper.artistwrapper_all.ArtistAll.set_visibility" href="#artistlib.wrapper.artistwrapper_all.ArtistAll.set_visibility">set_visibility</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

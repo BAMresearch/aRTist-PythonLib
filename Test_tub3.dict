@@ -1,0 +1,28 @@
+Test_tub3 {
+	
+	Filter3Material	void
+	computed	1
+	Transmission	0
+	Voltage 50
+	TargetThickness	1
+	WindowThickness	8
+	ReferenceActivity	1
+	Resolution	1.0
+	Filter3Thickness	0
+	ActivityUnit	GBq
+	AngleIn	45
+	WindowMaterial	Fe
+	MaxCurrent	100
+	Name	Test_tub3
+	ExposureDate	{Mon Oct 20 11:35:00 CEST 2014}
+	FilterThickness	0
+	MaxPower	{}
+	Exposure	1.
+	HalfLife	0
+	Filter2Thickness	0
+	ReferenceDate	{Mon Oct 20 11:35:00 CEST 2014}
+	FilterMaterial	void
+	TargetAngle	45
+	TargetMaterial	W
+	Filter2Material	void
+}

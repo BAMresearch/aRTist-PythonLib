@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>artistlib.wrapper.part API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:35%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/aRTist-PythonLib/favicon.ico">
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>artistlib.wrapper.part</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="artistlib.wrapper.part.Project"><code class="flex name class">
+<span>class <span class="ident">Project</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Project:
+    &#34;&#34;&#34;This class manages project parts by creating corresponding Python objects and synchronizing them with the parts in aRTist.&#34;&#34;&#34;
+
+    def __init__(self):
+        self.A = ArtistAll()
+        self.matches = None
+
+        self.parts_instances = []
+        self._source = Source(self)
+        self._detector = Detector(self)
+
+    def in_parts(self, path: str) -&gt; list[Part]:
+        &#34;&#34;&#34;Creates Python objects from the parts currently available in aRTist.&#34;&#34;&#34;
+        # wenn es ein neues Project ist (.aRTist) File dann werden alle ID und token ersetzt
+        if path.endswith(&#34;.aRTist&#34;):
+            self.matches = None
+            # for part in Part._instances:
+            for part in self.parts_instances:
+                part._destroyed = True
+            # Part._instances.clear()
+            self.parts_instances.clear()
+        self.A.load_project(path)
+        part_list = self._sync_parts()
+        return part_list
+
+    def _get_state(self) -&gt; list[str]:
+        &#34;&#34;&#34;Retrieves the current part IDs and tokens from aRTist.&#34;&#34;&#34;
+        ans = self.A.send(&#34;::PartList::Get&#34;)
+        pattern = r&#34;(\S+)\s+\{Name(?:[^\{\}]|\{[^\}]*\})*?\s+Token\s+(\S+)&#34;
+        # pattern=r&#34;(\S+)\s+\{Name\s+.*?Token\s+(\S+)&#34;
+        return re.findall(pattern, ans)
+
+    def _sync_parts(self) -&gt; list[Part]:
+        &#34;&#34;&#34;Creates Python objects for parts that do not yet have corresponding objects.&#34;&#34;&#34;
+        new_matches = self._get_state()
+        matches = self.matches
+        part_list = []
+        if matches is None:
+            for ID, token in new_matches:
+                if ID == &#34;D&#34; or ID == &#34;S&#34;:
+                    continue
+                p = Part(self, ID, token)
+                part_list.append(p)
+
+            self.matches = new_matches
+            return part_list
+
+        token_list_matches = {t[1] for t in matches}
+
+        for ID, token in new_matches:
+            if ID == &#34;D&#34; or ID == &#34;S&#34;:
+                continue
+
+            if token not in token_list_matches:
+                p = Part(self, ID, token)
+                part_list.append(p)
+
+        self.matches = new_matches
+        return part_list
+
+    def _update_state(self) -&gt; None:
+        &#34;&#34;&#34;Updates part IDs and tokens.&#34;&#34;&#34;
+        new_matches = self._get_state()
+        matches = self.matches
+
+        if matches is None:
+            self.matches = new_matches
+            return
+
+        if set(new_matches) != set(matches):
+            self._sync_parts()
+
+            # löscht die alten Parts anhand der token
+
+            old_token = {t[1] for t in matches}
+            new_token = {t[1] for t in new_matches}
+            removed_tokens = old_token - new_token
+
+            # for part in list(Part._instances):
+            for part in list(self.parts_instances):
+                if part.token in removed_tokens:
+                    part._destroyed = True
+                    self.parts_instances.remove(part)
+
+    def clear_project(self) -&gt; list[Part]:
+        &#34;&#34;&#34;Clears the virtual scene.&#34;&#34;&#34;
+        self.A.clear_project()
+        for part in self.parts_instances:
+            part._destroyed = True
+            # Part._instances.clear()
+        self.parts_instances.clear()
+        return self._sync_parts()
+
+    def update_project(self) -&gt; None:
+        &#34;&#34;&#34;This function updates the state of all parts in this project.&#34;&#34;&#34;
+        for part in list(self.parts_instances):
+            part.update_part()
+
+    def source(self) -&gt; Source:
+        return self._source
+
+    def detector(self) -&gt; Detector:
+        return self._detector</code></pre>
+</details>
+<div class="desc"><p>This class manages project parts by creating corresponding Python objects and synchronizing them with the parts in aRTist.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="artistlib.wrapper.part.Project.in_parts"><code class="name flex">
+<span>def <span class="ident">in_parts</span></span>(<span>self, path: str) ‑> list[<a title="artistlib.wrapper.part.Part" href="#artistlib.wrapper.part.Part">Part</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def in_parts(self, path: str) -&gt; list[Part]:
+    &#34;&#34;&#34;Creates Python objects from the parts currently available in aRTist.&#34;&#34;&#34;
+    # wenn es ein neues Project ist (.aRTist) File dann werden alle ID und token ersetzt
+    if path.endswith(&#34;.aRTist&#34;):
+        self.matches = None
+        # for part in Part._instances:
+        for part in self.parts_instances:
+            part._destroyed = True
+        # Part._instances.clear()
+        self.parts_instances.clear()
+    self.A.load_project(path)
+    part_list = self._sync_parts()
+    return part_list</code></pre>
+</details>
+<div class="desc"><p>Creates Python objects from the parts currently available in aRTist.</p></div>
+</dd>
+<dt id="artistlib.wrapper.part.Project.clear_project"><code class="name flex">
+<span>def <span class="ident">clear_project</span></span>(<span>self) ‑> list[<a title="artistlib.wrapper.part.Part" href="#artistlib.wrapper.part.Part">Part</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear_project(self) -&gt; list[Part]:
+    &#34;&#34;&#34;Clears the virtual scene.&#34;&#34;&#34;
+    self.A.clear_project()
+    for part in self.parts_instances:
+        part._destroyed = True
+        # Part._instances.clear()
+    self.parts_instances.clear()
+    return self._sync_parts()</code></pre>
+</details>
+<div class="desc"><p>Clears the virtual scene.</p></div>
+</dd>
+<dt id="artistlib.wrapper.part.Project.update_project"><code class="name flex">
+<span>def <span class="ident">update_project</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_project(self) -&gt; None:
+    &#34;&#34;&#34;This function updates the state of all parts in this project.&#34;&#34;&#34;
+    for part in list(self.parts_instances):
+        part.update_part()</code></pre>
+</details>
+<div class="desc"><p>This function updates the state of all parts in this project.</p></div>
+</dd>
+<dt id="artistlib.wrapper.part.Project.source"><code class="name flex">
+<span>def <span class="ident">source</span></span>(<span>self) ‑> <a title="artistlib.wrapper.part.Source" href="#artistlib.wrapper.part.Source">Source</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def source(self) -&gt; Source:
+    return self._source</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="artistlib.wrapper.part.Project.detector"><code class="name flex">
+<span>def <span class="ident">detector</span></span>(<span>self) ‑> <a title="artistlib.wrapper.part.Detector" href="#artistlib.wrapper.part.Detector">Detector</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def detector(self) -&gt; Detector:
+    return self._detector</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="artistlib.wrapper.part.Part"><code class="flex name class">
+<span>class <span class="ident">Part</span></span>
+<span>(</span><span>project_obj, ID, token)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Part:
+    &#34;&#34;&#34;This class creates a Python object based on the configuration in Artist.&#34;&#34;&#34;
+
+    def __init__(self, project_obj, ID, token):
+        self._destroyed = False
+        self.pro = project_obj
+        self.pro.parts_instances.append(self)
+
+        self.ID = ID
+        self.token = token
+        self.x = None
+        self.y = None
+        self.z = None
+        self.x_ref = None
+        self.y_ref = None
+        self.z_ref = None
+        self.angleX = None
+        self.angleY = None
+        self.angleZ = None
+        self.material = None
+
+        self._get_artist_values()
+        self._old_part = {}
+        self._sync_old()
+
+    def update_part(self) -&gt; str:
+        &#34;&#34;&#34;Applies modifications to Artist.&#34;&#34;&#34;
+        ans = &#34;&#34;
+        self.pro._update_state()
+
+        if (self.x, self.y, self.z) != (
+            self._old_part[&#34;x&#34;],
+            self._old_part[&#34;y&#34;],
+            self._old_part[&#34;z&#34;],
+        ):
+            ans += self.pro.A.part_position_global(int(self.ID), self.x, self.y, self.z)
+
+        if (self.angleX, self.angleY, self.angleZ) != (
+            self._old_part[&#34;angleX&#34;],
+            self._old_part[&#34;angleY&#34;],
+            self._old_part[&#34;angleZ&#34;],
+        ):
+            ans += self.pro.A.part_orientation(
+                int(self.ID), self.angleX, self.angleY, self.angleZ
+            )
+
+        if (self.x_ref, self.y_ref, self.z_ref) != (
+            self._old_part[&#34;x_ref&#34;],
+            self._old_part[&#34;y_ref&#34;],
+            self._old_part[&#34;z_ref&#34;],
+        ):
+            ans += self.pro.A.part_position_ref(
+                int(self.ID), self.x_ref, self.y_ref, self.z_ref
+            )
+
+        if self.material != self._old_part[&#34;material&#34;]:
+            ans += self.pro.A.part_material(int(self.ID), self.material)
+
+        self._get_artist_values()
+        self._sync_old()
+        return ans
+
+    def delete_part(self) -&gt; str:
+        &#34;&#34;&#34;Removes the specified part from Artist.&#34;&#34;&#34;
+        if self._destroyed:
+            raise ReferenceError(&#34;Part already destroyed&#34;)
+
+        self.pro._update_state()
+        ans = self.pro.A.delete_part(int(self.ID))
+        self.pro._update_state()
+        self._destroyed = True
+        return ans
+
+    def _sync_old(self) -&gt; None:
+        self._old_part = {
+            &#34;x&#34;: self.x,
+            &#34;y&#34;: self.y,
+            &#34;z&#34;: self.z,
+            &#34;x_ref&#34;: self.x_ref,
+            &#34;y_ref&#34;: self.y_ref,
+            &#34;z_ref&#34;: self.z_ref,
+            &#34;angleX&#34;: self.angleX,
+            &#34;angleY&#34;: self.angleY,
+            &#34;angleZ&#34;: self.angleZ,
+            &#34;material&#34;: self.material,
+        }
+
+    def _get_artist_values(self) -&gt; None:
+        self.x, self.y, self.z = self.pro.A.get_part_global(int(self.ID))
+        self.angleX, self.angleY, self.angleZ = self.pro.A.get_part_orientation(
+            int(self.ID)
+        )
+        self.x_ref, self.y_ref, self.z_ref = self.pro.A.get_part_ref(int(self.ID))
+        self.material = self.pro.A.get_part_material(int(self.ID))
+
+    def __getattribute__(self, name):
+        destroyed = object.__getattribute__(self, &#34;_destroyed&#34;)
+
+        if destroyed and name not in {
+            &#34;_destroyed&#34;,
+            &#34;__class__&#34;,
+            &#34;__repr__&#34;,
+            &#34;__str__&#34;,
+        }:
+            raise ReferenceError(&#34;Object was destroyed&#34;)
+
+        return object.__getattribute__(self, name)
+
+    def __setattr__(self, name, value):
+        if hasattr(self, &#34;_destroyed&#34;) and self._destroyed and name != &#34;_destroyed&#34;:
+            raise ReferenceError(&#34;Object was destroyed&#34;)
+
+        object.__setattr__(self, name, value)</code></pre>
+</details>
+<div class="desc"><p>This class creates a Python object based on the configuration in Artist.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="artistlib.wrapper.part.Part.update_part"><code class="name flex">
+<span>def <span class="ident">update_part</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_part(self) -&gt; str:
+    &#34;&#34;&#34;Applies modifications to Artist.&#34;&#34;&#34;
+    ans = &#34;&#34;
+    self.pro._update_state()
+
+    if (self.x, self.y, self.z) != (
+        self._old_part[&#34;x&#34;],
+        self._old_part[&#34;y&#34;],
+        self._old_part[&#34;z&#34;],
+    ):
+        ans += self.pro.A.part_position_global(int(self.ID), self.x, self.y, self.z)
+
+    if (self.angleX, self.angleY, self.angleZ) != (
+        self._old_part[&#34;angleX&#34;],
+        self._old_part[&#34;angleY&#34;],
+        self._old_part[&#34;angleZ&#34;],
+    ):
+        ans += self.pro.A.part_orientation(
+            int(self.ID), self.angleX, self.angleY, self.angleZ
+        )
+
+    if (self.x_ref, self.y_ref, self.z_ref) != (
+        self._old_part[&#34;x_ref&#34;],
+        self._old_part[&#34;y_ref&#34;],
+        self._old_part[&#34;z_ref&#34;],
+    ):
+        ans += self.pro.A.part_position_ref(
+            int(self.ID), self.x_ref, self.y_ref, self.z_ref
+        )
+
+    if self.material != self._old_part[&#34;material&#34;]:
+        ans += self.pro.A.part_material(int(self.ID), self.material)
+
+    self._get_artist_values()
+    self._sync_old()
+    return ans</code></pre>
+</details>
+<div class="desc"><p>Applies modifications to Artist.</p></div>
+</dd>
+<dt id="artistlib.wrapper.part.Part.delete_part"><code class="name flex">
+<span>def <span class="ident">delete_part</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_part(self) -&gt; str:
+    &#34;&#34;&#34;Removes the specified part from Artist.&#34;&#34;&#34;
+    if self._destroyed:
+        raise ReferenceError(&#34;Part already destroyed&#34;)
+
+    self.pro._update_state()
+    ans = self.pro.A.delete_part(int(self.ID))
+    self.pro._update_state()
+    self._destroyed = True
+    return ans</code></pre>
+</details>
+<div class="desc"><p>Removes the specified part from Artist.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="artistlib.wrapper.part.Detector"><code class="flex name class">
+<span>class <span class="ident">Detector</span></span>
+<span>(</span><span>project_obj)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Detector:
+    &#34;&#34;&#34;Provides an object-oriented interface for the aRTist detector.&#34;&#34;&#34;
+
+    def __init__(self, project_obj):
+        self.pro = project_obj
+        self.x = None
+        self.y = None
+        self.z = None
+        self.angleX = None
+        self.angleY = None
+        self.angleZ = None
+
+        self.size = None
+        self.pixel = None
+        self.res = None
+
+        self.pixelX = None
+        self.pixelY = None
+
+        self.sizeX = None
+        self.sizeY = None
+
+        self.resX = None
+        self.resY = None
+
+        self._get_artist_values()
+        self._old_part = {}
+        self._sync_old()
+
+    def _sync_old(self) -&gt; None:
+        self._old_part = {
+            &#34;x&#34;: self.x,
+            &#34;y&#34;: self.y,
+            &#34;z&#34;: self.z,
+            &#34;angleX&#34;: self.angleX,
+            &#34;angleY&#34;: self.angleY,
+            &#34;angleZ&#34;: self.angleZ,
+            &#34;size&#34;: self.size,
+            &#34;pixel&#34;: self.pixel,
+            &#34;res&#34;: self.res,
+            &#34;sizeX&#34;: self.sizeX,
+            &#34;sizeY&#34;: self.sizeY,
+            &#34;pixelX&#34;: self.pixelX,
+            &#34;pixelY&#34;: self.pixelY,
+            &#34;resX&#34;: self.resX,
+            &#34;resY&#34;: self.resY,
+        }
+
+    def _get_artist_values(self) -&gt; None:
+        self.x, self.y, self.z = self.pro.A.get_detector()
+        self.angleX, self.angleY, self.angleZ = self.pro.A.get_detector_orientation()
+        self._set_values_none()
+
+    def _set_values_none(self) -&gt; None:
+        self.pixelX, self.pixelY = self.pro.A.get_detector_pixel_count()
+        if self.pixelX != self.pixelY:
+            self.pixel = None
+        else:
+            self.pixel = self.pixelX
+
+        self.sizeX, self.sizeY = self.pro.A.get_detector_size()
+        if self.sizeX != self.sizeY:
+            self.size = None
+        else:
+            self.size = self.sizeX
+
+        self.resX, self.resY = self.pro.A.get_detector_res()
+        if self.resX != self.resY:
+            self.res = None
+        else:
+            self.res = self.resX
+
+    def update_detector(self) -&gt; str:
+        &#34;&#34;&#34;Applies modifications to the detector configuration in Artist.&#34;&#34;&#34;
+        ans = &#34;&#34;
+
+        if (self.x, self.y, self.z) != (
+            self._old_part[&#34;x&#34;],
+            self._old_part[&#34;y&#34;],
+            self._old_part[&#34;z&#34;],
+        ):
+            ans = ans + self.pro.A.detector_position(self.x, self.y, self.z)
+
+        if (self.angleX, self.angleY, self.angleZ) != (
+            self._old_part[&#34;angleX&#34;],
+            self._old_part[&#34;angleY&#34;],
+            self._old_part[&#34;angleZ&#34;],
+        ):
+            ans = ans + self.pro.A.detector_orientation(
+                self.angleX, self.angleY, self.angleZ
+            )
+
+        val = [
+            self.size,
+            self.pixel,
+            self.res,
+            self.sizeX,
+            self.sizeY,
+            self.pixelX,
+            self.pixelY,
+            self.resX,
+            self.resY,
+        ]
+
+        keys_dict = [
+            &#34;size&#34;,
+            &#34;pixel&#34;,
+            &#34;res&#34;,
+            &#34;sizeX&#34;,
+            &#34;sizeY&#34;,
+            &#34;pixelX&#34;,
+            &#34;pixelY&#34;,
+            &#34;resX&#34;,
+            &#34;resY&#34;,
+        ]
+        # if any(attr is not None for attr in val):
+        detector_send_dict = {}
+        for key, value in zip(keys_dict, val):
+            if value != self._old_part[key]:
+                detector_send_dict[key] = value
+        if len(detector_send_dict) &gt; 0:
+            ans = ans + self.pro.A.detector_geo(**detector_send_dict)
+
+        self._get_artist_values()
+        self._sync_old()
+        # self._set_values_none()
+        return ans</code></pre>
+</details>
+<div class="desc"><p>Provides an object-oriented interface for the aRTist detector.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="artistlib.wrapper.part.Detector.update_detector"><code class="name flex">
+<span>def <span class="ident">update_detector</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_detector(self) -&gt; str:
+    &#34;&#34;&#34;Applies modifications to the detector configuration in Artist.&#34;&#34;&#34;
+    ans = &#34;&#34;
+
+    if (self.x, self.y, self.z) != (
+        self._old_part[&#34;x&#34;],
+        self._old_part[&#34;y&#34;],
+        self._old_part[&#34;z&#34;],
+    ):
+        ans = ans + self.pro.A.detector_position(self.x, self.y, self.z)
+
+    if (self.angleX, self.angleY, self.angleZ) != (
+        self._old_part[&#34;angleX&#34;],
+        self._old_part[&#34;angleY&#34;],
+        self._old_part[&#34;angleZ&#34;],
+    ):
+        ans = ans + self.pro.A.detector_orientation(
+            self.angleX, self.angleY, self.angleZ
+        )
+
+    val = [
+        self.size,
+        self.pixel,
+        self.res,
+        self.sizeX,
+        self.sizeY,
+        self.pixelX,
+        self.pixelY,
+        self.resX,
+        self.resY,
+    ]
+
+    keys_dict = [
+        &#34;size&#34;,
+        &#34;pixel&#34;,
+        &#34;res&#34;,
+        &#34;sizeX&#34;,
+        &#34;sizeY&#34;,
+        &#34;pixelX&#34;,
+        &#34;pixelY&#34;,
+        &#34;resX&#34;,
+        &#34;resY&#34;,
+    ]
+    # if any(attr is not None for attr in val):
+    detector_send_dict = {}
+    for key, value in zip(keys_dict, val):
+        if value != self._old_part[key]:
+            detector_send_dict[key] = value
+    if len(detector_send_dict) &gt; 0:
+        ans = ans + self.pro.A.detector_geo(**detector_send_dict)
+
+    self._get_artist_values()
+    self._sync_old()
+    # self._set_values_none()
+    return ans</code></pre>
+</details>
+<div class="desc"><p>Applies modifications to the detector configuration in Artist.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="artistlib.wrapper.part.Source"><code class="flex name class">
+<span>class <span class="ident">Source</span></span>
+<span>(</span><span>project_obj)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Source:
+    &#34;&#34;&#34;Provides an object-oriented interface for the aRTist source.&#34;&#34;&#34;
+
+    def __init__(self, project_obj):
+        self.pro = project_obj
+        self.x = None
+        self.y = None
+        self.z = None
+        self.angleX = None
+        self.angleY = None
+        self.angleZ = None
+
+        self.Tube = None
+        self.V = None
+        self.TMaterial = None
+        self.TAngle = None
+        self.TThick = None
+        self.FMaterial = None
+        self.FThick = None
+        self.F2Material = None
+        self.F2Thick = None
+        self.F3Material = None
+        self.F3Thick = None
+        self.WMaterial = None
+        self.WThick = None
+        self.Angle = None
+        self.Transmission = None
+        self.res = None
+
+        self.exposure = None
+
+        self._get_artist_values()
+        self._old_part = {}
+        self._sync_old()
+
+    def _sync_old(self) -&gt; None:
+        self._old_part = {
+            &#34;x&#34;: self.x,
+            &#34;y&#34;: self.y,
+            &#34;z&#34;: self.z,
+            &#34;angleX&#34;: self.angleX,
+            &#34;angleY&#34;: self.angleY,
+            &#34;angleZ&#34;: self.angleZ,
+            &#34;Tube&#34;: self.Tube,
+            &#34;V&#34;: self.V,
+            &#34;TMaterial&#34;: self.TMaterial,
+            &#34;TAngle&#34;: self.TAngle,
+            &#34;TThick&#34;: self.TThick,
+            &#34;FMaterial&#34;: self.FMaterial,
+            &#34;FThick&#34;: self.FThick,
+            &#34;F2Material&#34;: self.F2Material,
+            &#34;F2Thick&#34;: self.F2Thick,
+            &#34;F3Material&#34;: self.F3Material,
+            &#34;F3Thick&#34;: self.F3Thick,
+            &#34;WMaterial&#34;: self.WMaterial,
+            &#34;WThick&#34;: self.WThick,
+            &#34;Angle&#34;: self.Angle,
+            &#34;Transmission&#34;: self.Transmission,
+            &#34;res&#34;: self.res,
+            &#34;exposure&#34;: self.exposure,
+        }
+
+    def _get_artist_values(self) -&gt; None:
+        self.x, self.y, self.z = self.pro.A.get_source()
+        self.angleX, self.angleY, self.angleZ = self.pro.A.get_source_orientation()
+        spectrum_dic = self.pro.A.get_spectra()
+        self._set_values_none(spectrum_dic)
+        self.exposure = self.pro.A.get_exposure()
+
+    def _set_values_none(self, spec_dic) -&gt; None:
+        self.Tube = spec_dic[&#34;Name&#34;] if spec_dic[&#34;Name&#34;] != &#34;{}&#34; else None
+        self.V = spec_dic[&#34;Voltage&#34;] if spec_dic[&#34;Voltage&#34;] != &#34;{}&#34; else None
+        self.TMaterial = (
+            spec_dic[&#34;TargetMaterial&#34;] if spec_dic[&#34;TargetMaterial&#34;] != &#34;{}&#34; else None
+        )
+        self.TAngle = (
+            spec_dic[&#34;TargetAngle&#34;] if spec_dic[&#34;TargetAngle&#34;] != &#34;{}&#34; else None
+        )
+        self.TThick = (
+            spec_dic[&#34;TargetThickness&#34;] if spec_dic[&#34;TargetThickness&#34;] != &#34;{}&#34; else None
+        )
+        self.FMaterial = (
+            spec_dic[&#34;FilterMaterial&#34;] if spec_dic[&#34;FilterMaterial&#34;] != &#34;{}&#34; else None
+        )
+        self.FThick = (
+            spec_dic[&#34;FilterThickness&#34;] if spec_dic[&#34;FilterThickness&#34;] != &#34;{}&#34; else None
+        )
+        self.F2Material = (
+            spec_dic[&#34;Filter2Material&#34;] if spec_dic[&#34;Filter2Material&#34;] != &#34;{}&#34; else None
+        )
+        self.F2Thick = (
+            spec_dic[&#34;Filter2Thickness&#34;]
+            if spec_dic[&#34;Filter2Thickness&#34;] != &#34;{}&#34;
+            else None
+        )
+        self.F3Material = (
+            spec_dic[&#34;Filter3Material&#34;] if spec_dic[&#34;Filter3Material&#34;] != &#34;{}&#34; else None
+        )
+        self.F3Thick = (
+            spec_dic[&#34;Filter3Thickness&#34;]
+            if spec_dic[&#34;Filter3Thickness&#34;] != &#34;{}&#34;
+            else None
+        )
+        self.WMaterial = (
+            spec_dic[&#34;WindowMaterial&#34;] if spec_dic[&#34;WindowMaterial&#34;] != &#34;{}&#34; else None
+        )
+        self.WThick = (
+            spec_dic[&#34;WindowThickness&#34;] if spec_dic[&#34;WindowThickness&#34;] != &#34;{}&#34; else None
+        )
+        self.Angle = spec_dic[&#34;AngleIn&#34;] if spec_dic[&#34;AngleIn&#34;] != &#34;{}&#34; else None
+        self.Transmission = (
+            spec_dic[&#34;Transmission&#34;] if spec_dic[&#34;Transmission&#34;] != &#34;{}&#34; else None
+        )
+        self.res = spec_dic[&#34;Resolution&#34;] if spec_dic[&#34;Resolution&#34;] != &#34;{}&#34; else None
+
+    def update_source(self) -&gt; str:
+        &#34;&#34;&#34;Applies modifications to the source configuration in Artist.&#34;&#34;&#34;
+        ans = &#34;&#34;
+        if (self.x, self.y, self.z) != (
+            self._old_part[&#34;x&#34;],
+            self._old_part[&#34;y&#34;],
+            self._old_part[&#34;z&#34;],
+        ):
+            ans = ans + self.pro.A.source_position((self.x), (self.y), (self.z))
+
+        if (self.angleX, self.angleY, self.angleZ) != (
+            self._old_part[&#34;angleX&#34;],
+            self._old_part[&#34;angleY&#34;],
+            self._old_part[&#34;angleZ&#34;],
+        ):
+            ans = ans + self.pro.A.source_orientation(
+                self.angleX, self.angleY, self.angleZ
+            )
+
+        Arg = [
+            self.Tube,
+            self.V,
+            self.TMaterial,
+            self.TAngle,
+            self.TThick,
+            self.FMaterial,
+            self.FThick,
+            self.F2Material,
+            self.F2Thick,
+            self.F3Material,
+            self.F3Thick,
+            self.WMaterial,
+            self.WThick,
+            self.Angle,
+            self.Transmission,
+            self.res,
+        ]
+
+        keys = [
+            &#34;Tube&#34;,
+            &#34;V&#34;,
+            &#34;TMaterial&#34;,
+            &#34;TAngle&#34;,
+            &#34;TThick&#34;,
+            &#34;FMaterial&#34;,
+            &#34;FThick&#34;,
+            &#34;F2Material&#34;,
+            &#34;F2Thick&#34;,
+            &#34;F3Material&#34;,
+            &#34;F3Thick&#34;,
+            &#34;WMaterial&#34;,
+            &#34;WThick&#34;,
+            &#34;Angle&#34;,
+            &#34;Transmission&#34;,
+            &#34;res&#34;,
+        ]
+
+        # if any(elements is not None for elements in Arg):
+        # old_value_list = list(self._old_part.values())
+        for key, ar in zip(keys, Arg):
+            # print(old_value_list[i+6])
+            if ar != self._old_part[key]:  # 6 index offset
+                ans = ans + self.pro.A.set_spectra(
+                    self.Tube,
+                    self.V,
+                    self.TMaterial,
+                    self.TAngle,
+                    self.TThick,
+                    self.FMaterial,
+                    self.FThick,
+                    self.F2Material,
+                    self.F2Thick,
+                    self.F3Material,
+                    self.F3Thick,
+                    self.WMaterial,
+                    self.WThick,
+                    self.Angle,
+                    self.Transmission,
+                    self.res,
+                )
+                break
+
+        if self.exposure != self._old_part[&#34;exposure&#34;]:
+            ans = ans + self.pro.A.set_exposure(self.exposure)
+        self._get_artist_values()
+        self._sync_old()
+        # self._set_values_none()
+        return ans
+
+    def cal_spectra(self, spec_name: str = None, dest_path: str = None) -&gt; str:
+        &#34;&#34;&#34;Finally, recalculates the spectrum after all modifications have been applied.&#34;&#34;&#34;
+        ans = self.pro.A.cal_spectra(spec_name, dest_path)
+        self._get_artist_values()
+        self._sync_old()
+        return ans</code></pre>
+</details>
+<div class="desc"><p>Provides an object-oriented interface for the aRTist source.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="artistlib.wrapper.part.Source.update_source"><code class="name flex">
+<span>def <span class="ident">update_source</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_source(self) -&gt; str:
+    &#34;&#34;&#34;Applies modifications to the source configuration in Artist.&#34;&#34;&#34;
+    ans = &#34;&#34;
+    if (self.x, self.y, self.z) != (
+        self._old_part[&#34;x&#34;],
+        self._old_part[&#34;y&#34;],
+        self._old_part[&#34;z&#34;],
+    ):
+        ans = ans + self.pro.A.source_position((self.x), (self.y), (self.z))
+
+    if (self.angleX, self.angleY, self.angleZ) != (
+        self._old_part[&#34;angleX&#34;],
+        self._old_part[&#34;angleY&#34;],
+        self._old_part[&#34;angleZ&#34;],
+    ):
+        ans = ans + self.pro.A.source_orientation(
+            self.angleX, self.angleY, self.angleZ
+        )
+
+    Arg = [
+        self.Tube,
+        self.V,
+        self.TMaterial,
+        self.TAngle,
+        self.TThick,
+        self.FMaterial,
+        self.FThick,
+        self.F2Material,
+        self.F2Thick,
+        self.F3Material,
+        self.F3Thick,
+        self.WMaterial,
+        self.WThick,
+        self.Angle,
+        self.Transmission,
+        self.res,
+    ]
+
+    keys = [
+        &#34;Tube&#34;,
+        &#34;V&#34;,
+        &#34;TMaterial&#34;,
+        &#34;TAngle&#34;,
+        &#34;TThick&#34;,
+        &#34;FMaterial&#34;,
+        &#34;FThick&#34;,
+        &#34;F2Material&#34;,
+        &#34;F2Thick&#34;,
+        &#34;F3Material&#34;,
+        &#34;F3Thick&#34;,
+        &#34;WMaterial&#34;,
+        &#34;WThick&#34;,
+        &#34;Angle&#34;,
+        &#34;Transmission&#34;,
+        &#34;res&#34;,
+    ]
+
+    # if any(elements is not None for elements in Arg):
+    # old_value_list = list(self._old_part.values())
+    for key, ar in zip(keys, Arg):
+        # print(old_value_list[i+6])
+        if ar != self._old_part[key]:  # 6 index offset
+            ans = ans + self.pro.A.set_spectra(
+                self.Tube,
+                self.V,
+                self.TMaterial,
+                self.TAngle,
+                self.TThick,
+                self.FMaterial,
+                self.FThick,
+                self.F2Material,
+                self.F2Thick,
+                self.F3Material,
+                self.F3Thick,
+                self.WMaterial,
+                self.WThick,
+                self.Angle,
+                self.Transmission,
+                self.res,
+            )
+            break
+
+    if self.exposure != self._old_part[&#34;exposure&#34;]:
+        ans = ans + self.pro.A.set_exposure(self.exposure)
+    self._get_artist_values()
+    self._sync_old()
+    # self._set_values_none()
+    return ans</code></pre>
+</details>
+<div class="desc"><p>Applies modifications to the source configuration in Artist.</p></div>
+</dd>
+<dt id="artistlib.wrapper.part.Source.cal_spectra"><code class="name flex">
+<span>def <span class="ident">cal_spectra</span></span>(<span>self, spec_name: str = None, dest_path: str = None) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cal_spectra(self, spec_name: str = None, dest_path: str = None) -&gt; str:
+    &#34;&#34;&#34;Finally, recalculates the spectrum after all modifications have been applied.&#34;&#34;&#34;
+    ans = self.pro.A.cal_spectra(spec_name, dest_path)
+    self._get_artist_values()
+    self._sync_old()
+    return ans</code></pre>
+</details>
+<div class="desc"><p>Finally, recalculates the spectrum after all modifications have been applied.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/aRTist-PythonLib">
+<img src="artistlib.png" alt=""> artistlib
+</a>
+</header>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="artistlib.wrapper" href="index.html">artistlib.wrapper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="artistlib.wrapper.part.Project" href="#artistlib.wrapper.part.Project">Project</a></code></h4>
+<ul class="">
+<li><code><a title="artistlib.wrapper.part.Project.in_parts" href="#artistlib.wrapper.part.Project.in_parts">in_parts</a></code></li>
+<li><code><a title="artistlib.wrapper.part.Project.clear_project" href="#artistlib.wrapper.part.Project.clear_project">clear_project</a></code></li>
+<li><code><a title="artistlib.wrapper.part.Project.update_project" href="#artistlib.wrapper.part.Project.update_project">update_project</a></code></li>
+<li><code><a title="artistlib.wrapper.part.Project.source" href="#artistlib.wrapper.part.Project.source">source</a></code></li>
+<li><code><a title="artistlib.wrapper.part.Project.detector" href="#artistlib.wrapper.part.Project.detector">detector</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="artistlib.wrapper.part.Part" href="#artistlib.wrapper.part.Part">Part</a></code></h4>
+<ul class="">
+<li><code><a title="artistlib.wrapper.part.Part.update_part" href="#artistlib.wrapper.part.Part.update_part">update_part</a></code></li>
+<li><code><a title="artistlib.wrapper.part.Part.delete_part" href="#artistlib.wrapper.part.Part.delete_part">delete_part</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="artistlib.wrapper.part.Detector" href="#artistlib.wrapper.part.Detector">Detector</a></code></h4>
+<ul class="">
+<li><code><a title="artistlib.wrapper.part.Detector.update_detector" href="#artistlib.wrapper.part.Detector.update_detector">update_detector</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="artistlib.wrapper.part.Source" href="#artistlib.wrapper.part.Source">Source</a></code></h4>
+<ul class="">
+<li><code><a title="artistlib.wrapper.part.Source.update_source" href="#artistlib.wrapper.part.Source.update_source">update_source</a></code></li>
+<li><code><a title="artistlib.wrapper.part.Source.cal_spectra" href="#artistlib.wrapper.part.Source.cal_spectra">cal_spectra</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

@@ -33,16 +33,7 @@ From any of these three options, you will get the complete package source code. 
 [from GitHub]: https://github.com/BAMresearch/aRTist-PythonLib
 [from PyPi]: https://pypi.org/project/artistlib/
 
-Usage
------
 
-Please make sure that aRTist is running and waiting for remote connection (menu: Tools>Enable remote access).
-
-The following example code shows the basic usage:
-
-```python
-.. include:: ../example_artistlib.py
-```
 
 About
 =====
@@ -63,3 +54,33 @@ The following people contributed to code and documentation of the package:
 * Carsten Bellon
 * David Plotzki
 * David Denkler
+* Julius Ott
+
+Usage
+-----
+
+Please make sure that aRTist is running and waiting for remote connection (menu: Tools>Enable remote access).
+
+The following example code shows the basic usage:
+
+```python
+.. include:: ../example_artistlib.py
+```
+
+Usage of the wrapper <!-- -->
+------------------------
+
+The following example code shows the basic usage of  the Wrapper:
+
+```python
+.. include:: ../example_wrapper.py
+```
+
+Usage of the part <!-- -->
+------------------------
+
+There is also an object-oriented way to control aRTist. The following code demonstrates the basic usage.
+
+```python
+.. include:: ../example_oop.py
+```

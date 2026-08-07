@@ -1,56 +1,62 @@
 import sys
 import os
+import artistlib as a
+from prompt_toolkit import PromptSession
+
 path = os.path.dirname(os.path.abspath(__file__))
 path = os.path.dirname(path)
 sys.path.insert(0, path)
 
-import artistlib as a
-from prompt_toolkit import PromptSession
-session = PromptSession()
 
-list = ["SUCCESS", "RESULT", "STDOUT"]
-commands = []
+def main():
+    session = PromptSession()
 
-rc = a.Junction()
+    list = ["SUCCESS", "RESULT", "STDOUT"]
 
-c = 0
+    rc = a.Junction()
 
-while True:
-    try:
-        com = session.prompt("Command: ")
+    c = 0
 
-        if "::RemoteControl::ReceiveFile" in com:
-            fileName2 = input("Send following file: ")
-            recAnswer = rc.send_file(fileName2)
-            print(recAnswer)
+    while True:
+        try:
+            com = session.prompt("Command: ")
 
-        else:
-            ans = rc.send(com, "*")
+            if "::RemoteControl::ReceiveFile" in com:
+                fileName2 = input("Send following file: ")
+                recAnswer = rc.send_file(fileName2)
+                print(recAnswer)
 
-            if "FILE" in ans:
-                fileName = input("Save file as: ")
-                rc.receive_file(fileName)
-                print("File saved as ", fileName)      
+            else:
+                ans = rc.send(com, "*")
 
-            for i in list:
-                typ = a.Junction.pick(rc, ans, i)
-                if "IMAGE" in ans and not "{}" in typ:
-                    name = input("Save Image as: ")
-                    rc.save_image(name)
-                    print("Image saved as ", name)
+                if "FILE" in ans:
+                    fileName = input("Save file as: ")
+                    rc.receive_file(fileName)
+                    print("File saved as ", fileName)
 
-                if not "{}" in typ:
-                    if not "not found" in typ:
-                        print(typ)
+                for i in list:
+                    typ = a.Junction.pick(rc, ans, i)
+                    if "IMAGE" in ans and "{}" not in typ:
+                        name = input("Save Image as: ")
+                        rc.get_image(name)
+                        print("Image saved as ", name)
+
+                    if "{}" not in typ:
+                        if "not found" not in typ:
+                            print(typ)
+                        else:
+                            c += 1
                     else:
                         c += 1
-                else:
-                    c += 1
 
-            if c >= 3 and not "BASE64" in ans:
-                print(ans)
+                if c >= 3 and "BASE64" not in ans:
+                    print(ans)
 
-            c = 0
+                c = 0
 
-    except KeyboardInterrupt:
-        raise SystemExit
+        except KeyboardInterrupt:
+            raise SystemExit
+
+
+if __name__ == "__main__":
+    main()

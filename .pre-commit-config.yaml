@@ -1,0 +1,33 @@
+repos:
+- repo: https://github.com/astral-sh/uv-pre-commit
+  # uv version.
+  rev: 0.8.18
+  hooks:
+    # Update the uv lockfile
+    - id: uv-lock
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v6.0.0
+  hooks:
+  - id: check-yaml
+    args: [--multi, --unsafe]
+  - id: end-of-file-fixer
+    exclude: ^.*(\.json)$
+  - id: mixed-line-ending
+  - id: trailing-whitespace
+  - id: no-commit-to-branch
+    name: do not commit to main branch
+- repo: local
+  hooks:
+  - id: format
+    name: Format
+    entry: uv run ruff format
+    args: [--check]
+    pass_filenames: true
+    language: system
+    types: [python]
+  - id: lint
+    name: Lint
+    entry: uv run ruff check
+    pass_filenames: true
+    language: system
+    types: [python]

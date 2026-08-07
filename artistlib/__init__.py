@@ -1,127 +1,78 @@
 # -*- coding: UTF-8 -*-
-"""The aRTist Python library is intended to remote control and automate the radiographic simulator aRTist.
+"""The aRTist Python library is designed to remotely control and automate the radiographic simulation software aRTist.
 
 .. include:: ./documentation.md
 """
 
-__pdoc__ = {'console': False, 'remote_access': False}
+__pdoc__ = {
+    "console": False,
+    "remote_access": False,
+    "ArtistStart.check_running_win": False,
+    "ArtistStart.check_running_Linux": False,
+    "ArtistStart.find_file": False,
+    "ArtistStart.read_json": False,
+    "ArtistStart.write_json": False,
+    "ArtistStart.load_artist_json": False,
+    "ArtistStart.find_artist_installation": False,
+    "ArtistStart.is_port_open": False,
+    "ArtistStart.find_artist_manual": False,
+    "ArtistStart.create_file": False,
+    "ArtistStart.delete_file": False,
+    "ArtistStart.run_artist": False,
+    "ArtistStart.wait_to_start": False,
+    "ArtistStart.find_and_start": False,
+    "ArtistStart.start_artist": False,
+    "ArtistStart.close_artist": False,
+    "ArtistStart.get_pid_by_name": False,
+    "ArtistStart.get_hwnds_by_pid": False,
+    "ArtistStart.hide_window": False,
+    "ArtistStart.show_window": False,
+    "ArtistStart.hide_ui": False,
+    "ArtistStart.show_ui": False,
+}
+
+
+from .wrapper.artist_send import ArtistSend
+from .wrapper.artist_project import ArtistProject
+from .wrapper.artist_setup import ArtistSetup
+from .wrapper.artist_detector import ArtistDetector
+from .wrapper.artist_source import ArtistSource
+
+
+from .wrapper.start.artist_start import close_artist, start_artist, show_ui, hide_ui
+from .wrapper.artistwrapper_all import ArtistAll
+from .wrapper.modules import CT
+from .wrapper.part import Project, Part, Detector, Source
+
+from .wrapper.material2 import MaterialService, Material
+from .junction import Junction
+
 
 from ._version import get_versions
-__version__ = get_versions()['version']
+
+__version__ = get_versions()["version"]
 del get_versions
 
-from .material import Material
 
-import numpy as np
-from numpy import append
-import socket
-import base64
-import pathlib
-from PIL import Image
-class Junction:
-    """Remote control of aRTist simulator
-    """
-    def __init__(self, host="localhost", port=3658, bufferSize=1024, timeout=5):
-        self.host = host
-        self.port = port
-        self.bufferSize = bufferSize
-        self.timeout = timeout
-        self.error = 0
-        self.progress = 0
-        self.answer = {}
-
-        self.connect()
-
-    def connect(self):
-        self.S = socket.socket()                        # Create socket (for TCP)
-        self.S.connect((self.host, self.port))          # Connect to aRTist
-        self.S.settimeout(self.timeout)
-        self.listen(0)
-        return self
-
-    def send(self, command, msgType="RESULT"):
-        c = command + '\n'
-        self.S.send(c.encode())
-        return self.listen(msgType=msgType)
-
-    def listen(self, command_no=1, msgType="RESULT"):
-        answer = ""
-        stop = False
-        if (command_no == 0):
-            self.S.settimeout(0.2)
-        while (not stop):# and ("SUCCESS" not in total) and ("ERROR" not in total):     # Solange server antwortet und nicht "SUCCESS" enthält
-            try:
-                msg = self.S.recv(self.bufferSize).decode()
-            except BaseException as e:
-                err = e.args[0]
-                if err == "timed out":
-                    #print("Timeout\n")
-                    answer += "RESULT Timeout\n"
-                    #print(answer)
-                    stop = True
-                    continue
-            else:
-                if ("SUCCESS" in msg):
-                    answer += msg
-                    stop = True
-                    continue
-                elif ("ERROR" in msg):
-                    answer += msg
-                    stop = True
-                    #global error
-                    self.error = self.error + 1 
-                    continue
-                elif ("PROGRESS" in msg):
-                    try:
-                        self.progress = float(msg.strip('PROGRESS '))
-                    except:
-                        self.progress = 0
-                    continue
-                else:
-                    if (command_no == 0):
-                        print(msg)
-                    answer += msg
-        self.S.settimeout(self.timeout)
-        self.answer.update({"SUCCESS":self.pick(answer, "SUCCESS"), "RESULT":self.pick(answer, "RESULT"), "SDTOUT":self.pick(answer, "STDOUT"), "BASE64":self.pick(answer, "BASE64"), "IMAGE":self.pick(answer, "IMAGE"), "FILE":self.pick(answer, "FILE")})
-        if (msgType != "*"):
-            answer = self.pick(answer, msgType)
-        return answer
-
-    def pick(self, answer, res='RESULT'):
-        picked = ''
-        for a in answer.split('\n'):
-            if a.find(res) == 0:
-                picked += a[1 + len(res):].strip('\r') + '\n'
-        if len(picked) == 0:
-            return res + ' not found.'
-        return picked
-
-    def get_answer(self, key):
-        return self.answer[key]
-
-    def save_image(self, imageName):
-        npTypes = [np.bool_, np.ubyte, np.byte, np.ubyte, np.short, np.ushort, np.intc, np.uintc, np.int_, np.uint, np.single, np.double]
-        imageData = self.answer["BASE64"]
-        decodedData = base64.b64decode((imageData))
-        imageHeader = self.answer["IMAGE"].split()
-        dtype = npTypes[int(imageHeader[4])]
-        im = np.frombuffer(decodedData, dtype).reshape((int(imageHeader[1]),int(imageHeader[0])))
-        Image.fromarray(im).save(imageName)
-
-    def receive_file(self, fileName):
-        fileData = self.answer["BASE64"]
-        decodedFile = base64.b64decode((fileData))
-        artistFile = open(fileName, "wb")
-        artistFile.write(decodedFile)
-        artistFile.close()
-
-    def send_file(self, fileName):
-        outFile = open(fileName, "br")
-        fileBytes = outFile.read()
-        encBytes = base64.b64encode((fileBytes))
-        encString = str(encBytes)
-        encString = encString.lstrip("b'").rstrip("'")
-        fileExtension = pathlib.Path(fileName).suffix
-        com = "::RemoteControl::ReceiveFile " + encString + " " + fileExtension
-        recAnswer = self.send(com, "RESULT")
-        return recAnswer
+__all__ = [
+    "Junction",
+    "ArtistStart",
+    "start_artist",
+    "close_artist",
+    "hide_ui",
+    "show_ui",
+    "ArtistSend",
+    "ArtistProject",
+    "ArtistSetup",
+    "ArtistDetector",
+    "ArtistSource",
+    "MaterialService",
+    "Material",
+    "Material",
+    "ArtistAll",
+    "CT",
+    "Project",
+    "Part",
+    "Detector",
+    "Source",
+]
